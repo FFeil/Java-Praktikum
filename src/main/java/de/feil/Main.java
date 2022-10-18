@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    // VM Args: --module-path "\path\to\javafx-sdk-19\lib" --add-modules javafx.controls,javafx.fxml
+    // VM Args: --module-path "C:\Program Files\Java\javafx-sdk-19\lib" --add-modules javafx.controls,javafx.fxml
     public static void main(String[] args) {
         launch(args);
     }
