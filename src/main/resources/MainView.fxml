@@ -69,7 +69,7 @@
                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
             <SeparatorMenuItem />
-            <Menu mnemonicParsing="false" text="_Speichern">
+            <Menu mnemonicParsing="false" text="Speichern">
                 <MenuItem mnemonicParsing="false" text="_XML">
                <accelerator>
                   <KeyCodeCombination alt="UP" code="X" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
@@ -79,7 +79,7 @@
                   <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>
             </Menu>
-            <Menu mnemonicParsing="false" text="_Laden">
+            <Menu mnemonicParsing="false" text="Laden">
                 <MenuItem text="_XML">
                <accelerator>
                   <KeyCodeCombination alt="DOWN" code="X" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />

@@ -42,7 +42,7 @@
                <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
         </Menu>
-        <Menu mnemonicParsing="false" text="Population">
+        <Menu mnemonicParsing="false" text="_Population">
             <MenuItem text="_Größe ändern...">
             <accelerator>
                <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
@@ -80,11 +80,11 @@
                </accelerator></MenuItem>
             </Menu>
             <Menu mnemonicParsing="false" text="_Laden">
-                <MenuItem text="XML">
+                <MenuItem text="_XML">
                <accelerator>
                   <KeyCodeCombination alt="DOWN" code="X" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>
-                <MenuItem text="Deserialisieren">
+                <MenuItem text="_Deserialisieren">
                <accelerator>
                   <KeyCodeCombination alt="DOWN" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>
