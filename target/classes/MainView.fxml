@@ -22,7 +22,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <MenuBar>
-        <Menu mnemonicParsing="false" text="_Automat">
+        <Menu text="_Automat">
             <MenuItem id="neuMenuItem" text="_Neu...">
             <accelerator>
                <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -42,7 +42,7 @@
                <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
         </Menu>
-        <Menu mnemonicParsing="false" text="_Population">
+        <Menu text="_Population">
             <MenuItem text="_Größe ändern...">
             <accelerator>
                <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
@@ -69,17 +69,17 @@
                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
             <SeparatorMenuItem />
-            <Menu mnemonicParsing="false" text="_Speichern">
-                <MenuItem mnemonicParsing="false" text="_XML">
+            <Menu text="_Speichern">
+                <MenuItem text="_XML">
                <accelerator>
                   <KeyCodeCombination alt="UP" code="X" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>
-                <MenuItem mnemonicParsing="false" text="_Serialisieren">
+                <MenuItem text="_Serialisieren">
                <accelerator>
                   <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>
             </Menu>
-            <Menu mnemonicParsing="false" text="_Laden">
+            <Menu text="_Laden">
                 <MenuItem text="_XML">
                <accelerator>
                   <KeyCodeCombination alt="DOWN" code="X" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
