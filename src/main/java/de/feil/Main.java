@@ -14,6 +14,7 @@ public class Main extends Application {
         launch(args);
     }
 
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/MainView.fxml"));
