@@ -1,5 +1,6 @@
 package de.feil.automaton;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -9,26 +10,27 @@ public abstract class Automaton {
 
     private int numberOfRows;
     private int numberOfColumns;
-    private int numberOfStates;
-    private boolean isMooreNeighborHood;
+    private final int numberOfStates;
+    private final boolean isMooreNeighborHood;
     private boolean isTorus;
     private Cell[][] cells;
+    private final Random random;
 
     /**
      * Konstruktor
      *
-     * @param rows Anzahl an Reihen
-     * @param columns Anzahl an Spalten
-     * @param numberOfStates Anzahl an Zuständen; die Zustände
-     * des Automaten
-     * sind dann die Werte 0 bis
-     * numberOfStates-1
+     * @param rows                Anzahl an Reihen
+     * @param columns             Anzahl an Spalten
+     * @param numberOfStates      Anzahl an Zuständen; die Zustände
+     *                            des Automaten
+     *                            sind dann die Werte 0 bis
+     *                            numberOfStates-1
      * @param isMooreNeighborHood true, falls der Automat die
-     * Moore-Nachbarschaft
-     * benutzt; false, falls der Automat die
-     * von-Neumann-Nachbarschaft benutzt
-     * @param isTorus true, falls die Zellen als
-     * Torus betrachtet werden
+     *                            Moore-Nachbarschaft
+     *                            benutzt; false, falls der Automat die
+     *                            von-Neumann-Nachbarschaft benutzt
+     * @param isTorus             true, falls die Zellen als
+     *                            Torus betrachtet werden
      */
     public Automaton(int rows, int columns, int numberOfStates,
                      boolean isMooreNeighborHood, boolean isTorus) {
@@ -38,15 +40,16 @@ public abstract class Automaton {
         this.isMooreNeighborHood = isMooreNeighborHood;
         this.isTorus = isTorus;
         cells = new Cell[rows][columns];
+        random = new Random();
     }
 
     /**
      * Implementierung der Transformationsregel
      *
-     * @param cell die betroffene Zelle (darf nicht verändert
-     * werden!!!)
+     * @param cell      die betroffene Zelle (darf nicht verändert
+     *                  werden!!!)
      * @param neighbors die Nachbarn der betroffenen Zelle (dürfen nicht
-     * verändert werden!!!)
+     *                  verändert werden!!!)
      * @return eine neu erzeugte Zelle, die gemäß der
      * Transformationsregel aus der
      * betroffenen Zelle hervorgeht
@@ -54,6 +57,7 @@ public abstract class Automaton {
      */
     protected abstract Cell transform(Cell cell, Cell[] neighbors)
             throws Throwable;
+
     /**
      * Liefert die Anzahl an Zuständen des Automaten; gültige Zustände sind
      * int-Werte zwischen 0 und Anzahl-1
@@ -87,7 +91,7 @@ public abstract class Automaton {
      * gelöschter Zellen sollen beibehalten werden; neue Zellen sollen im
      * Zustand 0 erzeugt werden
      *
-     * @param rows die neue Anzahl an Reihen
+     * @param rows    die neue Anzahl an Reihen
      * @param columns die neue Anzahl an Spalten
      */
     public void changeSize(int rows, int columns) {
@@ -103,6 +107,8 @@ public abstract class Automaton {
             }
         }
 
+        numberOfRows = rows;
+        numberOfColumns = columns;
         cells = newCells;
     }
 
@@ -120,7 +126,7 @@ public abstract class Automaton {
      * Ändert die Torus-Eigenschaft des Automaten
      *
      * @param isTorus true, falls der Automat als Torus betrachtet wird;
-     * false sonst
+     *                false sonst
      */
     public void setTorus(boolean isTorus) {
         this.isTorus = isTorus;
@@ -153,8 +159,6 @@ public abstract class Automaton {
      * setzt für jede Zelle einen zufällig erzeugten Zustand
      */
     public void randomPopulation() {
-        Random random = new Random();
-
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
                 cells[i][j].setState(random.nextInt(numberOfStates));
@@ -165,7 +169,7 @@ public abstract class Automaton {
     /**
      * Liefert eine Zelle des Automaten
      *
-     * @param row Reihe der Zelle
+     * @param row    Reihe der Zelle
      * @param column Spalte der Zelle
      * @return Cell-Objekt a Position row/column
      */
@@ -176,9 +180,9 @@ public abstract class Automaton {
     /**
      * Aendert den Zustand einer Zelle
      *
-     * @param row Reihe der Zelle
+     * @param row    Reihe der Zelle
      * @param column Spalte der Zelle
-     * @param state neuer Zustand der Zelle
+     * @param state  neuer Zustand der Zelle
      */
     public void setState(int row, int column, int state) {
         cells[row][column].setState(state);
@@ -187,15 +191,19 @@ public abstract class Automaton {
     /**
      * Aendert den Zustand eines ganzen Bereichs von Zellen
      *
-     * @param fromRow Reihe der obersten Zelle
+     * @param fromRow    Reihe der obersten Zelle
      * @param fromColumn Spalte der obersten Zelle
-     * @param toRow Reihe der untersten Zelle
-     * @param toColumn Spalte der untersten Zelle
-     * @param state neuer Zustand der Zellen
+     * @param toRow      Reihe der untersten Zelle
+     * @param toColumn   Spalte der untersten Zelle
+     * @param state      neuer Zustand der Zellen
      */
     public void setState(int fromRow, int fromColumn, int toRow,
                          int toColumn, int state) {
-        //TODO
+        for (int i = fromRow; i < toRow; i++) {
+            for (int j = fromColumn; j < toColumn; j++) {
+                cells[i][j].setState(state);
+            }
+        }
     }
 
     /**
@@ -205,9 +213,52 @@ public abstract class Automaton {
      * Torus-Eigenschaft des Automaten
      *
      * @throws Throwable Exceptions der transform-Methode werden
-     * weitergeleitet
+     *                   weitergeleitet
      */
     public void nextGeneration() throws Throwable {
-        //TODO
+        Cell[][] newCells = new Cell[numberOfRows][numberOfColumns];
+
+        for (int i = 0; i < numberOfRows; i++) {
+            for (int j = 0; j < numberOfColumns; j++) {
+                newCells[i][j] = transform(cells[i][j], getNeighbours(i, j));
+            }
+        }
+
+        cells = newCells;
+    }
+
+    private Cell[] getNeighbours(int row, int column) {
+        ArrayList<Cell> neighbours = new ArrayList<>();
+
+        if (isMooreNeighborHood) {
+            for (int i = row - 1; i < row + 2; i++) {
+                for (int j = column - 1; j < column + 2; j++) {
+                    if (i != row && j != column) {
+                        helper(neighbours, i, j);
+                    }
+                }
+            }
+        } else { // Neumann Nachbarschaft
+            for (int i = row - 1; i < row + 2; i+=2) {
+                helper(neighbours, i, column);
+            }
+            for (int i = column - 1; i < column + 2; i+=2) {
+                helper(neighbours, row, i);
+            }
+        }
+
+        return neighbours.toArray(new Cell[neighbours.size()]);
+    }
+
+    private void helper(ArrayList<Cell> container, int i, int j) {
+        int tmpI = i;
+        int tmpJ = j;
+
+        tmpI %= numberOfStates;
+        tmpJ %= numberOfStates;
+
+        if (isTorus || (i == tmpI && j == tmpJ)) {
+            container.add(cells[tmpI][tmpJ]);
+        }
     }
 }

@@ -1,0 +1,52 @@
+/*
+neuMenuItem
+*/
+#neuMenuItem > .label {
+    -fx-graphic: url("icons/New16.gif");
+}
+#neuMenuItem .accelerator-text{
+    -fx-graphic: none;
+}
+
+/*
+ladenMenuItem
+*/
+#ladenMenuItem > .label {
+    -fx-graphic:  url("icons/Load16.gif");
+}
+
+#ladenMenuItem .accelerator-text{
+    -fx-graphic: none;
+}
+
+/*
+schrittMenuItem
+*/
+#schrittMenuItem > .label {
+    -fx-padding: 0em 0em 0em 1.55em;
+}
+#schrittMenuItem .accelerator-text {
+    -fx-padding: 0em 0.5em 0em 0em;
+}
+
+/*
+startMenuItem
+*/
+#startMenuItem > .label {
+    -fx-graphic:  url("icons/Start16.gif");
+}
+
+#startMenuItem .accelerator-text {
+    -fx-graphic: none;
+}
+
+/*
+stopMenuItem
+*/
+#stopMenuItem > .label {
+      -fx-graphic:  url("icons/Stop16.gif");
+}
+
+#stopMenuItem .accelerator-text {
+    -fx-graphic: none;
+}

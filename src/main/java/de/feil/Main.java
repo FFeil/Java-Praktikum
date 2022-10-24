@@ -20,7 +20,7 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/MainView.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
 
-        scene.getStylesheets().add("style.css");
+        scene.getStylesheets().add("main.css");
 
         stage.setTitle("Zellulärer Automat");
         stage.setScene(scene);
