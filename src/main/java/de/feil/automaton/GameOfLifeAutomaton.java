@@ -1,9 +1,11 @@
 package de.feil.automaton;
 
+import java.util.Arrays;
+
 public class GameOfLifeAutomaton extends Automaton {
+
     public GameOfLifeAutomaton(int rows, int columns, boolean isTorus) {
-        super(0, 0, 0, false, false);
-        //TODO
+        super(rows, columns, 2, true, isTorus);
     }
 
     public GameOfLifeAutomaton() {
@@ -11,7 +13,14 @@ public class GameOfLifeAutomaton extends Automaton {
     }
 
     protected Cell transform(Cell cell, Cell[] neighbors) {
-        //TODO
-        return null;
+        long numberOfNeighbors = Arrays.stream(neighbors)
+                .filter(c -> c.getState() == 1)
+                .count();
+
+        if ((numberOfNeighbors == 2 && cell.getState() == 1) || numberOfNeighbors == 3) {
+            return new Cell(1);
+        }
+
+        return new Cell(0);
     }
 }

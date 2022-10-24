@@ -41,6 +41,12 @@ public abstract class Automaton {
         this.isTorus = isTorus;
         cells = new Cell[rows][columns];
         random = new Random();
+
+        for (int i = 0; i < numberOfRows; i++) {
+            for (int j = 0; j < numberOfColumns; j++) {
+                cells[i][j] = new Cell(0);
+            }
+        }
     }
 
     /**
@@ -220,45 +226,92 @@ public abstract class Automaton {
 
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
-                newCells[i][j] = transform(cells[i][j], getNeighbours(i, j));
+                newCells[i][j] = transform(cells[i][j], getNeighbors(i, j));
             }
         }
 
         cells = newCells;
     }
 
-    private Cell[] getNeighbours(int row, int column) {
-        ArrayList<Cell> neighbours = new ArrayList<>();
-
+    /**
+     * Gibt alle Nachbarn einer Zelle zurück
+     *
+     * @param row    Reihe der Zelle
+     * @param column Spalte der Zelle
+     * @return Alle Nachbarn als Cell-Array
+     */
+    private Cell[] getNeighbors(int row, int column) {
         if (isMooreNeighborHood) {
-            for (int i = row - 1; i < row + 2; i++) {
-                for (int j = column - 1; j < column + 2; j++) {
-                    if (i != row && j != column) {
-                        helper(neighbours, i, j);
-                    }
+            return getMooreNeighbors(row, column);
+        } else {
+            return getNeumannNeighbors(row, column);
+        }
+    }
+
+    /**
+     * Gibt alle Moore-Nachbarn einer Zelle zurück
+     *
+     * @param row    Reihe der Zelle
+     * @param column Spalte der Zelle
+     * @return Alle Moore-Nachbarn als Cell-Array
+     */
+    private Cell[] getMooreNeighbors(int row, int column) {
+        ArrayList<Cell> neighbors = new ArrayList<>();
+
+        for (int i = row - 1; i < row + 2; i++) {
+            for (int j = column - 1; j < column + 2; j++) {
+                if (!(i == row && j == column)) {
+                    addNeighbor(neighbors, i, j);
                 }
-            }
-        } else { // Neumann Nachbarschaft
-            for (int i = row - 1; i < row + 2; i+=2) {
-                helper(neighbours, i, column);
-            }
-            for (int i = column - 1; i < column + 2; i+=2) {
-                helper(neighbours, row, i);
             }
         }
 
-        return neighbours.toArray(new Cell[neighbours.size()]);
+        return neighbors.toArray(new Cell[neighbors.size()]);
     }
 
-    private void helper(ArrayList<Cell> container, int i, int j) {
+
+    /**
+     * Gibt alle Neumann-Nachbarn einer Zelle zurück
+     *
+     * @param row    Reihe der Zelle
+     * @param column Spalte der Zelle
+     * @return Alle Neumann-Nachbarn als Cell-Array
+     */
+    private Cell[] getNeumannNeighbors(int row, int column) {
+        ArrayList<Cell> neighbors = new ArrayList<>();
+
+        for (int i = row - 1; i < row + 2; i += 2) {
+            addNeighbor(neighbors, i, column);
+        }
+        for (int i = column - 1; i < column + 2; i += 2) {
+            addNeighbor(neighbors, row, i);
+        }
+
+        return neighbors.toArray(new Cell[neighbors.size()]);
+    }
+
+
+    /**
+     * Fügt eine Zelle zu einer Liste hinzu, falls entweder die Dimensionen im
+     * Rahmen von cells sind oder der Torus true ist.
+     *
+     * @param i Reihe der Zelle
+     * @param j Spalte der Zelle
+     */
+    private void addNeighbor(ArrayList<Cell> container, int i, int j) {
         int tmpI = i;
         int tmpJ = j;
 
-        tmpI %= numberOfStates;
-        tmpJ %= numberOfStates;
+        // Positives Modulo
+        tmpI = (tmpI + numberOfRows) % numberOfRows;
+        tmpJ = (tmpJ + numberOfColumns) % numberOfColumns;
 
         if (isTorus || (i == tmpI && j == tmpJ)) {
             container.add(cells[tmpI][tmpJ]);
         }
+    }
+
+    public Cell[][] getCells() {
+        return cells;
     }
 }
