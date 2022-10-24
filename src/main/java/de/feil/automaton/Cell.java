@@ -5,11 +5,13 @@ package de.feil.automaton;
  */
 public class Cell {
 
+    private int state;
+
     /**
      * Initialisiert die Zelle im Zustand 0
      */
     public Cell() {
-        //TODO
+        state = 0;
     }
 
     /**
@@ -18,8 +20,9 @@ public class Cell {
      * @param state
      */
     public Cell(int state) {
-        //TODO
+        this.state = state;
     }
+
     /**
      * Copy-Konstruktor; initialisiert die Zelle mit dem Zustand der
      * übergebenen Zelle
@@ -27,16 +30,16 @@ public class Cell {
      * @param cell
      */
     public Cell(Cell cell) {
-        //TODO
+        this.state = cell.getState();
     }
+
     /**
      * Liefert den Zustand der Zelle
      *
      * @return Zustand der Zelle
      */
     public int getState() {
-        //TODO
-        return 1;
+        return state;
     }
 
     /**
@@ -45,7 +48,7 @@ public class Cell {
      * @param state der neue Zustand der Zelle
      */
     void setState(int state) {
-        //TODO
+        this.state = state;
     }
 }
 

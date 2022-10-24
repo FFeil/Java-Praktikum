@@ -1,9 +1,18 @@
 package de.feil.automaton;
 
+import java.util.Random;
+
 /**
  * Abstrakte Klasse zur Repräsentation eines zellulären Automaten
  */
 public abstract class Automaton {
+
+    private int numberOfRows;
+    private int numberOfColumns;
+    private int numberOfStates;
+    private boolean isMooreNeighborHood;
+    private boolean isTorus;
+    private Cell[][] cells;
 
     /**
      * Konstruktor
@@ -23,7 +32,12 @@ public abstract class Automaton {
      */
     public Automaton(int rows, int columns, int numberOfStates,
                      boolean isMooreNeighborHood, boolean isTorus) {
-        //TODO
+        numberOfRows = rows;
+        numberOfColumns = columns;
+        this.numberOfStates = numberOfStates;
+        this.isMooreNeighborHood = isMooreNeighborHood;
+        this.isTorus = isTorus;
+        cells = new Cell[rows][columns];
     }
 
     /**
@@ -47,8 +61,7 @@ public abstract class Automaton {
      * @return die Anzahl an Zuständen des Automaten
      */
     public int getNumberOfStates() {
-        //TODO
-        return 0;
+        return numberOfStates;
     }
 
     /**
@@ -57,8 +70,7 @@ public abstract class Automaton {
      * @return die Anzahl an Reihen
      */
     public int getNumberOfRows() {
-        //TODO
-        return 0;
+        return numberOfRows;
     }
 
     /**
@@ -67,8 +79,7 @@ public abstract class Automaton {
      * @return die Anzahl an Spalten
      */
     public int getNumberOfColumns() {
-        //TODO
-        return 0;
+        return numberOfColumns;
     }
 
     /**
@@ -80,7 +91,19 @@ public abstract class Automaton {
      * @param columns die neue Anzahl an Spalten
      */
     public void changeSize(int rows, int columns) {
-        //TODO
+        Cell[][] newCells = new Cell[rows][columns];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (i < numberOfRows && j < numberOfColumns) {
+                    newCells[i][j] = cells[i][j];
+                } else {
+                    newCells[i][j] = new Cell();
+                }
+            }
+        }
+
+        cells = newCells;
     }
 
     /**
@@ -90,8 +113,7 @@ public abstract class Automaton {
      * sonst
      */
     public boolean isTorus() {
-        //TODO
-        return false;
+        return isTorus;
     }
 
     /**
@@ -101,7 +123,7 @@ public abstract class Automaton {
      * false sonst
      */
     public void setTorus(boolean isTorus) {
-        //TODO
+        this.isTorus = isTorus;
     }
 
     /**
@@ -113,22 +135,31 @@ public abstract class Automaton {
      * false, falls er die von-Neumann-Nachbarschaft berücksichtigt
      */
     public boolean isMooreNeighborHood() {
-        //TODO
-        return false;
+        return isMooreNeighborHood;
     }
 
     /**
      * setzt alle Zellen in den Zustand 0
      */
     public void clearPopulation() {
-        //TODO
+        for (int i = 0; i < numberOfRows; i++) {
+            for (int j = 0; j < numberOfColumns; j++) {
+                cells[i][j].setState(0);
+            }
+        }
     }
 
     /**
      * setzt für jede Zelle einen zufällig erzeugten Zustand
      */
     public void randomPopulation() {
-        //TODO
+        Random random = new Random();
+
+        for (int i = 0; i < numberOfRows; i++) {
+            for (int j = 0; j < numberOfColumns; j++) {
+                cells[i][j].setState(random.nextInt(numberOfStates));
+            }
+        }
     }
 
     /**
@@ -136,11 +167,10 @@ public abstract class Automaton {
      *
      * @param row Reihe der Zelle
      * @param column Spalte der Zelle
-     * @return Cell-Objekt an Position row/column
+     * @return Cell-Objekt a Position row/column
      */
     public Cell getCell(int row, int column) {
-        //TODO
-        return null;
+        return cells[row][column];
     }
 
     /**
@@ -151,7 +181,7 @@ public abstract class Automaton {
      * @param state neuer Zustand der Zelle
      */
     public void setState(int row, int column, int state) {
-        //TODO
+        cells[row][column].setState(state);
     }
 
     /**
