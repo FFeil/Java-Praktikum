@@ -305,6 +305,7 @@ public abstract class Automaton {
         tmpI = (tmpI + numberOfRows) % numberOfRows;
         tmpJ = (tmpJ + numberOfColumns) % numberOfColumns;
 
+        // (i == tmpI && j == tmpJ) => Index außerhalb von cells, falls torus == false
         if (isTorus || (i == tmpI && j == tmpJ)) {
             container.add(cells[tmpI][tmpJ]);
         }

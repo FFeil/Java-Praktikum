@@ -2,11 +2,11 @@ package de.feil.automaton;
 
 class AutomatonTest {
 
-    static GameOfLifeAutomaton automaton = new GameOfLifeAutomaton(6, 6, true);
+    static GameOfLifeAutomaton automaton = new GameOfLifeAutomaton(6, 6, false);
 
     public static void main(String[] args) throws Throwable {
-        blinkerTest();
-        //uhrTest();
+        //blinkerTest();
+        uhrTest();
     }
 
     private static void printCells() {
