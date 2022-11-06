@@ -280,12 +280,11 @@ public abstract class Automaton {
     private Cell[] getNeumannNeighbors(int row, int column) {
         ArrayList<Cell> neighbors = new ArrayList<>();
 
-        for (int i = row - 1; i < row + 2; i += 2) {
-            addNeighbor(neighbors, i, column);
-        }
-        for (int i = column - 1; i < column + 2; i += 2) {
-            addNeighbor(neighbors, row, i);
-        }
+        addNeighbor(neighbors, row - 1, column);
+        addNeighbor(neighbors, row + 1, column);
+
+        addNeighbor(neighbors, row, column - 1);
+        addNeighbor(neighbors, row, column + 1);
 
         return neighbors.toArray(new Cell[neighbors.size()]);
     }
@@ -311,6 +310,11 @@ public abstract class Automaton {
         }
     }
 
+    /**
+     * Liefert alle Zellen des Automaten
+     *
+     * @return Cell-Array Objekt
+     */
     public Cell[][] getCells() {
         return cells;
     }

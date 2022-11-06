@@ -2,26 +2,11 @@ package de.feil.automaton;
 
 class AutomatonTest {
 
-    static GameOfLifeAutomaton automaton = new GameOfLifeAutomaton(6, 6, false);
+    static GameOfLifeAutomaton automaton = new GameOfLifeAutomaton(6, 6, true);
 
     public static void main(String[] args) throws Throwable {
-        automaton.setState(1, 0, 1);
-        automaton.setState(1, 1, 1);
-        automaton.setState(1, 2, 1);
-
-        printCells();
-
-        automaton.nextGeneration();
-        printCells();
-
-        automaton.nextGeneration();
-        printCells();
-
-        automaton.nextGeneration();
-        printCells();
-
-        automaton.nextGeneration();
-        printCells();
+        blinkerTest();
+        //uhrTest();
     }
 
     private static void printCells() {
@@ -38,5 +23,44 @@ class AutomatonTest {
 
         System.out.println();
         System.out.println();
+    }
+
+    private static void blinkerTest() throws Throwable {
+        automaton.clearPopulation();
+
+        automaton.setState(0, 0, 1);
+        automaton.setState(0, 1, 1);
+        automaton.setState(0, 2, 1);
+
+        System.out.println("Generation 0");
+        printCells();
+
+        for (int i = 1; i < 4; i++) {
+            automaton.nextGeneration();
+
+            System.out.println("Generation " + i);
+            printCells();
+        }
+    }
+
+    private static void uhrTest() throws Throwable {
+        automaton.clearPopulation();
+
+        automaton.setState(2, 2, 1);
+        automaton.setState(2, 3, 1);
+        automaton.setState(1, 4, 1);
+        automaton.setState(3, 4, 1);
+        automaton.setState(3, 5, 1);
+        automaton.setState(4, 3, 1);
+
+        System.out.println("Generation 0");
+        printCells();
+
+        for (int i = 1; i < 4; i++) {
+            automaton.nextGeneration();
+
+            System.out.println("Generation " + i);
+            printCells();
+        }
     }
 }

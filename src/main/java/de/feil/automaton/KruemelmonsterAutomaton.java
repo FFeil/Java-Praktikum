@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class KruemelmonsterAutomaton extends Automaton {
+
     public KruemelmonsterAutomaton(int rows, int columns, boolean isTorus) {
         super(rows, columns, 10, false, isTorus);
     }

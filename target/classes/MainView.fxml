@@ -64,7 +64,7 @@
             <accelerator>
                <KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem text="_Verkleinern">
+            <MenuItem text="Ver_kleinern">
             <accelerator>
                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
@@ -79,7 +79,7 @@
                   <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>
             </Menu>
-            <Menu text="_Laden">
+            <Menu text="L_aden">
                 <MenuItem text="_XML">
                <accelerator>
                   <KeyCodeCombination alt="DOWN" code="X" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
@@ -100,11 +100,11 @@
             <accelerator>
                <KeyCodeCombination alt="DOWN" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem id="startMenuItem" text="_Start">
+            <MenuItem id="startMenuItem" text="St_art">
             <accelerator>
                <KeyCodeCombination alt="DOWN" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem id="stopMenuItem" disable="true" text="_Stopp">
+            <MenuItem id="stopMenuItem" disable="true" text="St_opp">
             <accelerator>
                <KeyCodeCombination alt="DOWN" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
