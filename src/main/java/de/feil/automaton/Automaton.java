@@ -44,7 +44,7 @@ public abstract class Automaton {
 
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
-                cells[i][j] = new Cell(0);
+                cells[i][j] = new Cell();
             }
         }
     }

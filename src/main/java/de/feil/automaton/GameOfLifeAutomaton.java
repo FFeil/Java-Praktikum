@@ -13,14 +13,14 @@ public class GameOfLifeAutomaton extends Automaton {
     }
 
     protected Cell transform(Cell cell, Cell[] neighbors) {
-        long numberOfNeighbors = Arrays.stream(neighbors)
+        long numberOfActiveNeighbors = Arrays.stream(neighbors)
                 .filter(c -> c.getState() == 1)
                 .count();
 
-        if ((numberOfNeighbors == 2 && cell.getState() == 1) || numberOfNeighbors == 3) {
+        if ((numberOfActiveNeighbors == 2 && cell.getState() == 1) || numberOfActiveNeighbors == 3) {
             return new Cell(1);
         }
 
-        return new Cell(0);
+        return new Cell();
     }
 }
