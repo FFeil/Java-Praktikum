@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Slider?>
@@ -17,10 +18,9 @@
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.feil.Controller">
     <MenuBar>
         <Menu text="_Automat">
             <MenuItem id="neuMenuItem" text="_Neu...">
@@ -141,11 +141,11 @@
             <Tooltip text="Drucken" />
          </tooltip></Button>
       <Separator orientation="VERTICAL" />
-        <Button mnemonicParsing="false" style="-fx-graphic: url(icons/ZoomIn24.gif);">
+        <Button mnemonicParsing="false" onAction="#OnZoomInAction" style="-fx-graphic: url(icons/ZoomIn24.gif);">
          <tooltip>
             <Tooltip text="Vergrößern" />
          </tooltip></Button>
-        <Button mnemonicParsing="false" style="-fx-graphic: url(icons/ZoomOut24.gif);">
+        <Button mnemonicParsing="false" onAction="#OnZoomOutAction" style="-fx-graphic: url(icons/ZoomOut24.gif);">
          <tooltip>
             <Tooltip text="Verkleinern" />
          </tooltip></Button>
@@ -168,9 +168,9 @@
             <Tooltip text="Empty Tooltip" />
          </tooltip></Slider>
     </ToolBar>
-   <HBox minHeight="385.0" VBox.vgrow="ALWAYS">
+   <HBox minHeight="415.0" VBox.vgrow="ALWAYS">
       <children>
-         <VBox maxWidth="145.0" minWidth="120.0" spacing="18.0">
+         <VBox maxWidth="145.0" minWidth="145.0" spacing="18.0" HBox.hgrow="NEVER">
             <children>
                <HBox spacing="15.0">
                   <children>
@@ -270,11 +270,11 @@
                <Insets right="5.0" />
             </HBox.margin>
          </VBox>
-         <Region minHeight="385.0" minWidth="385.0" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: blue;" HBox.hgrow="ALWAYS">
+         <ScrollPane fx:id="scrollPane" prefHeight="500.0" prefViewportHeight="500.0" prefViewportWidth="500.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
             <HBox.margin>
                <Insets left="5.0" />
             </HBox.margin>
-         </Region>
+         </ScrollPane>
       </children>
       <VBox.margin>
          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
