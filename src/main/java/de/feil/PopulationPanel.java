@@ -14,14 +14,14 @@ public class PopulationPanel extends Region {
     private static final double BORDER_HEIGHT = 10;
 
     private Automaton automaton;
-    private Canvas canvas;
+    private final Canvas canvas;
 
     public PopulationPanel(Automaton automaton) {
         this.automaton = automaton;
-
         this.canvas = new Canvas(calcCanvasWidth(), calcCanvasHeight());
-        paintCanvas();
         this.getChildren().add(canvas);
+
+        paintCanvas();
     }
 
 
@@ -29,7 +29,7 @@ public class PopulationPanel extends Region {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        gc.setLineWidth(0.8);
+        gc.setLineWidth(.8);
         gc.setStroke(Color.GRAY);
 
         for (int i = 0; i < automaton.getNumberOfRows(); i++) {
@@ -39,6 +39,7 @@ public class PopulationPanel extends Region {
                 } else {
                     gc.setFill(Color.WHITE);
                 }
+
                 gc.fillRect(BORDER_WIDTH + j * AUTOMATON_WIDTH, BORDER_HEIGHT + i * AUTOMATON_HEIGHT, AUTOMATON_WIDTH,
                         AUTOMATON_HEIGHT);
                 gc.strokeRect(BORDER_WIDTH + j * AUTOMATON_HEIGHT, BORDER_HEIGHT + i * AUTOMATON_HEIGHT, AUTOMATON_WIDTH,
