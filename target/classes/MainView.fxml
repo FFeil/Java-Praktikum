@@ -141,11 +141,11 @@
             <Tooltip text="Drucken" />
          </tooltip></Button>
       <Separator orientation="VERTICAL" />
-        <Button mnemonicParsing="false" onAction="#OnZoomInAction" style="-fx-graphic: url(icons/ZoomIn24.gif);">
+        <Button mnemonicParsing="false" onAction="#onZoomInAction" style="-fx-graphic: url(icons/ZoomIn24.gif);">
          <tooltip>
             <Tooltip text="Vergrößern" />
          </tooltip></Button>
-        <Button mnemonicParsing="false" onAction="#OnZoomOutAction" style="-fx-graphic: url(icons/ZoomOut24.gif);">
+        <Button mnemonicParsing="false" onAction="#onZoomOutAction" style="-fx-graphic: url(icons/ZoomOut24.gif);">
          <tooltip>
             <Tooltip text="Verkleinern" />
          </tooltip></Button>
