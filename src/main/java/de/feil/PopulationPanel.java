@@ -13,7 +13,7 @@ public class PopulationPanel extends Region {
     private static final double BORDER_WIDTH = 10;
     private static final double BORDER_HEIGHT = 10;
 
-    private Automaton automaton;
+    private final Automaton automaton;
     private final Canvas canvas;
 
     public PopulationPanel(Automaton automaton) {
@@ -57,18 +57,20 @@ public class PopulationPanel extends Region {
     }
 
     public void zoomIn() {
-        AUTOMATON_WIDTH++;
-        AUTOMATON_HEIGHT++;
+        if (AUTOMATON_WIDTH < 134) {
+            AUTOMATON_WIDTH += 2;
+            AUTOMATON_HEIGHT += 2;
 
-        canvas.setWidth(calcCanvasWidth());
-        canvas.setHeight(calcCanvasHeight());
-        paintCanvas();
+            canvas.setWidth(calcCanvasWidth());
+            canvas.setHeight(calcCanvasHeight());
+            paintCanvas();
+        }
     }
 
     public void zoomOut() {
-        if (AUTOMATON_HEIGHT > 2 && AUTOMATON_WIDTH > 2) {
-            AUTOMATON_WIDTH--;
-            AUTOMATON_HEIGHT--;
+        if (AUTOMATON_HEIGHT > 3) {
+            AUTOMATON_WIDTH -= 2;
+            AUTOMATON_HEIGHT -= 2;
 
             canvas.setWidth(calcCanvasWidth());
             canvas.setHeight(calcCanvasHeight());

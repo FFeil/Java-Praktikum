@@ -24,6 +24,8 @@ public class Main extends Application {
 
         stage.setTitle("Zellulärer Automat");
         stage.setScene(scene);
+        stage.setMinHeight(553);
+        stage.setMinWidth(736);
         stage.show();
     }
 }
