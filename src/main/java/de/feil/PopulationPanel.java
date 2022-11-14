@@ -24,6 +24,10 @@ public class PopulationPanel extends Region {
     private int selectedRadioButton;
     private final ArrayList<ColorPicker> colorPickers;
 
+    private int rowDragStart;
+    private int columnDragStart;
+
+
     public PopulationPanel(Automaton automaton, ArrayList<ColorPicker> colorPickers) {
         this.automaton = automaton;
         this.canvas = new Canvas(calcCanvasWidth(), calcCanvasHeight());
@@ -31,10 +35,9 @@ public class PopulationPanel extends Region {
         this.colorPickers = colorPickers;
 
         this.canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMouseClicked);
-
         this.canvas.addEventHandler(MouseEvent.DRAG_DETECTED, this::onMouseDragDetected);
-        this.canvas.addEventHandler(MouseDragEvent.MOUSE_DRAG_RELEASED, this::onMouseDragReleased);
         this.canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::onMouseDragged);
+        //this.canvas.addEventHandler(MouseDragEvent.MOUSE_DRAG_RELEASED, this::onMouseDragReleased);
 
         this.getChildren().add(canvas);
 
@@ -109,49 +112,74 @@ public class PopulationPanel extends Region {
         double x = event.getX();
         double y = event.getY();
 
-        if (x < BORDER_WIDTH || y < BORDER_HEIGHT || x > BORDER_WIDTH + automaton.getNumberOfColumns() * AUTOMATON_WIDTH
-                || y > BORDER_HEIGHT + automaton.getNumberOfRows() * AUTOMATON_HEIGHT) {
+        if (validateMouseCoordinates(x, y)) {
             return;
         }
 
-        int row = (int) ((y - BORDER_HEIGHT) / AUTOMATON_HEIGHT);
-        int col = (int) ((x - BORDER_WIDTH) / AUTOMATON_WIDTH);
+        int row = getMouseRow(y);
+        int col = getMouseColumn(x);
 
         automaton.setState(row, col, selectedRadioButton);
         paintCanvas();
     }
-    private int rowDragStart;
-    private int columnDragStart;
 
     private void onMouseDragDetected(MouseEvent event) {
-        startFullDrag();
         double x = event.getX();
         double y = event.getY();
 
-        if (x < BORDER_WIDTH || y < BORDER_HEIGHT || x > BORDER_WIDTH + automaton.getNumberOfColumns() * AUTOMATON_WIDTH
-                || y > BORDER_HEIGHT + automaton.getNumberOfRows() * AUTOMATON_HEIGHT) {
+        if (validateMouseCoordinates(x, y)) {
             return;
         }
 
-        rowDragStart = (int) ((y - BORDER_HEIGHT) / AUTOMATON_HEIGHT);
-        columnDragStart = (int) ((x - BORDER_WIDTH) / AUTOMATON_WIDTH);
+        rowDragStart = getMouseRow(y);
+        columnDragStart = getMouseColumn(x);
+
+        System.out.println(rowDragStart);
+        System.out.println(columnDragStart);
+
+        startFullDrag();
     }
 
     private void onMouseDragged(MouseEvent event) {
         double x = event.getX();
         double y = event.getY();
 
-        if (x < BORDER_WIDTH || y < BORDER_HEIGHT || x > BORDER_WIDTH + automaton.getNumberOfColumns() * AUTOMATON_WIDTH
-                || y > BORDER_HEIGHT + automaton.getNumberOfRows() * AUTOMATON_HEIGHT) {
+        if (validateMouseCoordinates(x, y)) {
             return;
         }
 
-        int row = (int) ((y - BORDER_HEIGHT) / AUTOMATON_HEIGHT);
-        int col = (int) ((x - BORDER_WIDTH) / AUTOMATON_WIDTH);
+        int currentRow = getMouseRow(y);
+        int currentCol = getMouseColumn(x);
 
+        // Variablen für die for-Schleife
+        int rowStart;
+        int rowEnd;
+        int colStart;
+        int colEnd;
 
-        for (int i = rowDragStart; i < row + 1; i++) {
-            for (int j = columnDragStart; j < col + 1; j++) {
+        if (rowDragStart < currentRow) {
+            rowStart = rowDragStart;
+            rowEnd = currentRow;
+        } else {
+            rowStart = currentRow;
+            rowEnd = rowDragStart;
+        }
+        if (columnDragStart < currentCol) {
+            colStart = columnDragStart;
+            colEnd = currentCol;
+        } else {
+            colStart = currentCol;
+            colEnd = columnDragStart;
+        }
+
+        System.out.println(rowStart + " bis " + rowEnd);
+        System.out.println(colStart + " bis " + colEnd);
+
+        System.out.println();
+        System.out.println();
+
+        for (int i = rowStart; i < rowEnd + 1; i++) {
+            for (int j = colStart; j < colEnd + 1; j++) {
                 automaton.setState(i, j, selectedRadioButton);
             }
         }
@@ -159,8 +187,19 @@ public class PopulationPanel extends Region {
         paintCanvas();
     }
 
-
     private void onMouseDragReleased(MouseDragEvent event) {
+    }
 
+    private boolean validateMouseCoordinates(double x, double y) {
+        return x < BORDER_WIDTH || y < BORDER_HEIGHT || x > BORDER_WIDTH + automaton.getNumberOfColumns() * AUTOMATON_WIDTH
+                || y > BORDER_HEIGHT + automaton.getNumberOfRows() * AUTOMATON_HEIGHT;
+    }
+
+    private int getMouseRow(double y) {
+        return (int) ((y - BORDER_HEIGHT) / AUTOMATON_HEIGHT);
+    }
+
+    private int getMouseColumn(double x) {
+        return (int) ((x - BORDER_WIDTH) / AUTOMATON_WIDTH);
     }
 }

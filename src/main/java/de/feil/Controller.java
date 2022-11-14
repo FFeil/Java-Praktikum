@@ -5,7 +5,6 @@ import de.feil.automaton.GameOfLifeAutomaton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
@@ -170,20 +169,12 @@ public class Controller {
             Dialog<Pair<String, String>> dialog = new Dialog<>();
 
             dialog.setTitle("Größe ändern");
-            dialog.setHeaderText("Welche Dimensionen soll der Automat haben?");
-
-            TextField rows = new TextField();
-            TextField columns = new TextField();
+            dialog.setHeaderText("Welche Größe soll der Automat haben?");
 
             dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
 
-            dialog.setOnCloseRequest(event -> {
-                if (!Pattern.matches("[1-4]?\\d?\\d", rows.getText())
-                        || !Pattern.matches("[1-4]?\\d?\\d", columns.getText())) {
-                    event.consume();
-                }
-            });
-
+            TextField rows = new TextField();
+            TextField columns = new TextField();
             GridPane grid = new GridPane();
             dialog.getDialogPane().setContent(grid);
 
@@ -194,6 +185,14 @@ public class Controller {
             grid.add(new Label("Spalten:"), 0, 1);
             grid.add(columns, 1, 1);
             grid.add(rows, 1, 0);
+
+            dialog.setOnCloseRequest(event -> { // 4 < x > 501
+                if (!Pattern.matches("[5-9]|[1-9]\\d|[1-4]\\d\\d|500", rows.getText())
+                        || !Pattern.matches("[5-9]|[1-9]\\d|[1-4]\\d\\d|500", columns.getText())) {
+                    event.consume();
+                    dialog.setResult(null);
+                }
+            });
 
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == ButtonType.OK) {
@@ -208,6 +207,5 @@ public class Controller {
                 populationPanel.resizeCanvas();
             });
         });
-
     }
 }
