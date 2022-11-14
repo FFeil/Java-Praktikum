@@ -2,11 +2,19 @@ package de.feil;
 
 import de.feil.automaton.Automaton;
 import de.feil.automaton.GameOfLifeAutomaton;
+import javafx.beans.binding.Bindings;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToggleButton;
 
 public class Controller {
 
+    @FXML
+    private ToggleButton torusToggleBotton;
+    @FXML
+    private CheckMenuItem torusCheckMenuItem;
     @FXML
     private ScrollPane scrollPane;
     private PopulationPanel populationPanel;
@@ -23,13 +31,31 @@ public class Controller {
         scrollPane.setContent(populationPanel);
     }
 
+    @FXML
     public void onZoomInAction() {
         populationPanel.zoomIn();
-        populationPanel.resize(populationPanel.calcCanvasWidth(), populationPanel.calcCanvasHeight());
     }
 
+    @FXML
     public void onZoomOutAction() {
         populationPanel.zoomOut();
-        populationPanel.resize(populationPanel.calcCanvasWidth(), populationPanel.calcCanvasHeight());
+    }
+
+    @FXML
+    public void onResetAction() {
+        automaton.clearPopulation();
+        populationPanel.paintCanvas();
+    }
+
+    @FXML
+    public void onRandomAction() {
+        automaton.randomPopulation();
+        populationPanel.paintCanvas();
+    }
+
+    @FXML
+    public void onTorusAction() {
+
+        automaton.setTorus(!automaton.isTorus());
     }
 }

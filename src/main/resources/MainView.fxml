@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.feil.Controller">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.feil.Controller">
     <MenuBar>
         <Menu text="_Automat">
             <MenuItem id="neuMenuItem" text="_Neu...">
@@ -55,16 +55,16 @@
             <accelerator>
                <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
-            <CheckMenuItem text="_Torus">
+            <CheckMenuItem fx:id="torusCheckMenuItem" onAction="#onTorusAction" text="_Torus">
             <accelerator>
                <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></CheckMenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem text="_Vergrößern">
+            <MenuItem onAction="#onZoomInAction" text="_Vergrößern">
             <accelerator>
                <KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem text="Ver_kleinern">
+            <MenuItem onAction="#onZoomOutAction" text="Ver_kleinern">
             <accelerator>
                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
@@ -124,15 +124,15 @@
          <tooltip>
             <Tooltip text="Größe ändern" />
          </tooltip></Button>
-        <Button mnemonicParsing="false" style="-fx-graphic: url(icons/Delete24.gif);">
+        <Button mnemonicParsing="false" onAction="#onResetAction" style="-fx-graphic: url(icons/Delete24.gif);">
          <tooltip>
             <Tooltip text="Zurücksetzen" />
          </tooltip></Button>
-        <Button mnemonicParsing="false" style="-fx-graphic: url(icons/Random24.gif);">
+        <Button mnemonicParsing="false" onAction="#onRandomAction" style="-fx-graphic: url(icons/Random24.gif);">
          <tooltip>
             <Tooltip text="Zufällig" />
          </tooltip></Button>
-        <ToggleButton mnemonicParsing="false" style="-fx-graphic: url(icons/Torus24.gif);">
+        <ToggleButton fx:id="torusToggleBotton" mnemonicParsing="false" onAction="#onTorusAction" style="-fx-graphic: url(icons/Torus24.gif);">
          <tooltip>
             <Tooltip text="Torus" />
          </tooltip></ToggleButton>

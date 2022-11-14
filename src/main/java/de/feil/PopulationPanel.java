@@ -25,7 +25,7 @@ public class PopulationPanel extends Region {
     }
 
 
-    private void paintCanvas() {
+    public void paintCanvas() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
@@ -64,6 +64,8 @@ public class PopulationPanel extends Region {
             canvas.setWidth(calcCanvasWidth());
             canvas.setHeight(calcCanvasHeight());
             paintCanvas();
+
+            resize(calcCanvasWidth(), calcCanvasHeight());
         }
     }
 
@@ -75,6 +77,8 @@ public class PopulationPanel extends Region {
             canvas.setWidth(calcCanvasWidth());
             canvas.setHeight(calcCanvasHeight());
             paintCanvas();
+
+            resize(calcCanvasWidth(), calcCanvasHeight());
         }
     }
 }
