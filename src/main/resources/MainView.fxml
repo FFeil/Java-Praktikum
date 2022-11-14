@@ -19,8 +19,9 @@
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.feil.Controller">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.feil.Controller">
     <MenuBar>
         <Menu text="_Automat">
             <MenuItem id="neuMenuItem" text="_Neu...">
@@ -43,11 +44,11 @@
             </accelerator></MenuItem>
         </Menu>
         <Menu text="_Population">
-            <MenuItem text="_Größe ändern...">
+            <MenuItem onAction="#onChangeSizeAction" text="_Größe ändern...">
             <accelerator>
                <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem text="_Löschen...">
+            <MenuItem onAction="#onResetAction" text="_Löschen...">
             <accelerator>
                <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
@@ -60,11 +61,11 @@
                <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></CheckMenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem onAction="#onZoomInAction" text="_Vergrößern">
+            <MenuItem fx:id="zoomInMenuItem" onAction="#onZoomInAction" text="_Vergrößern">
             <accelerator>
                <KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem onAction="#onZoomOutAction" text="Ver_kleinern">
+            <MenuItem fx:id="zoomOutMenuItem" onAction="#onZoomOutAction" text="Ver_kleinern">
             <accelerator>
                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
@@ -120,7 +121,7 @@
             <Tooltip text="Laden" />
          </tooltip></Button>
       <Separator orientation="VERTICAL" />
-        <Button mnemonicParsing="false" style="-fx-graphic: url(icons/Size24.gif);">
+        <Button mnemonicParsing="false" onAction="#onChangeSizeAction" style="-fx-graphic: url(icons/Size24.gif);">
          <tooltip>
             <Tooltip text="Größe ändern" />
          </tooltip></Button>
@@ -132,7 +133,7 @@
          <tooltip>
             <Tooltip text="Zufällig" />
          </tooltip></Button>
-        <ToggleButton fx:id="torusToggleBotton" mnemonicParsing="false" onAction="#onTorusAction" style="-fx-graphic: url(icons/Torus24.gif);">
+        <ToggleButton fx:id="torusToggleButton" mnemonicParsing="false" onAction="#onTorusAction" style="-fx-graphic: url(icons/Torus24.gif);">
          <tooltip>
             <Tooltip text="Torus" />
          </tooltip></ToggleButton>
@@ -141,11 +142,11 @@
             <Tooltip text="Drucken" />
          </tooltip></Button>
       <Separator orientation="VERTICAL" />
-        <Button mnemonicParsing="false" onAction="#onZoomInAction" style="-fx-graphic: url(icons/ZoomIn24.gif);">
+        <Button fx:id="zoomInButton" mnemonicParsing="false" onAction="#onZoomInAction" style="-fx-graphic: url(icons/ZoomIn24.gif);">
          <tooltip>
             <Tooltip text="Vergrößern" />
          </tooltip></Button>
-        <Button mnemonicParsing="false" onAction="#onZoomOutAction" style="-fx-graphic: url(icons/ZoomOut24.gif);">
+        <Button fx:id="zoomOutButton" mnemonicParsing="false" onAction="#onZoomOutAction" style="-fx-graphic: url(icons/ZoomOut24.gif);">
          <tooltip>
             <Tooltip text="Verkleinern" />
          </tooltip></Button>
@@ -174,95 +175,98 @@
             <children>
                <HBox spacing="15.0">
                   <children>
-                     <RadioButton mnemonicParsing="false" text="0">
+                     <RadioButton fx:id="radioButton0" mnemonicParsing="false" onAction="#onRadioButtonAction" selected="true" text="0">
                         <HBox.margin>
                            <Insets top="3.0" />
                         </HBox.margin></RadioButton>
-                     <ColorPicker />
+                     <ColorPicker fx:id="colorPicker0" onAction="#onColorPickerAction" />
                   </children>
                </HBox>
                <HBox spacing="15.0">
                   <children>
-                     <RadioButton mnemonicParsing="false" text="1">
+                     <RadioButton fx:id="radioButton1" mnemonicParsing="false" onAction="#onRadioButtonAction" text="1">
                         <HBox.margin>
                            <Insets top="3.0" />
                         </HBox.margin></RadioButton>
-                     <ColorPicker />
+                     <ColorPicker fx:id="colorPicker1" onAction="#onColorPickerAction">
+                        <value>
+                           <Color />
+                        </value></ColorPicker>
                   </children>
                </HBox>
                <HBox spacing="15.0">
                   <children>
-                     <RadioButton mnemonicParsing="false" text="2">
+                     <RadioButton fx:id="radioButton2" mnemonicParsing="false" onAction="#onRadioButtonAction" text="2">
                         <padding>
                            <Insets top="3.0" />
                         </padding>
                         <HBox.margin>
                            <Insets top="3.0" />
                         </HBox.margin></RadioButton>
-                     <ColorPicker />
+                     <ColorPicker fx:id="colorPicker2" onAction="#onColorPickerAction" />
                   </children>
                </HBox>
                <HBox spacing="15.0">
                   <children>
-                     <RadioButton mnemonicParsing="false" text="3">
+                     <RadioButton fx:id="radioButton3" mnemonicParsing="false" onAction="#onRadioButtonAction" text="3">
                         <HBox.margin>
                            <Insets top="3.0" />
                         </HBox.margin></RadioButton>
-                     <ColorPicker />
+                     <ColorPicker fx:id="colorPicker3" onAction="#onColorPickerAction" />
                   </children>
                </HBox>
                <HBox spacing="15.0">
                   <children>
-                     <RadioButton mnemonicParsing="false" text="4">
+                     <RadioButton fx:id="radioButton4" mnemonicParsing="false" onAction="#onRadioButtonAction" text="4">
                         <HBox.margin>
                            <Insets top="3.0" />
                         </HBox.margin></RadioButton>
-                     <ColorPicker />
+                     <ColorPicker fx:id="colorPicker4" onAction="#onColorPickerAction" />
                   </children>
                </HBox>
                <HBox spacing="15.0">
                   <children>
-                     <RadioButton mnemonicParsing="false" text="5">
+                     <RadioButton fx:id="radioButton5" mnemonicParsing="false" onAction="#onRadioButtonAction" text="5">
                         <HBox.margin>
                            <Insets top="3.0" />
                         </HBox.margin></RadioButton>
-                     <ColorPicker />
+                     <ColorPicker fx:id="colorPicker5" onAction="#onColorPickerAction" />
                   </children>
                </HBox>
                <HBox spacing="15.0">
                   <children>
-                     <RadioButton mnemonicParsing="false" text="6">
+                     <RadioButton fx:id="radioButton6" mnemonicParsing="false" onAction="#onRadioButtonAction" text="6">
                         <HBox.margin>
                            <Insets top="3.0" />
                         </HBox.margin></RadioButton>
-                     <ColorPicker />
+                     <ColorPicker fx:id="colorPicker6" onAction="#onColorPickerAction" />
                   </children>
                </HBox>
                <HBox spacing="15.0">
                   <children>
-                     <RadioButton mnemonicParsing="false" text="7">
+                     <RadioButton fx:id="radioButton7" mnemonicParsing="false" onAction="#onRadioButtonAction" text="7">
                         <HBox.margin>
                            <Insets top="3.0" />
                         </HBox.margin></RadioButton>
-                     <ColorPicker />
+                     <ColorPicker fx:id="colorPicker7" onAction="#onColorPickerAction" />
                   </children>
                </HBox>
                <HBox spacing="15.0">
                   <children>
-                     <RadioButton mnemonicParsing="false" text="8">
+                     <RadioButton fx:id="radioButton8" mnemonicParsing="false" onAction="#onRadioButtonAction" text="8">
                         <HBox.margin>
                            <Insets top="3.0" />
                         </HBox.margin></RadioButton>
-                     <ColorPicker />
+                     <ColorPicker fx:id="colorPicker8" onAction="#onColorPickerAction" />
                   </children>
                </HBox>
                <HBox spacing="15.0">
                   <children>
-                     <RadioButton mnemonicParsing="false" text="9">
+                     <RadioButton fx:id="radioButton9" mnemonicParsing="false" onAction="#onRadioButtonAction" text="9">
                         <HBox.margin>
                            <Insets top="3.0" />
                         </HBox.margin></RadioButton>
-                     <ColorPicker />
+                     <ColorPicker fx:id="colorPicker9" onAction="#onColorPickerAction" />
                   </children>
                </HBox>
             </children>
