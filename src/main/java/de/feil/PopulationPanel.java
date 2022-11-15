@@ -132,7 +132,7 @@ public class PopulationPanel extends Region {
         int currentRow = getMouseRow(y);
         int currentCol = getMouseColumn(x);
 
-        // Variablen für die for-Schleife
+        // Variablen für die for-Schleife initiieren + setzen
         int rowStart;
         int rowEnd;
         int colStart;

@@ -1,18 +1,15 @@
 package de.feil;
 
 import de.feil.automaton.Automaton;
+import de.feil.automaton.ChangeSizeDialog;
 import de.feil.automaton.GameOfLifeAutomaton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
-import java.util.regex.Pattern;
 
 public class Controller {
 
@@ -165,51 +162,9 @@ public class Controller {
 
     @FXML
     public void onChangeSizeAction() {
-        Platform.runLater(() -> {
-            Dialog<Pair<Integer, Integer>> dialog = new Dialog<>();
-
-            dialog.setTitle("Größe ändern");
-            dialog.setHeaderText("Welche Größe soll der Automat haben?");
-
-            dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-
-            // Grid mit TextFields und Labels
-            TextField rows = new TextField();
-            TextField columns = new TextField();
-            GridPane grid = new GridPane();
-            dialog.getDialogPane().setContent(grid);
-
-            grid.setHgap(10);
-            grid.setVgap(10);
-
-            grid.add(new Label("Zeilen:"), 0, 0);
-            grid.add(new Label("Spalten:"), 0, 1);
-            grid.add(columns, 1, 1);
-            grid.add(rows, 1, 0);
-
-            // Falls Werte falsch -> OK-Button unterdrücken
-            dialog.setOnCloseRequest(event -> { // 4 < x > 501
-                if (!Pattern.matches("[5-9]|[1-9]\\d|[1-4]\\d\\d|500", rows.getText())
-                        || !Pattern.matches("[5-9]|[1-9]\\d|[1-4]\\d\\d|500", columns.getText())) {
-                    event.consume();
-                    dialog.setResult(null);
-                }
-            });
-
-            // Ergebnis als Pair<Integer, Integer> zurückgeben
-            dialog.setResultConverter(dialogButton -> {
-                if (dialogButton == ButtonType.OK) {
-                    return new Pair<>(Integer.parseInt(rows.getText()), Integer.parseInt(columns.getText()));
-                }
-                return null;
-            });
-
-            // Automat + Canvas anpassen
-            Optional<Pair<Integer, Integer>> result = dialog.showAndWait();
-            result.ifPresent(dimensionPair -> {
-                automaton.changeSize(dimensionPair.getKey(), dimensionPair.getValue());
-                populationPanel.resizeCanvas();
-            });
-        });
+        Platform.runLater(() -> new ChangeSizeDialog().showAndWait().ifPresent(resultPair -> {
+            automaton.changeSize(resultPair.getKey(), resultPair.getValue());
+            populationPanel.resizeCanvas();
+        }));
     }
 }
