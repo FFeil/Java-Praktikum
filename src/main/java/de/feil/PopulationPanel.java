@@ -4,12 +4,12 @@ import de.feil.automaton.Automaton;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PopulationPanel extends Region {
 
@@ -28,18 +28,16 @@ public class PopulationPanel extends Region {
     private int columnDragStart;
 
 
-    public PopulationPanel(Automaton automaton, ArrayList<ColorPicker> colorPickers) {
+    public PopulationPanel(Automaton automaton, List<ColorPicker> colorPickers) {
         this.automaton = automaton;
         this.canvas = new Canvas(calcCanvasWidth(), calcCanvasHeight());
-        selectedRadioButton = 0;
-        this.colorPickers = colorPickers;
-
-        this.canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onMouseClicked);
-        this.canvas.addEventHandler(MouseEvent.DRAG_DETECTED, this::onMouseDragDetected);
-        this.canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::onMouseDragged);
-        //this.canvas.addEventHandler(MouseDragEvent.MOUSE_DRAG_RELEASED, this::onMouseDragReleased);
-
         this.getChildren().add(canvas);
+
+        selectedRadioButton = 0;
+        this.colorPickers = (ArrayList<ColorPicker>) colorPickers;
+
+        this.canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, this::onMousePressed);
+        this.canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::onMouseDragged);
 
         paintCanvas();
     }
@@ -108,22 +106,7 @@ public class PopulationPanel extends Region {
         resize(calcCanvasWidth(), calcCanvasHeight());
     }
 
-    private void onMouseClicked(MouseEvent event) {
-        double x = event.getX();
-        double y = event.getY();
-
-        if (validateMouseCoordinates(x, y)) {
-            return;
-        }
-
-        int row = getMouseRow(y);
-        int col = getMouseColumn(x);
-
-        automaton.setState(row, col, selectedRadioButton);
-        paintCanvas();
-    }
-
-    private void onMouseDragDetected(MouseEvent event) {
+    private void onMousePressed(MouseEvent event) {
         double x = event.getX();
         double y = event.getY();
 
@@ -134,10 +117,8 @@ public class PopulationPanel extends Region {
         rowDragStart = getMouseRow(y);
         columnDragStart = getMouseColumn(x);
 
-        System.out.println(rowDragStart);
-        System.out.println(columnDragStart);
-
-        startFullDrag();
+        automaton.setState(rowDragStart, columnDragStart, selectedRadioButton);
+        paintCanvas();
     }
 
     private void onMouseDragged(MouseEvent event) {
@@ -172,12 +153,15 @@ public class PopulationPanel extends Region {
             colEnd = columnDragStart;
         }
 
-        System.out.println(rowStart + " bis " + rowEnd);
-        System.out.println(colStart + " bis " + colEnd);
+        // Sonst Array out of bounce exception
+        if (rowEnd == automaton.getNumberOfRows()) {
+            rowEnd--;
+        }
+        if (colEnd == automaton.getNumberOfColumns()) {
+            colEnd--;
+        }
 
-        System.out.println();
-        System.out.println();
-
+        // Zellen setzen
         for (int i = rowStart; i < rowEnd + 1; i++) {
             for (int j = colStart; j < colEnd + 1; j++) {
                 automaton.setState(i, j, selectedRadioButton);
@@ -185,9 +169,6 @@ public class PopulationPanel extends Region {
         }
 
         paintCanvas();
-    }
-
-    private void onMouseDragReleased(MouseDragEvent event) {
     }
 
     private boolean validateMouseCoordinates(double x, double y) {

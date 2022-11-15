@@ -166,13 +166,14 @@ public class Controller {
     @FXML
     public void onChangeSizeAction() {
         Platform.runLater(() -> {
-            Dialog<Pair<String, String>> dialog = new Dialog<>();
+            Dialog<Pair<Integer, Integer>> dialog = new Dialog<>();
 
             dialog.setTitle("Größe ändern");
             dialog.setHeaderText("Welche Größe soll der Automat haben?");
 
             dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
 
+            // Grid mit TextFields und Labels
             TextField rows = new TextField();
             TextField columns = new TextField();
             GridPane grid = new GridPane();
@@ -186,6 +187,7 @@ public class Controller {
             grid.add(columns, 1, 1);
             grid.add(rows, 1, 0);
 
+            // Falls Werte falsch -> OK-Button unterdrücken
             dialog.setOnCloseRequest(event -> { // 4 < x > 501
                 if (!Pattern.matches("[5-9]|[1-9]\\d|[1-4]\\d\\d|500", rows.getText())
                         || !Pattern.matches("[5-9]|[1-9]\\d|[1-4]\\d\\d|500", columns.getText())) {
@@ -194,16 +196,18 @@ public class Controller {
                 }
             });
 
+            // Ergebnis als Pair<Integer, Integer> zurückgeben
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == ButtonType.OK) {
-                    return new Pair<>(rows.getText(), columns.getText());
+                    return new Pair<>(Integer.parseInt(rows.getText()), Integer.parseInt(columns.getText()));
                 }
                 return null;
             });
 
-            Optional<Pair<String, String>> result = dialog.showAndWait();
-            result.ifPresent(dimension -> {
-                automaton.changeSize(Integer.parseInt(dimension.getKey()), Integer.parseInt(dimension.getValue()));
+            // Automat + Canvas anpassen
+            Optional<Pair<Integer, Integer>> result = dialog.showAndWait();
+            result.ifPresent(dimensionPair -> {
+                automaton.changeSize(dimensionPair.getKey(), dimensionPair.getValue());
                 populationPanel.resizeCanvas();
             });
         });

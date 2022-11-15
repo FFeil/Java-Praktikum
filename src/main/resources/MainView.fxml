@@ -52,7 +52,7 @@
             <accelerator>
                <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem text="_Erzeugen...">
+            <MenuItem onAction="#onRandomAction" text="_Erzeugen...">
             <accelerator>
                <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
