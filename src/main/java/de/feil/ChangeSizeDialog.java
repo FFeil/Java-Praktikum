@@ -1,4 +1,4 @@
-package de.feil.automaton;
+package de.feil;
 
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;

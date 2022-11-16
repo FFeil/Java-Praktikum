@@ -1,7 +1,6 @@
 package de.feil;
 
 import de.feil.automaton.Automaton;
-import de.feil.automaton.ChangeSizeDialog;
 import de.feil.automaton.GameOfLifeAutomaton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -75,12 +74,10 @@ public class Controller {
     @FXML
     private CheckMenuItem torusCheckMenuItem;
 
+    // Population Area
     @FXML
     private ScrollPane scrollPane;
     private PopulationPanel populationPanel;
-
-
-
     private Automaton automaton;
 
     public void initialize() {

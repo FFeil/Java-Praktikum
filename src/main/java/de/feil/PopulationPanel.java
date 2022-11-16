@@ -73,7 +73,7 @@ public class PopulationPanel extends Region {
     }
 
     public boolean zoomIn() {
-        if (AUTOMATON_WIDTH < 134) {
+        if (AUTOMATON_WIDTH < 134 && AUTOMATON_HEIGHT < 134) {
             AUTOMATON_WIDTH += 2;
             AUTOMATON_HEIGHT += 2;
 
@@ -86,7 +86,7 @@ public class PopulationPanel extends Region {
     }
 
     public boolean zoomOut() {
-        if (AUTOMATON_HEIGHT > 3) {
+        if (AUTOMATON_WIDTH > 3 && AUTOMATON_HEIGHT > 3) {
             AUTOMATON_WIDTH -= 2;
             AUTOMATON_HEIGHT -= 2;
 
@@ -101,9 +101,9 @@ public class PopulationPanel extends Region {
     public void resizeCanvas() {
         canvas.setWidth(calcCanvasWidth());
         canvas.setHeight(calcCanvasHeight());
-        paintCanvas();
-
         resize(calcCanvasWidth(), calcCanvasHeight());
+
+        paintCanvas();
     }
 
     private void onMousePressed(MouseEvent event) {
