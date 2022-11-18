@@ -6,7 +6,11 @@ import de.feil.automaton.KruemelmonsterAutomaton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,22 +22,6 @@ public class Controller {
     public RadioButton radioButton0;
     @FXML
     public RadioButton radioButton1;
-    @FXML
-    public RadioButton radioButton2;
-    @FXML
-    public RadioButton radioButton3;
-    @FXML
-    public RadioButton radioButton4;
-    @FXML
-    public RadioButton radioButton5;
-    @FXML
-    public RadioButton radioButton6;
-    @FXML
-    public RadioButton radioButton7;
-    @FXML
-    public RadioButton radioButton8;
-    @FXML
-    public RadioButton radioButton9;
     private ArrayList<RadioButton> radioButtons;
 
     // ColorPickers
@@ -41,22 +29,6 @@ public class Controller {
     public ColorPicker colorPicker0;
     @FXML
     public ColorPicker colorPicker1;
-    @FXML
-    public ColorPicker colorPicker2;
-    @FXML
-    public ColorPicker colorPicker3;
-    @FXML
-    public ColorPicker colorPicker4;
-    @FXML
-    public ColorPicker colorPicker5;
-    @FXML
-    public ColorPicker colorPicker6;
-    @FXML
-    public ColorPicker colorPicker7;
-    @FXML
-    public ColorPicker colorPicker8;
-    @FXML
-    public ColorPicker colorPicker9;
     private ArrayList<ColorPicker> colorPickers;
 
     // Zoom
@@ -81,27 +53,44 @@ public class Controller {
     private PopulationPanel populationPanel;
     private Automaton automaton;
 
+    @FXML
+    public VBox statePanel;
+
     public void initialize() {
-        automaton = new KruemelmonsterAutomaton(60, 60, false);
+        automaton = new KruemelmonsterAutomaton(60, 60, 20, false);
         automaton.randomPopulation();
 
-        radioButtons = new ArrayList<>(Arrays.asList(radioButton0, radioButton1, radioButton2, radioButton3, radioButton4,
-                radioButton5, radioButton6, radioButton7, radioButton8, radioButton9));
-        colorPickers = new ArrayList<>(Arrays.asList(colorPicker0, colorPicker1, colorPicker2, colorPicker3, colorPicker4,
-                colorPicker5, colorPicker6, colorPicker7, colorPicker8, colorPicker9));
-        ToggleGroup toggleGroup = new ToggleGroup();
+        radioButtons = new ArrayList<>(Arrays.asList(radioButton0, radioButton1));
+        colorPickers = new ArrayList<>(Arrays.asList(colorPicker0, colorPicker1));
 
-        radioButtons.forEach(r -> r.setToggleGroup(toggleGroup));
-
-        if (automaton instanceof GameOfLifeAutomaton) {
-            for (int i = 2; i < 10; i++) {
-                radioButtons.get(i).setDisable(true);
-                colorPickers.get(i).setDisable(true);
-            }
-        }
+        createStatePanel();
 
         populationPanel = new PopulationPanel(automaton, colorPickers);
         scrollPane.setContent(populationPanel);
+    }
+
+    private void createStatePanel() {
+        for (int i = 2; i < automaton.getNumberOfStates(); i++) {
+            HBox hBox = new HBox();
+            hBox.setSpacing(10);
+
+            RadioButton radioButton = new RadioButton("" + i);
+            radioButton.setMinWidth(47);
+            radioButton.setMaxWidth(47);
+            HBox.setMargin(radioButton, new Insets(3, 0, 0, 0));
+            ColorPicker colorPicker = new ColorPicker(new Color(Math.random(), Math.random(), Math.random(),Math.random()));
+
+            hBox.getChildren().addAll(radioButton, colorPicker);
+            statePanel.getChildren().add(hBox);
+            radioButtons.add(radioButton);
+            colorPickers.add(colorPicker);
+        }
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        radioButtons.forEach(r -> {
+            r.setToggleGroup(toggleGroup);
+            r.setOnAction(this::onRadioButtonAction);
+        });
     }
 
     @FXML

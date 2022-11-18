@@ -171,109 +171,44 @@
     </ToolBar>
    <HBox minHeight="415.0" VBox.vgrow="ALWAYS">
       <children>
-         <VBox maxWidth="145.0" minWidth="145.0" spacing="18.0" HBox.hgrow="NEVER">
-            <children>
-               <HBox spacing="15.0">
-                  <children>
-                     <RadioButton fx:id="radioButton0" mnemonicParsing="false" onAction="#onRadioButtonAction" selected="true" text="0">
-                        <HBox.margin>
-                           <Insets top="3.0" />
-                        </HBox.margin></RadioButton>
-                     <ColorPicker fx:id="colorPicker0" onAction="#onColorPickerAction" />
-                  </children>
-               </HBox>
-               <HBox spacing="15.0">
-                  <children>
-                     <RadioButton fx:id="radioButton1" mnemonicParsing="false" onAction="#onRadioButtonAction" text="1">
-                        <HBox.margin>
-                           <Insets top="3.0" />
-                        </HBox.margin></RadioButton>
-                     <ColorPicker fx:id="colorPicker1" onAction="#onColorPickerAction">
-                        <value>
-                           <Color />
-                        </value></ColorPicker>
-                  </children>
-               </HBox>
-               <HBox spacing="15.0">
-                  <children>
-                     <RadioButton fx:id="radioButton2" mnemonicParsing="false" onAction="#onRadioButtonAction" text="2">
-                        <padding>
-                           <Insets top="3.0" />
-                        </padding>
-                        <HBox.margin>
-                           <Insets top="3.0" />
-                        </HBox.margin></RadioButton>
-                     <ColorPicker fx:id="colorPicker2" onAction="#onColorPickerAction" />
-                  </children>
-               </HBox>
-               <HBox spacing="15.0">
-                  <children>
-                     <RadioButton fx:id="radioButton3" mnemonicParsing="false" onAction="#onRadioButtonAction" text="3">
-                        <HBox.margin>
-                           <Insets top="3.0" />
-                        </HBox.margin></RadioButton>
-                     <ColorPicker fx:id="colorPicker3" onAction="#onColorPickerAction" />
-                  </children>
-               </HBox>
-               <HBox spacing="15.0">
-                  <children>
-                     <RadioButton fx:id="radioButton4" mnemonicParsing="false" onAction="#onRadioButtonAction" text="4">
-                        <HBox.margin>
-                           <Insets top="3.0" />
-                        </HBox.margin></RadioButton>
-                     <ColorPicker fx:id="colorPicker4" onAction="#onColorPickerAction" />
-                  </children>
-               </HBox>
-               <HBox spacing="15.0">
-                  <children>
-                     <RadioButton fx:id="radioButton5" mnemonicParsing="false" onAction="#onRadioButtonAction" text="5">
-                        <HBox.margin>
-                           <Insets top="3.0" />
-                        </HBox.margin></RadioButton>
-                     <ColorPicker fx:id="colorPicker5" onAction="#onColorPickerAction" />
-                  </children>
-               </HBox>
-               <HBox spacing="15.0">
-                  <children>
-                     <RadioButton fx:id="radioButton6" mnemonicParsing="false" onAction="#onRadioButtonAction" text="6">
-                        <HBox.margin>
-                           <Insets top="3.0" />
-                        </HBox.margin></RadioButton>
-                     <ColorPicker fx:id="colorPicker6" onAction="#onColorPickerAction" />
-                  </children>
-               </HBox>
-               <HBox spacing="15.0">
-                  <children>
-                     <RadioButton fx:id="radioButton7" mnemonicParsing="false" onAction="#onRadioButtonAction" text="7">
-                        <HBox.margin>
-                           <Insets top="3.0" />
-                        </HBox.margin></RadioButton>
-                     <ColorPicker fx:id="colorPicker7" onAction="#onColorPickerAction" />
-                  </children>
-               </HBox>
-               <HBox spacing="15.0">
-                  <children>
-                     <RadioButton fx:id="radioButton8" mnemonicParsing="false" onAction="#onRadioButtonAction" text="8">
-                        <HBox.margin>
-                           <Insets top="3.0" />
-                        </HBox.margin></RadioButton>
-                     <ColorPicker fx:id="colorPicker8" onAction="#onColorPickerAction" />
-                  </children>
-               </HBox>
-               <HBox spacing="15.0">
-                  <children>
-                     <RadioButton fx:id="radioButton9" mnemonicParsing="false" onAction="#onRadioButtonAction" text="9">
-                        <HBox.margin>
-                           <Insets top="3.0" />
-                        </HBox.margin></RadioButton>
-                     <ColorPicker fx:id="colorPicker9" onAction="#onColorPickerAction" />
-                  </children>
-               </HBox>
-            </children>
+         <ScrollPane hbarPolicy="NEVER" HBox.hgrow="NEVER">
             <HBox.margin>
                <Insets right="5.0" />
             </HBox.margin>
-         </VBox>
+            <content>
+               <VBox fx:id="statePanel" spacing="18.0">
+                  <children>
+                     <HBox spacing="10.0">
+                        <children>
+                           <RadioButton fx:id="radioButton0" maxWidth="47.0" minWidth="47.0" mnemonicParsing="false" onAction="#onRadioButtonAction" selected="true" text="0">
+                              <HBox.margin>
+                                 <Insets top="3.0" />
+                              </HBox.margin>
+                           </RadioButton>
+                           <ColorPicker fx:id="colorPicker0" onAction="#onColorPickerAction" />
+                        </children>
+                     </HBox>
+                     <HBox spacing="10.0">
+                        <children>
+                           <RadioButton fx:id="radioButton1" maxWidth="47.0" minWidth="47.0" mnemonicParsing="false" onAction="#onRadioButtonAction" text="1">
+                              <HBox.margin>
+                                 <Insets top="3.0" />
+                              </HBox.margin>
+                           </RadioButton>
+                           <ColorPicker fx:id="colorPicker1" onAction="#onColorPickerAction">
+                              <value>
+                                 <Color />
+                              </value>
+                           </ColorPicker>
+                        </children>
+                     </HBox>
+                  </children>
+                  <padding>
+                     <Insets bottom="5.0" left="5.0" right="15.0" top="5.0" />
+                  </padding>
+               </VBox>
+            </content>
+         </ScrollPane>
          <ScrollPane fx:id="scrollPane" prefHeight="500.0" prefViewportHeight="500.0" prefViewportWidth="500.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
             <HBox.margin>
                <Insets left="5.0" />

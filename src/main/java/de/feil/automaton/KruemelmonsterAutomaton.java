@@ -5,12 +5,12 @@ import java.util.Optional;
 
 public class KruemelmonsterAutomaton extends Automaton {
 
-    public KruemelmonsterAutomaton(int rows, int columns, boolean isTorus) {
-        super(rows, columns, 10, false, isTorus);
+    public KruemelmonsterAutomaton(int rows, int columns, int numberOfStates, boolean isTorus) {
+        super(rows, columns, numberOfStates, false, isTorus);
     }
 
     public KruemelmonsterAutomaton() {
-        this(100, 100, true);
+        this(100, 100, 10, true);
     }
 
     protected Cell transform(Cell cell, Cell[] neighbors) {

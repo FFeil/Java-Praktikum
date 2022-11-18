@@ -58,7 +58,7 @@ public class PopulationPanel extends Region {
                 gc.setFill(colorPickers.get(automaton.getCell(i, j).getState()).getValue());
                 gc.fillRect(BORDER_WIDTH + j * AUTOMATON_WIDTH, BORDER_HEIGHT + i * AUTOMATON_HEIGHT, AUTOMATON_WIDTH,
                         AUTOMATON_HEIGHT);
-                gc.strokeRect(BORDER_WIDTH + j * AUTOMATON_HEIGHT, BORDER_HEIGHT + i * AUTOMATON_HEIGHT, AUTOMATON_WIDTH,
+                gc.strokeRect(BORDER_WIDTH + j * AUTOMATON_WIDTH, BORDER_HEIGHT + i * AUTOMATON_HEIGHT, AUTOMATON_WIDTH,
                         AUTOMATON_HEIGHT);
             }
         }
@@ -73,7 +73,6 @@ public class PopulationPanel extends Region {
     }
 
     public boolean zoomIn() {
-        System.out.println(AUTOMATON_HEIGHT);
         if (AUTOMATON_WIDTH < 65 && AUTOMATON_HEIGHT < 65) {
             AUTOMATON_WIDTH += 2;
             AUTOMATON_HEIGHT += 2;
@@ -102,8 +101,6 @@ public class PopulationPanel extends Region {
     public void resizeCanvas() {
         canvas.setWidth(calcCanvasWidth());
         canvas.setHeight(calcCanvasHeight());
-        resize(calcCanvasWidth(), calcCanvasHeight());
-
         paintCanvas();
     }
 
