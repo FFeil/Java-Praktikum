@@ -73,7 +73,8 @@ public class PopulationPanel extends Region {
     }
 
     public boolean zoomIn() {
-        if (AUTOMATON_WIDTH < 134 && AUTOMATON_HEIGHT < 134) {
+        System.out.println(AUTOMATON_HEIGHT);
+        if (AUTOMATON_WIDTH < 65 && AUTOMATON_HEIGHT < 65) {
             AUTOMATON_WIDTH += 2;
             AUTOMATON_HEIGHT += 2;
 

@@ -2,6 +2,7 @@ package de.feil;
 
 import de.feil.automaton.Automaton;
 import de.feil.automaton.GameOfLifeAutomaton;
+import de.feil.automaton.KruemelmonsterAutomaton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,7 +82,7 @@ public class Controller {
     private Automaton automaton;
 
     public void initialize() {
-        automaton = new GameOfLifeAutomaton(60, 60, false);
+        automaton = new KruemelmonsterAutomaton(60, 60, false);
         automaton.randomPopulation();
 
         radioButtons = new ArrayList<>(Arrays.asList(radioButton0, radioButton1, radioButton2, radioButton3, radioButton4,
@@ -106,8 +107,10 @@ public class Controller {
     @FXML
     public void onZoomInAction() {
         if (populationPanel.zoomIn()) {
-            zoomInButton.setDisable(false);
-            zoomInMenuItem.setDisable(false);
+            if (zoomOutButton.isDisable()) {
+                zoomOutButton.setDisable(false);
+                zoomOutMenuItem.setDisable(false);
+            }
         } else {
             zoomInButton.setDisable(true);
             zoomInMenuItem.setDisable(true);
@@ -117,11 +120,11 @@ public class Controller {
     @FXML
     public void onZoomOutAction() {
         if (populationPanel.zoomOut()) {
-            zoomOutButton.setDisable(false);
-            zoomOutMenuItem.setDisable(false);
-        }
-
-        if (!populationPanel.zoomOut()) {
+            if (zoomInButton.isDisable()) {
+                zoomInButton.setDisable(false);
+                zoomInMenuItem.setDisable(false);
+            }
+        } else {
             zoomOutButton.setDisable(true);
             zoomOutMenuItem.setDisable(true);
         }
