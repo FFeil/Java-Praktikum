@@ -171,7 +171,7 @@
     </ToolBar>
    <HBox minHeight="415.0" VBox.vgrow="ALWAYS">
       <children>
-         <ScrollPane hbarPolicy="NEVER" HBox.hgrow="NEVER">
+         <ScrollPane hbarPolicy="NEVER" minWidth="212.0" HBox.hgrow="NEVER">
             <HBox.margin>
                <Insets right="5.0" />
             </HBox.margin>

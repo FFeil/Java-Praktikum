@@ -1,7 +1,6 @@
 package de.feil;
 
 import de.feil.automaton.Automaton;
-import de.feil.automaton.GameOfLifeAutomaton;
 import de.feil.automaton.KruemelmonsterAutomaton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -57,7 +56,7 @@ public class Controller {
     public VBox statePanel;
 
     public void initialize() {
-        automaton = new KruemelmonsterAutomaton(60, 60, 20, false);
+        automaton = new KruemelmonsterAutomaton(60, 60, 50, false);
         automaton.randomPopulation();
 
         radioButtons = new ArrayList<>(Arrays.asList(radioButton0, radioButton1));
