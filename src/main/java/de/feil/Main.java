@@ -14,7 +14,6 @@ public class Main extends Application {
         launch(args);
     }
 
-
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/MainView.fxml"));
@@ -24,7 +23,8 @@ public class Main extends Application {
 
         stage.setTitle("Zellulärer Automat");
         stage.setScene(scene);
-        stage.setMinHeight(553);
+        //stage.setMinHeight(553);
+        stage.setMinHeight(568);
         stage.setMinWidth(736);
         stage.show();
     }

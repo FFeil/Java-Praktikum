@@ -46,29 +46,32 @@ public class Controller {
     @FXML
     private CheckMenuItem torusCheckMenuItem;
 
-    // Population Area
+    private Automaton automaton;
+    // Population Panel
     @FXML
     private ScrollPane scrollPane;
     private PopulationPanel populationPanel;
-    private Automaton automaton;
-
+    // State Panel
     @FXML
     public VBox statePanel;
 
     public void initialize() {
-        automaton = new KruemelmonsterAutomaton(60, 60, 50, false);
+        automaton = new KruemelmonsterAutomaton(60, 60, 50, true);
         automaton.randomPopulation();
+
+        torusToggleButton.setSelected(automaton.isTorus());
+        torusCheckMenuItem.setSelected(automaton.isTorus());
 
         radioButtons = new ArrayList<>(Arrays.asList(radioButton0, radioButton1));
         colorPickers = new ArrayList<>(Arrays.asList(colorPicker0, colorPicker1));
 
-        createStatePanel();
+        fillStatePanel();
 
         populationPanel = new PopulationPanel(automaton, colorPickers);
         scrollPane.setContent(populationPanel);
     }
 
-    private void createStatePanel() {
+    private void fillStatePanel() {
         for (int i = 2; i < automaton.getNumberOfStates(); i++) {
             HBox hBox = new HBox();
             hBox.setSpacing(10);
