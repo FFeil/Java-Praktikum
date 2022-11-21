@@ -151,21 +151,8 @@ public class PopulationPanel extends Region {
             colEnd = columnDragStart;
         }
 
-        // Sonst Array out of bounce exception
-        if (rowEnd == automaton.getNumberOfRows()) {
-            rowEnd--;
-        }
-        if (colEnd == automaton.getNumberOfColumns()) {
-            colEnd--;
-        }
-
         // Zellen setzen
-        for (int i = rowStart; i < rowEnd + 1; i++) {
-            for (int j = colStart; j < colEnd + 1; j++) {
-                automaton.setState(i, j, selectedRadioButton);
-            }
-        }
-
+        automaton.setState(rowStart, colStart, rowEnd + 1, colEnd + 1, selectedRadioButton);
         paintCanvas();
     }
 

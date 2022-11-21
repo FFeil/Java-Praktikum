@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class ChangeSizeDialog extends Dialog<Pair<Integer, Integer>> {
 
-    public ChangeSizeDialog() {
+    public ChangeSizeDialog(int numberOfRows, int numberOfCols) {
         setTitle("Größe ändern");
         setHeaderText("Welche Größe soll der Automat haben?" +
                 "\n 5 <= Anzahl < =500");
@@ -21,6 +21,8 @@ public class ChangeSizeDialog extends Dialog<Pair<Integer, Integer>> {
         // Grid mit TextFields und Labels erstellen
         TextField rows = new TextField();
         TextField columns = new TextField();
+        rows.setText("" + numberOfRows);
+        columns.setText("" + numberOfCols);
         GridPane grid = new GridPane();
         getDialogPane().setContent(grid);
 

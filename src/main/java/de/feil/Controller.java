@@ -153,7 +153,8 @@ public class Controller {
 
     @FXML
     public void onChangeSizeAction() {
-        Platform.runLater(() -> new ChangeSizeDialog().showAndWait().ifPresent(resultPair -> {
+        Platform.runLater(() -> new ChangeSizeDialog(automaton.getNumberOfRows(), automaton.getNumberOfColumns())
+                .showAndWait().ifPresent(resultPair -> {
             automaton.changeSize(resultPair.getKey(), resultPair.getValue());
             populationPanel.resizeCanvas();
         }));
