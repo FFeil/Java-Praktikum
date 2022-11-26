@@ -1,7 +1,15 @@
 package de.feil;
 
+import de.feil.controller.main.Controller;
+import de.feil.controller.panel.PopulationPanelController;
+import de.feil.controller.panel.StatePanelController;
+import de.feil.model.base.Automaton;
+import de.feil.model.implementation.KruemelmonsterAutomaton;
+import de.feil.view.panel.PopulationPanel;
+import de.feil.view.panel.StatePanel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -16,14 +24,35 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/MainView.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        // Model
+        Automaton automaton = new KruemelmonsterAutomaton(50, 50, 20, true);
+        automaton.randomPopulation();
+        // View
+        StatePanel statePanel = new StatePanel(automaton.getNumberOfStates());
+        PopulationPanel populationPanel = new PopulationPanel(automaton, statePanel.getColorPickers());
 
+        // Controller + load fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/MainView.fxml"));
+        Controller controller = new Controller(automaton);
+        fxmlLoader.setController(controller);
+        Parent root = fxmlLoader.load();
+
+        controller.initialize();
+
+        // Panels zu ScrollPanes hinzufügen
+        controller.getStatePanelScrollPane().setContent(statePanel);
+        controller.getPopulationPanelScrollPane().setContent(populationPanel);
+
+        // Panel Controller
+        new StatePanelController(automaton, statePanel);
+        new PopulationPanelController(automaton, populationPanel, statePanel.getToggleGroup(), controller);
+
+
+        Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add("main.css");
+        stage.setScene(scene);
 
         stage.setTitle("Zellulärer Automat");
-        stage.setScene(scene);
-        //stage.setMinHeight(553);
         stage.setMinHeight(568);
         stage.setMinWidth(736);
         stage.show();

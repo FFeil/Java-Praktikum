@@ -1,15 +1,18 @@
-package de.feil;
+package de.feil.view.dialog;
 
+import de.feil.util.Pair;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.util.Pair;
+
 
 import java.util.regex.Pattern;
 
-public class ChangeSizeDialog extends Dialog<Pair<Integer, Integer>> {
+public class ChangeSizeDialog extends Dialog<Pair<Integer>> {
 
     public ChangeSizeDialog(int numberOfRows, int numberOfCols) {
         setTitle("Größe ändern");
@@ -34,18 +37,18 @@ public class ChangeSizeDialog extends Dialog<Pair<Integer, Integer>> {
         grid.add(columns, 1, 1);
         grid.add(rows, 1, 0);
 
-        // Falls Werte falsch -> OK-Button unterdrücken
-        setOnCloseRequest(event -> { // 4 < x > 501
-            if (!Pattern.matches("[5-9]|[1-9]\\d|[1-4]\\d\\d|500", rows.getText())
-                    || !Pattern.matches("[5-9]|[1-9]\\d|[1-4]\\d\\d|500", columns.getText())) {
-                event.consume();
-                setResult(null);
-            }
-        });
+        // Falls Werte falsch -> OK-Button disable
+        BooleanBinding rowsBinding = Bindings.createBooleanBinding(
+                () -> Pattern.matches("[5-9]|[1-9]\\d|[1-4]\\d\\d|500", rows.getText()), rows.textProperty());
+        BooleanBinding columnsBinding = Bindings.createBooleanBinding(
+                () -> Pattern.matches("[5-9]|[1-9]\\d|[1-4]\\d\\d|500", columns.getText()), columns.textProperty());
+
+        getDialogPane().lookupButton(ButtonType.OK).disableProperty()
+                .bind(rowsBinding.not().or(columnsBinding.not()));
 
         // Ergebnis als Pair<Integer, Integer> zurückgeben
         setResultConverter(button -> {
-            if (button == ButtonType.OK && !rows.getText().isEmpty() && !columns.getText().isEmpty()) {
+            if (button == ButtonType.OK) {
                 return new Pair<>(Integer.parseInt(rows.getText()), Integer.parseInt(columns.getText()));
             }
             return null;

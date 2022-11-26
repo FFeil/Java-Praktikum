@@ -1,4 +1,7 @@
-package de.feil.automaton;
+package de.feil.model.console;
+
+import de.feil.model.base.Cell;
+import de.feil.model.implementation.GameOfLifeAutomaton;
 
 class AutomatonTest {
 

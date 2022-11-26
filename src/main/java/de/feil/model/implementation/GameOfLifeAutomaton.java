@@ -1,4 +1,7 @@
-package de.feil.automaton;
+package de.feil.model.implementation;
+
+import de.feil.model.base.Automaton;
+import de.feil.model.base.Cell;
 
 import java.util.Arrays;
 

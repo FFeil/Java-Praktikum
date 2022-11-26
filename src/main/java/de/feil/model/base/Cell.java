@@ -1,4 +1,4 @@
-package de.feil.automaton;
+package de.feil.model.base;
 
 /**
  * Klasse zur Repräsentation einer Zelle eines zellulären Automaten

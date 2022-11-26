@@ -1,4 +1,6 @@
-package de.feil.automaton;
+package de.feil.model.base;
+
+import de.feil.util.Observable;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -6,7 +8,7 @@ import java.util.Random;
 /**
  * Abstrakte Klasse zur Repräsentation eines zellulären Automaten
  */
-public abstract class Automaton {
+public abstract class Automaton extends Observable {
 
     private int numberOfRows;
     private int numberOfColumns;
@@ -116,6 +118,8 @@ public abstract class Automaton {
         numberOfRows = rows;
         numberOfColumns = columns;
         cells = newCells;
+
+        notifyObserver();
     }
 
     /**
@@ -136,6 +140,8 @@ public abstract class Automaton {
      */
     public void setTorus(boolean isTorus) {
         this.isTorus = isTorus;
+
+        notifyObserver();
     }
 
     /**
@@ -159,6 +165,8 @@ public abstract class Automaton {
                 cells[i][j].setState(0);
             }
         }
+
+        notifyObserver();
     }
 
     /**
@@ -170,6 +178,8 @@ public abstract class Automaton {
                 cells[i][j].setState(random.nextInt(numberOfStates));
             }
         }
+
+        notifyObserver();
     }
 
     /**
@@ -192,6 +202,8 @@ public abstract class Automaton {
      */
     public void setState(int row, int column, int state) {
         cells[row][column].setState(state);
+
+        notifyObserver();
     }
 
     /**
@@ -210,6 +222,8 @@ public abstract class Automaton {
                 cells[i][j].setState(state);
             }
         }
+
+        notifyObserver();
     }
 
     /**
@@ -231,6 +245,8 @@ public abstract class Automaton {
         }
 
         cells = newCells;
+
+        notifyObserver();
     }
 
     /**
@@ -309,6 +325,8 @@ public abstract class Automaton {
         if (isTorus || (i == tmpI && j == tmpJ)) {
             container.add(cells[tmpI][tmpJ]);
         }
+
+        notifyObserver();
     }
 
     /**
