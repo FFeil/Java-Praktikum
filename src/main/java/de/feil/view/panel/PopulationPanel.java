@@ -66,26 +66,22 @@ public class PopulationPanel extends Region implements Observer {
         return 2 * BORDER_HEIGHT + AUTOMATON_HEIGHT * automaton.getNumberOfRows();
     }
 
-    public boolean zoomIn() {
-        if (AUTOMATON_WIDTH < 65 && AUTOMATON_HEIGHT < 65) {
-            AUTOMATON_WIDTH += 2;
-            AUTOMATON_HEIGHT += 2;
-
-            return true;
-        }
-
-        return false;
+    public boolean canZoomIn() {
+        return AUTOMATON_WIDTH < 65 && AUTOMATON_HEIGHT < 65;
     }
 
-    public boolean zoomOut() {
-        if (AUTOMATON_WIDTH > 3 && AUTOMATON_HEIGHT > 3) {
-            AUTOMATON_WIDTH -= 2;
-            AUTOMATON_HEIGHT -= 2;
+    public void zoomIn() {
+        AUTOMATON_WIDTH += 2;
+        AUTOMATON_HEIGHT += 2;
+    }
 
-            return true;
-        }
+    public boolean canZoomOut() {
+        return AUTOMATON_WIDTH > 3 && AUTOMATON_HEIGHT > 3;
+    }
 
-        return false;
+    public void zoomOut() {
+        AUTOMATON_WIDTH -= 2;
+        AUTOMATON_HEIGHT -= 2;
     }
 
     public Optional<Pair<Integer>> getRowAndCol(double x, double y) {
@@ -95,6 +91,7 @@ public class PopulationPanel extends Region implements Observer {
         }
         int row = (int) ((y - BORDER_HEIGHT) / AUTOMATON_HEIGHT);
         int col = (int) ((x - BORDER_WIDTH) / AUTOMATON_WIDTH);
+
         return Optional.of(new Pair<>(row, col));
     }
 

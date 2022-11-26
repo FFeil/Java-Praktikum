@@ -15,7 +15,7 @@ public abstract class Automaton extends Observable {
     private final int numberOfStates;
     private final boolean isMooreNeighborHood;
     private boolean isTorus;
-    private Cell[][] cells;
+    private transient Cell[][] cells;
     private final Random random;
 
     /**
@@ -34,7 +34,7 @@ public abstract class Automaton extends Observable {
      * @param isTorus             true, falls die Zellen als
      *                            Torus betrachtet werden
      */
-    public Automaton(int rows, int columns, int numberOfStates,
+    protected Automaton(int rows, int columns, int numberOfStates,
                      boolean isMooreNeighborHood, boolean isTorus) {
         numberOfRows = rows;
         numberOfColumns = columns;
@@ -336,5 +336,33 @@ public abstract class Automaton extends Observable {
      */
     public Cell[][] getCells() {
         return cells;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        if (this.numberOfRows == ((Automaton) obj).numberOfRows
+                && this.numberOfColumns == ((Automaton) obj).numberOfColumns
+                && this.numberOfStates == ((Automaton) obj).numberOfStates
+                && this.isMooreNeighborHood == ((Automaton) obj).isMooreNeighborHood
+                && this.isTorus == ((Automaton) obj).isTorus) {
+            for (int i = 0; i < numberOfRows; i++) {
+                for (int j = 0; j < numberOfColumns; j++) {
+                   if (this.cells[i][j].getState() != ((Automaton) obj).cells[i][j].getState()) {
+                       return false;
+                   }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

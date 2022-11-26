@@ -49,53 +49,50 @@ public class PopulationPanelController {
 
     private void onMouseDragged(MouseEvent event) {
         populationPanel.getRowAndCol(event.getX(), event.getY()).ifPresent(rowCol -> {
-            int rowStart;
-            int rowEnd;
-            int colStart;
-            int colEnd;
+            int rowStart = Math.min(rowDragStart, rowCol.value1());
+            int rowEnd = Math.max(rowDragStart, rowCol.value1()) + 1;
+            int colStart = Math.min(columnDragStart, rowCol.value2());
+            int colEnd = Math.max(columnDragStart, rowCol.value2()) + 1;
 
-            if (rowDragStart < rowCol.value1()) {
-                rowStart = rowDragStart;
-                rowEnd = rowCol.value1();
-            } else {
-                rowStart = rowCol.value1();
-                rowEnd = rowDragStart;
+            // Sonst Index out of bounds Exception
+            if (rowEnd > automaton.getNumberOfRows()) {
+                rowEnd--;
             }
-            if (columnDragStart < rowCol.value2()) {
-                colStart = columnDragStart;
-                colEnd = rowCol.value2();
-            } else {
-                colStart = rowCol.value2();
-                colEnd = columnDragStart;
+            if (colEnd > automaton.getNumberOfColumns()) {
+                colEnd--;
             }
 
-            automaton.setState(rowStart, colStart, rowEnd + 1, colEnd + 1, getSelectedRadioButton());
+            automaton.setState(rowStart, colStart, rowEnd, colEnd, getSelectedRadioButton());
         });
     }
 
   public void onZoomInAction(ActionEvent event) {
-      if (populationPanel.zoomIn()) {
-          if (controller.getZoomInButton().isDisable()) {
-              controller.getZoomOutButton().setDisable(false);
-              controller.getZoomOutMenuItem().setDisable(false);
-          }
-          automaton.notifyObserver();
-      } else {
+      populationPanel.zoomIn();
+      automaton.notifyObserver();
+
+      if (!populationPanel.canZoomIn()) {
           controller.getZoomInButton().setDisable(true);
           controller.getZoomInButton().setDisable(true);
+      }
+
+      if (controller.getZoomOutButton().isDisable()) {
+          controller.getZoomOutButton().setDisable(false);
+          controller.getZoomOutMenuItem().setDisable(false);
       }
   }
 
   public void onZoomOutAction(ActionEvent event) {
-      if (populationPanel.zoomOut()) {
-          if (controller.getZoomInButton().isDisable()) {
-              controller.getZoomInButton().setDisable(false);
-              controller.getZoomInButton().setDisable(false);
-          }
-          automaton.notifyObserver();
-      } else {
+      populationPanel.zoomOut();
+      automaton.notifyObserver();
+
+      if (!populationPanel.canZoomOut()) {
           controller.getZoomOutButton().setDisable(true);
           controller.getZoomOutMenuItem().setDisable(true);
+      }
+
+      if (controller.getZoomInButton().isDisable()) {
+          controller.getZoomInButton().setDisable(false);
+          controller.getZoomInButton().setDisable(false);
       }
   }
 
