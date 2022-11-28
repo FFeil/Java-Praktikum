@@ -15,9 +15,9 @@ public class GameOfLifeAutomaton extends Automaton {
         this(50, 50, true);
     }
 
-    protected Cell transform(Cell cell, Cell[] neighbors) {
+    protected synchronized Cell transform(Cell cell, Cell[] neighbors) {
         long numberOfActiveNeighbors = Arrays.stream(neighbors)
-                .filter(c -> c.getState() == 1)
+                .filter(neighborCell -> neighborCell.getState() == 1)
                 .count();
 
         if ((numberOfActiveNeighbors == 2 && cell.getState() == 1) || numberOfActiveNeighbors == 3) {

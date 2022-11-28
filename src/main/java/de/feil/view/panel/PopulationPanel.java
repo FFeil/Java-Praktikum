@@ -3,6 +3,7 @@ package de.feil.view.panel;
 import de.feil.model.base.Automaton;
 import de.feil.util.Observer;
 import de.feil.util.Pair;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
@@ -41,6 +42,9 @@ public class PopulationPanel extends Region implements Observer {
     }
 
     public void paintCanvas() {
+        canvas.setWidth(calcCanvasWidth());
+        canvas.setHeight(calcCanvasHeight());
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
@@ -97,9 +101,10 @@ public class PopulationPanel extends Region implements Observer {
 
     @Override
     public void update() {
-        canvas.setWidth(calcCanvasWidth());
-        canvas.setHeight(calcCanvasHeight());
-
-        paintCanvas();
+        if (Platform.isFxApplicationThread()) {
+            paintCanvas();
+        } else {
+            Platform.runLater(this::paintCanvas);
+        }
     }
 }

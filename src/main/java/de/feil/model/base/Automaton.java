@@ -15,7 +15,7 @@ public abstract class Automaton extends Observable {
     private final int numberOfStates;
     private final boolean isMooreNeighborHood;
     private boolean isTorus;
-    private transient Cell[][] cells;
+    private Cell[][] cells;
     private final Random random;
 
     /**
@@ -72,7 +72,7 @@ public abstract class Automaton extends Observable {
      *
      * @return die Anzahl an Zuständen des Automaten
      */
-    public int getNumberOfStates() {
+    public synchronized int getNumberOfStates() {
         return numberOfStates;
     }
 
@@ -81,7 +81,7 @@ public abstract class Automaton extends Observable {
      *
      * @return die Anzahl an Reihen
      */
-    public int getNumberOfRows() {
+    public synchronized int getNumberOfRows() {
         return numberOfRows;
     }
 
@@ -90,7 +90,7 @@ public abstract class Automaton extends Observable {
      *
      * @return die Anzahl an Spalten
      */
-    public int getNumberOfColumns() {
+    public synchronized int getNumberOfColumns() {
         return numberOfColumns;
     }
 
@@ -102,7 +102,7 @@ public abstract class Automaton extends Observable {
      * @param rows    die neue Anzahl an Reihen
      * @param columns die neue Anzahl an Spalten
      */
-    public void changeSize(int rows, int columns) {
+    public synchronized void changeSize(int rows, int columns) {
         Cell[][] newCells = new Cell[rows][columns];
 
         for (int i = 0; i < rows; i++) {
@@ -128,7 +128,7 @@ public abstract class Automaton extends Observable {
      * @return true, falls der Automat als Torus betrachtet wird; false
      * sonst
      */
-    public boolean isTorus() {
+    public synchronized boolean isTorus() {
         return isTorus;
     }
 
@@ -138,7 +138,7 @@ public abstract class Automaton extends Observable {
      * @param isTorus true, falls der Automat als Torus betrachtet wird;
      *                false sonst
      */
-    public void setTorus(boolean isTorus) {
+    public synchronized void setTorus(boolean isTorus) {
         this.isTorus = isTorus;
 
         notifyObserver();
@@ -152,14 +152,14 @@ public abstract class Automaton extends Observable {
      * @return true, falls der Automat die Moore-Nachbarschaft berücksicht;
      * false, falls er die von-Neumann-Nachbarschaft berücksichtigt
      */
-    public boolean isMooreNeighborHood() {
+    public synchronized boolean isMooreNeighborHood() {
         return isMooreNeighborHood;
     }
 
     /**
      * setzt alle Zellen in den Zustand 0
      */
-    public void clearPopulation() {
+    public synchronized void clearPopulation() {
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
                 cells[i][j].setState(0);
@@ -172,7 +172,7 @@ public abstract class Automaton extends Observable {
     /**
      * setzt für jede Zelle einen zufällig erzeugten Zustand
      */
-    public void randomPopulation() {
+    public synchronized void randomPopulation() {
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
                 cells[i][j].setState(random.nextInt(numberOfStates));
@@ -189,7 +189,7 @@ public abstract class Automaton extends Observable {
      * @param column Spalte der Zelle
      * @return Cell-Objekt a Position row/column
      */
-    public Cell getCell(int row, int column) {
+    public synchronized Cell getCell(int row, int column) {
         return cells[row][column];
     }
 
@@ -200,7 +200,7 @@ public abstract class Automaton extends Observable {
      * @param column Spalte der Zelle
      * @param state  neuer Zustand der Zelle
      */
-    public void setState(int row, int column, int state) {
+    public synchronized void setState(int row, int column, int state) {
         cells[row][column].setState(state);
 
         notifyObserver();
@@ -215,7 +215,7 @@ public abstract class Automaton extends Observable {
      * @param toColumn   Spalte der untersten Zelle
      * @param state      neuer Zustand der Zellen
      */
-    public void setState(int fromRow, int fromColumn, int toRow,
+    public synchronized void setState(int fromRow, int fromColumn, int toRow,
                          int toColumn, int state) {
         for (int i = fromRow; i < toRow; i++) {
             for (int j = fromColumn; j < toColumn; j++) {
@@ -235,7 +235,7 @@ public abstract class Automaton extends Observable {
      * @throws Throwable Exceptions der transform-Methode werden
      *                   weitergeleitet
      */
-    public void nextGeneration() throws Throwable {
+    public synchronized void nextGeneration() throws Throwable {
         Cell[][] newCells = new Cell[numberOfRows][numberOfColumns];
 
         for (int i = 0; i < numberOfRows; i++) {
@@ -274,13 +274,15 @@ public abstract class Automaton extends Observable {
     private Cell[] getMooreNeighbors(int row, int column) {
         ArrayList<Cell> neighbors = new ArrayList<>();
 
-        for (int i = row - 1; i < row + 2; i++) {
-            for (int j = column - 1; j < column + 2; j++) {
-                if (!(i == row && j == column)) {
-                    addNeighbor(neighbors, i, j);
-                }
-            }
-        }
+        addNeighbor(neighbors, row - 1, column - 1);
+        addNeighbor(neighbors, row - 1, column);
+        addNeighbor(neighbors, row - 1, column + 1);
+        addNeighbor(neighbors, row, column - 1);
+        addNeighbor(neighbors, row, column);
+        addNeighbor(neighbors, row, column + 1);
+        addNeighbor(neighbors, row + 1, column - 1);
+        addNeighbor(neighbors, row + 1, column);
+        addNeighbor(neighbors, row + 1, column + 1);
 
         return neighbors.toArray(new Cell[neighbors.size()]);
     }
@@ -334,12 +336,12 @@ public abstract class Automaton extends Observable {
      *
      * @return Cell-Array Objekt
      */
-    public Cell[][] getCells() {
+    public synchronized Cell[][] getCells() {
         return cells;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public synchronized boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }

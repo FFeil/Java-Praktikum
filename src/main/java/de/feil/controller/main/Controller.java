@@ -8,15 +8,39 @@ import javafx.scene.control.*;
 
 public class Controller {
 
-    // Zoom
+    // Zoom in
     @FXML
-    public MenuItem zoomInMenuItem;
+    private MenuItem zoomInMenuItem;
     @FXML
-    public MenuItem zoomOutMenuItem;
+    private Button zoomInButton;
+
+    // Zoom out
     @FXML
-    public Button zoomInButton;
+    private MenuItem zoomOutMenuItem;
     @FXML
-    public Button zoomOutButton;
+    private Button zoomOutButton;
+
+    // Step
+    @FXML
+    private MenuItem stepMenuItem;
+    @FXML
+    private Button stepButton;
+
+    // Start
+    @FXML
+    private MenuItem startMenuItem;
+    @FXML
+    private Button startButton;
+
+    // Stop
+    @FXML
+    private MenuItem stopMenuItem;
+    @FXML
+    private Button stopButton;
+
+    // Slider
+    @FXML
+    private Slider slider;
 
     // Torus
     @FXML
@@ -26,7 +50,7 @@ public class Controller {
 
     // ScrollPanes
     @FXML
-    public ScrollPane statePanelScrollPane;
+    private ScrollPane statePanelScrollPane;
     @FXML
     private ScrollPane populationPanelScrollPane;
 
@@ -63,6 +87,34 @@ public class Controller {
 
     public Button getZoomOutButton() {
         return zoomOutButton;
+    }
+
+    public MenuItem getStepMenuItem() {
+        return stepMenuItem;
+    }
+
+    public Button getStepButton() {
+        return stepButton;
+    }
+
+    public MenuItem getStartMenuItem() {
+        return startMenuItem;
+    }
+
+    public Button getStartButton() {
+        return startButton;
+    }
+
+    public MenuItem getStopMenuItem() {
+        return stopMenuItem;
+    }
+
+    public Button getStopButton() {
+        return stopButton;
+    }
+
+    public Slider getSlider() {
+        return slider;
     }
 
     @FXML

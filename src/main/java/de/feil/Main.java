@@ -3,6 +3,7 @@ package de.feil;
 import de.feil.controller.main.Controller;
 import de.feil.controller.panel.PopulationPanelController;
 import de.feil.controller.panel.StatePanelController;
+import de.feil.controller.simulation.SimulationController;
 import de.feil.model.base.Automaton;
 import de.feil.model.implementation.KruemelmonsterAutomaton;
 import de.feil.view.panel.PopulationPanel;
@@ -25,8 +26,9 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Model
-        Automaton automaton = new KruemelmonsterAutomaton(50, 50, 20, true);
+        Automaton automaton = new KruemelmonsterAutomaton(40, 40, 10, true);
         automaton.randomPopulation();
+
         // View
         StatePanel statePanel = new StatePanel(automaton.getNumberOfStates());
         PopulationPanel populationPanel = new PopulationPanel(automaton, statePanel.getColorPickers());
@@ -46,7 +48,8 @@ public class Main extends Application {
         // Panel Controller
         new StatePanelController(automaton, statePanel);
         new PopulationPanelController(automaton, populationPanel, statePanel.getToggleGroup(), controller);
-
+        // Simulation Controller
+        new SimulationController(automaton, controller);
 
         Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add("main.css");

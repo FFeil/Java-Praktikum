@@ -94,15 +94,15 @@
             </accelerator></MenuItem>
         </Menu>
         <Menu mnemonicParsing="false" text="_Simulation">
-            <MenuItem id="schrittMenuItem" text="_Schritt">
+            <MenuItem id="schrittMenuItem" fx:id="stepMenuItem" text="_Schritt">
             <accelerator>
                <KeyCodeCombination alt="DOWN" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem id="startMenuItem" text="St_art">
+            <MenuItem id="startMenuItem" fx:id="startMenuItem" text="St_art">
             <accelerator>
                <KeyCodeCombination alt="DOWN" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem id="stopMenuItem" disable="true" text="St_opp">
+            <MenuItem id="stopMenuItem" fx:id="stopMenuItem" disable="true" text="St_opp">
             <accelerator>
                <KeyCodeCombination alt="DOWN" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
@@ -148,22 +148,22 @@
             <Tooltip text="Verkleinern" />
          </tooltip></Button>
       <Separator orientation="VERTICAL" />
-        <Button mnemonicParsing="false" style="-fx-graphic: url(icons/Step24.gif);">
+        <Button fx:id="stepButton" mnemonicParsing="false" style="-fx-graphic: url(icons/Step24.gif);">
          <tooltip>
             <Tooltip text="Schritt" />
          </tooltip></Button>
-        <Button mnemonicParsing="false" style="-fx-graphic: url(icons/Start24.gif);">
+        <Button fx:id="startButton" mnemonicParsing="false" style="-fx-graphic: url(icons/Start24.gif);">
          <tooltip>
             <Tooltip text="Start" />
          </tooltip></Button>
-        <Button disable="true" mnemonicParsing="false" style="-fx-graphic: url(icons/Stop24.gif);">
+        <Button fx:id="stopButton" disable="true" mnemonicParsing="false" style="-fx-graphic: url(icons/Stop24.gif);">
          <tooltip>
             <Tooltip text="Stop" />
          </tooltip></Button>
       <Separator orientation="VERTICAL" />
-        <Slider showTickLabels="true" showTickMarks="true">
+        <Slider fx:id="slider">
          <tooltip>
-            <Tooltip text="Empty Tooltip" />
+            <Tooltip text="Geschwindigkeit" />
          </tooltip></Slider>
     </ToolBar>
    <HBox minHeight="415.0" VBox.vgrow="ALWAYS">
