@@ -9,9 +9,9 @@ public class SimulationController {
     private Automaton automaton;
     private final Controller controller;
 
-    final static int DEF_SPEED = 2000;
-    final static int MIN_SPEED = 500;
-    final static int MAX_SPEED = 5000;
+    final static int DEF_SPEED = 1300;
+    final static int MIN_SPEED = 100;
+    final static int MAX_SPEED = 2000;
 
     private volatile int speed;
 
@@ -28,10 +28,8 @@ public class SimulationController {
 
         controller.getStepMenuItem().setOnAction(this::onStepAction);
         controller.getStepButton().setOnAction(this::onStepAction);
-
         controller.getStartMenuItem().setOnAction(this::onStartAction);
         controller.getStartButton().setOnAction(this::onStartAction);
-
         controller.getStopMenuItem().setOnAction(this::onStopAction);
         controller.getStopButton().setOnAction(this::onStopAction);
 
@@ -41,23 +39,8 @@ public class SimulationController {
     }
 
     private void onStepAction(ActionEvent event) {
-        controller.getStepMenuItem().setDisable(true);
-        controller.getStepButton().setDisable(true);
-
-        controller.getStartMenuItem().setDisable(true);
-        controller.getStartButton().setDisable(true);
-
-        controller.getStopMenuItem().setDisable(true);
-        controller.getStopButton().setDisable(true);
-
         try {
             automaton.nextGeneration();
-
-            controller.getStepMenuItem().setDisable(false);
-            controller.getStepButton().setDisable(false);
-
-            controller.getStartMenuItem().setDisable(false);
-            controller.getStartButton().setDisable(false);
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -66,10 +49,8 @@ public class SimulationController {
     private void onStartAction(ActionEvent event) {
         controller.getStepMenuItem().setDisable(true);
         controller.getStepButton().setDisable(true);
-
         controller.getStartMenuItem().setDisable(true);
         controller.getStartButton().setDisable(true);
-
         controller.getStopMenuItem().setDisable(false);
         controller.getStopButton().setDisable(false);
 
@@ -88,12 +69,11 @@ public class SimulationController {
                 SimulationThread.currentThread().interrupt();
             }
         }
+
         controller.getStepMenuItem().setDisable(false);
         controller.getStepButton().setDisable(false);
-
         controller.getStartMenuItem().setDisable(false);
         controller.getStartButton().setDisable(false);
-
         controller.getStepMenuItem().setDisable(true);
         controller.getStopButton().setDisable(true);
 
@@ -108,7 +88,7 @@ public class SimulationController {
                 try {
                     automaton.nextGeneration();
 
-                    Thread.sleep(speed);
+                    Thread.sleep(Math.abs(speed - MAX_SPEED - MIN_SPEED));
                 } catch (InterruptedException e) {
                     interrupt();
                 } catch (Throwable e) {

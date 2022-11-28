@@ -4,7 +4,6 @@ import de.feil.model.base.Automaton;
 import de.feil.model.base.Cell;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 public class KruemelmonsterAutomaton extends Automaton {
