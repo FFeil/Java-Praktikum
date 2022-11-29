@@ -74,7 +74,7 @@ public class SimulationController {
         controller.getStepButton().setDisable(false);
         controller.getStartMenuItem().setDisable(false);
         controller.getStartButton().setDisable(false);
-        controller.getStepMenuItem().setDisable(true);
+        controller.getStopMenuItem().setDisable(true);
         controller.getStopButton().setDisable(true);
 
         simulationThread = null;

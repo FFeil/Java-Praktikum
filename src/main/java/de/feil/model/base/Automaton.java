@@ -7,6 +7,7 @@ import java.util.Random;
 
 /**
  * Abstrakte Klasse zur Repräsentation eines zellulären Automaten
+ * Observer: PopulationPanel
  */
 public abstract class Automaton extends Observable {
 

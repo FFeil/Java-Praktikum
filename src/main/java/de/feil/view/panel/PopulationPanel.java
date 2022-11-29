@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+// Observe: Automaton
 public class PopulationPanel extends Region implements Observer {
 
     private static double AUTOMATON_WIDTH = 15;

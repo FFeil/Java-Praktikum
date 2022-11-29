@@ -26,7 +26,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Model
-        Automaton automaton = new KruemelmonsterAutomaton(40, 40, 10, true);
+        Automaton automaton = new KruemelmonsterAutomaton(30, 30, 6, true);
         automaton.randomPopulation();
 
         // View
@@ -46,8 +46,8 @@ public class Main extends Application {
         controller.getPopulationPanelScrollPane().setContent(populationPanel);
 
         // Panel Controller
-        new StatePanelController(automaton, statePanel);
-        new PopulationPanelController(automaton, populationPanel, statePanel.getToggleGroup(), controller);
+        new PopulationPanelController(automaton, controller
+                ,new StatePanelController(populationPanel, statePanel), populationPanel);
         // Simulation Controller
         new SimulationController(automaton, controller);
 

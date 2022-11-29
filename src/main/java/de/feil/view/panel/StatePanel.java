@@ -10,7 +10,6 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-// Noch kein update vom Observer interface notwendig
 public class StatePanel extends VBox {
 
     private final List<ColorPicker> colorPickers;

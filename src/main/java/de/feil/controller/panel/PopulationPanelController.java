@@ -4,8 +4,6 @@ import de.feil.controller.main.Controller;
 import de.feil.model.base.Automaton;
 import de.feil.view.panel.PopulationPanel;
 import javafx.event.ActionEvent;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 
 import static javafx.scene.input.MouseEvent.MOUSE_DRAGGED;
@@ -14,20 +12,21 @@ import static javafx.scene.input.MouseEvent.MOUSE_PRESSED;
 public class PopulationPanelController {
 
     private Automaton automaton;
-    private final PopulationPanel populationPanel;
-    private final ToggleGroup toggleGroup;
+
     private final Controller controller;
+    private final StatePanelController statePanelController;
+    private final PopulationPanel populationPanel;
 
     private int rowDragStart;
     private int columnDragStart;
 
 
-    public PopulationPanelController(Automaton automaton, PopulationPanel populationPanel,
-                                     ToggleGroup toggleGroup, Controller controller) {
+    public PopulationPanelController(Automaton automaton, Controller controller,
+                                     StatePanelController statePanelController, PopulationPanel populationPanel) {
         this.automaton = automaton;
-        this.populationPanel = populationPanel;
-        this.toggleGroup = toggleGroup;
         this.controller = controller;
+        this.statePanelController = statePanelController;
+        this.populationPanel = populationPanel;
 
         populationPanel.getCanvas().addEventHandler(MOUSE_PRESSED, this::onMousePressed);
         populationPanel.getCanvas().addEventHandler(MOUSE_DRAGGED, this::onMouseDragged);
@@ -43,7 +42,7 @@ public class PopulationPanelController {
             rowDragStart = rowCol.value1();
             columnDragStart = rowCol.value2();
 
-            automaton.setState(rowDragStart, columnDragStart, getSelectedRadioButton());
+            automaton.setState(rowDragStart, columnDragStart, statePanelController.getSelectedState());
         });
     }
 
@@ -62,13 +61,13 @@ public class PopulationPanelController {
                 colEnd--;
             }
 
-            automaton.setState(rowStart, colStart, rowEnd, colEnd, getSelectedRadioButton());
+            automaton.setState(rowStart, colStart, rowEnd, colEnd, statePanelController.getSelectedState());
         });
     }
 
   public void onZoomInAction(ActionEvent event) {
       populationPanel.zoomIn();
-      automaton.notifyObserver();
+      populationPanel.paintCanvas();
 
       if (!populationPanel.canZoomIn()) {
           controller.getZoomInButton().setDisable(true);
@@ -83,7 +82,7 @@ public class PopulationPanelController {
 
   public void onZoomOutAction(ActionEvent event) {
       populationPanel.zoomOut();
-      automaton.notifyObserver();
+      populationPanel.paintCanvas();
 
       if (!populationPanel.canZoomOut()) {
           controller.getZoomOutButton().setDisable(true);
@@ -95,8 +94,4 @@ public class PopulationPanelController {
           controller.getZoomInButton().setDisable(false);
       }
   }
-
-    private int getSelectedRadioButton() {
-        return Integer.parseInt(((RadioButton) toggleGroup.getSelectedToggle()).getText());
-    }
 }
