@@ -9,7 +9,7 @@ public class SimulationController {
     private Automaton automaton;
     private final Controller controller;
 
-    final static int DEF_SPEED = 1300;
+    final static int DEF_SPEED = 800;
     final static int MIN_SPEED = 100;
     final static int MAX_SPEED = 2000;
 
@@ -33,7 +33,8 @@ public class SimulationController {
         controller.getStopMenuItem().setOnAction(this::onStopAction);
         controller.getStopButton().setOnAction(this::onStopAction);
 
-        controller.getSlider().valueProperty().addListener((obs, o, n) -> speed = n.intValue());
+        controller.getSlider().valueProperty().addListener(
+                (obs, o, n) -> speed = Math.abs(n.intValue() - MAX_SPEED - MIN_SPEED));
 
         simulationThread = null;
     }
@@ -56,6 +57,7 @@ public class SimulationController {
 
         if (simulationThread == null) {
             simulationThread = new SimulationThread();
+            simulationThread.setDaemon(true);
             simulationThread.start();
         }
     }
@@ -87,8 +89,7 @@ public class SimulationController {
             while (!isInterrupted()) {
                 try {
                     automaton.nextGeneration();
-
-                    Thread.sleep(Math.abs(speed - MAX_SPEED - MIN_SPEED));
+                    Thread.sleep(speed);
                 } catch (InterruptedException e) {
                     interrupt();
                 } catch (Throwable e) {

@@ -48,6 +48,7 @@ public class Main extends Application {
         // Panel Controller
         new PopulationPanelController(automaton, controller
                 ,new StatePanelController(populationPanel, statePanel), populationPanel);
+
         // Simulation Controller
         new SimulationController(automaton, controller);
 
