@@ -18,28 +18,29 @@ import java.io.IOException;
 
 public class MainStage extends Stage {
 
-    private final Stage editorStage;
+    private final String fileName;
 
-    public MainStage(Automaton automaton) throws IOException {
-        // Init Editor Stage + EditorController
-        editorStage = new Stage();
-        editorStage.setTitle("Editor");
+    public MainStage(String name, Automaton automaton) throws IOException {
+        this.fileName = name;
+
+        // EditorController + load editor fxml
+        Stage editorStage = new Stage();
+        editorStage.initOwner(this);
         FXMLLoader editorLoader = new FXMLLoader(Main.class.getResource("/fxml/EditorView.fxml"));
-        EditorController editorController = new EditorController(editorStage);
+        EditorController editorController = new EditorController(fileName, editorStage);
         editorLoader.setController(editorController);
-        Parent editorRoot = editorLoader.load();
-        Scene editorScene = new Scene(editorRoot, 400, 400);
-        editorStage.setScene(editorScene);
+        editorStage.setScene(new Scene(editorLoader.load(), 400, 400));
+        editorStage.setTitle("Editor");
 
         // View
         StatePanel statePanel = new StatePanel(automaton.getNumberOfStates());
         PopulationPanel populationPanel = new PopulationPanel(automaton, statePanel.getColorPickers());
 
-        // Controller + load fxml
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/fxml/MainView.fxml"));
+        // MainController + load main fxml
+        FXMLLoader mainLoader = new FXMLLoader(Main.class.getResource("/fxml/MainView.fxml"));
         MainController controller = new MainController(this, automaton, editorController);
-        fxmlLoader.setController(controller);
-        Parent root = fxmlLoader.load();
+        mainLoader.setController(controller);
+        Parent root = mainLoader.load();
 
         controller.initialize();
 
@@ -60,13 +61,13 @@ public class MainStage extends Stage {
         scene.getStylesheets().add("/css/main.css");
         setScene(scene);
 
-        setTitle("Zellulärer Automat");
+        setTitle("Zellulärer Automat: " + fileName);
         setMinHeight(568);
         setMinWidth(736);
         show();
     }
 
-    public Stage getEditorStage() {
-        return editorStage;
+    public String getFileName() {
+        return fileName;
     }
 }

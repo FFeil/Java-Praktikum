@@ -30,12 +30,12 @@
                <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem text="_Editor">
+            <MenuItem onAction="#onEditorAction" text="_Editor">
             <accelerator>
                <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem text="_Beenden">
+            <MenuItem onAction="#onExitAction" text="_Beenden">
             <accelerator>
                <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>

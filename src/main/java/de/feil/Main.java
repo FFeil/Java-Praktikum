@@ -22,7 +22,7 @@ public class Main extends Application {
         Automaton automaton = new KruemelmonsterAutomaton(30, 30, 6, true);
         automaton.randomPopulation();
 
-        new MainStage(automaton).show();
+        new MainStage("KruemelmonsterAutomaton", automaton).show();
     }
 
     @Override

@@ -18,18 +18,18 @@
          <menus>
             <Menu mnemonicParsing="false" text="_Editor">
               <items>
-                <MenuItem text="_Speichern">
+                <MenuItem onAction="#onSaveAction" text="_Speichern">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem text="_Complilieren">
+                  <MenuItem onAction="#onCompileAction" text="_Complilieren">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="K" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem text="S_chließen">
+                  <MenuItem onAction="#onExitAction" text="S_chließen">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -40,11 +40,11 @@
       </MenuBar>
       <ToolBar>
          <items>
-            <Button mnemonicParsing="false" style="-fx-graphic: url(icons/Save24.gif);">
+            <Button mnemonicParsing="false" onAction="#onSaveAction" style="-fx-graphic: url(icons/Save24.gif);">
                <tooltip>
                   <Tooltip text="Speichern" />
                </tooltip></Button>
-            <Button mnemonicParsing="false" style="-fx-graphic: url(icons/Compile24.gif);">
+            <Button mnemonicParsing="false" onAction="#onCompileAction" style="-fx-graphic: url(icons/Compile24.gif);">
                <tooltip>
                   <Tooltip text="Complilieren" />
                </tooltip></Button>

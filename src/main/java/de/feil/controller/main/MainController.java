@@ -13,16 +13,15 @@ import javafx.stage.FileChooser;
 
 import javax.tools.*;
 import java.io.File;
-import java.io.FileWriter;
-import java.lang.reflect.Method;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainController {
@@ -153,15 +152,7 @@ public class MainController {
                         lines.set(11, lines.get(11).replace("DefaultAutomaton", name));
                         Files.write(Path.of(file.getPath()), lines, StandardCharsets.UTF_8);
 
-                        // Quelle: https://blog.frankel.ch/compilation-java-code-on-the-fly/
-                        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-                        compiler.run(null, null, null, file.getAbsolutePath());
-
-                        URL classUrl = file.getParentFile().toURI().toURL();
-                        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{classUrl});
-                        Class<?> newAutomatonClass = Class.forName(name, true, classLoader);
-
-                        new MainStage((Automaton) newAutomatonClass.getDeclaredConstructor().newInstance());
+                        createNewMainStage(file, name);
                     }
                 } catch (Exception e) {
                     ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
@@ -172,6 +163,20 @@ public class MainController {
         }));
     }
 
+    private void createNewMainStage(File file, String name) {
+        try {
+            // Quelle: https://blog.frankel.ch/compilation-java-code-on-the-fly/
+            ToolProvider.getSystemJavaCompiler().run(null, null, null, file.getAbsolutePath());
+            URL classUrl = file.getParentFile().toURI().toURL();
+            URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{classUrl});
+            Class<?> newAutomatonClass = Class.forName(name, true, classLoader);
+
+            new MainStage(name, (Automaton) newAutomatonClass.getDeclaredConstructor().newInstance());
+        } catch (Exception e) {
+            ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
+        }
+    }
+
     @FXML
     public void onLoadAction() {
         FileChooser fileChooser = new FileChooser();
@@ -180,10 +185,31 @@ public class MainController {
         FileChooser.ExtensionFilter javaFilter = new FileChooser.ExtensionFilter("JAVA files (*.java)", "*.java");
         fileChooser.getExtensionFilters().add(javaFilter);
 
-        if (fileChooser.showOpenDialog(mainStage) != null) {
-
-            mainStage.getEditorStage().show();
+        File selectedFile = fileChooser.showOpenDialog(mainStage);
+        if (selectedFile != null) {
+            createNewMainStage(selectedFile, selectedFile.getName().replace(".java", ""));
         }
+    }
+
+    @FXML
+    public void onEditorAction() throws IOException {
+        Path path = Paths.get("automata/" + mainStage.getFileName() + ".java");
+        StringBuilder text = new StringBuilder();
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+
+        for (int l = 0; l < lines.size(); l++) {
+            text.append(lines.get(l));
+            if (l < lines.size() - 1) {
+                text.append(System.lineSeparator());
+            }
+        }
+
+        editorController.showStage(String.valueOf(text));
+    }
+
+    @FXML
+    public void onExitAction() {
+        mainStage.close();
     }
 
     @FXML

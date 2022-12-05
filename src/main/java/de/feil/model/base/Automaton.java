@@ -256,7 +256,6 @@ public abstract class Automaton extends Observable {
 
             cells = newCells;
         }
-
         notifyObserver();
     }
 
