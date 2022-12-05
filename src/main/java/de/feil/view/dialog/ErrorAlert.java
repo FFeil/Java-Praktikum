@@ -6,6 +6,8 @@ import javafx.scene.control.ButtonType;
 
 public class ErrorAlert {
 
+    private ErrorAlert() {}
+
     public static void show(String msg) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);

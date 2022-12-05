@@ -10,9 +10,9 @@ public class SimulationController {
     private Automaton automaton;
     private final MainController controller;
 
-    final static int DEF_SPEED = 800;
-    final static int MIN_SPEED = 100;
-    final static int MAX_SPEED = 2000;
+    final static int DEF_SPEED = 4;
+    final static int MIN_SPEED = 1;
+    final static int MAX_SPEED = 10;
 
     private volatile int speed;
 
@@ -21,7 +21,7 @@ public class SimulationController {
     public SimulationController(Automaton automaton, MainController mainController) {
         this.automaton = automaton;
         this.controller = mainController;
-        this.speed = DEF_SPEED;
+        this.speed = 3000 / DEF_SPEED;
 
         mainController.getSlider().setMin(MIN_SPEED);
         mainController.getSlider().setMax(MAX_SPEED);
@@ -35,7 +35,7 @@ public class SimulationController {
         mainController.getStopButton().setOnAction(this::onStopAction);
 
         mainController.getSlider().valueProperty().addListener(
-                (obs, o, n) -> speed = Math.abs(n.intValue() - MAX_SPEED - MIN_SPEED));
+                (obs, o, n) -> speed =  3000 / n.intValue());
 
         simulationThread = null;
     }

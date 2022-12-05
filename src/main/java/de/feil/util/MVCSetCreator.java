@@ -1,4 +1,4 @@
-package de.feil.view.stage;
+package de.feil.util;
 
 import de.feil.Main;
 import de.feil.controller.editor.EditorController;
@@ -16,18 +16,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MainStage extends Stage {
+public class MVCSetCreator {
 
-    private final String fileName;
 
-    public MainStage(String name, Automaton automaton) throws IOException {
-        this.fileName = name;
+    public MVCSetCreator(String name, Automaton automaton) throws IOException {
+        Stage mainStage = new Stage();
 
         // EditorController + load editor fxml
         Stage editorStage = new Stage();
-        editorStage.initOwner(this);
+        editorStage.initOwner(mainStage);
         FXMLLoader editorLoader = new FXMLLoader(Main.class.getResource("/fxml/EditorView.fxml"));
-        EditorController editorController = new EditorController(fileName, editorStage);
+        EditorController editorController = new EditorController(name, editorStage);
         editorLoader.setController(editorController);
         editorStage.setScene(new Scene(editorLoader.load(), 400, 400));
         editorStage.setTitle("Editor");
@@ -38,7 +37,7 @@ public class MainStage extends Stage {
 
         // MainController + load main fxml
         FXMLLoader mainLoader = new FXMLLoader(Main.class.getResource("/fxml/MainView.fxml"));
-        MainController controller = new MainController(this, automaton, editorController);
+        MainController controller = new MainController(mainStage, automaton, editorController);
         mainLoader.setController(controller);
         Parent root = mainLoader.load();
 
@@ -55,19 +54,14 @@ public class MainStage extends Stage {
         // Simulation Controller
         new SimulationController(automaton, controller);
 
-
         // Init main Stage
         Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add("/css/main.css");
-        setScene(scene);
+        mainStage.setScene(scene);
 
-        setTitle("Zellulärer Automat: " + fileName);
-        setMinHeight(568);
-        setMinWidth(736);
-        show();
-    }
-
-    public String getFileName() {
-        return fileName;
+        mainStage.setTitle("Zellulärer Automat: " + name);
+        mainStage.setMinHeight(568);
+        mainStage.setMinWidth(736);
+        mainStage.show();
     }
 }

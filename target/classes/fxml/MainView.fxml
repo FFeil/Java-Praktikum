@@ -161,7 +161,7 @@
             <Tooltip text="Stop" />
          </tooltip></Button>
       <Separator orientation="VERTICAL" />
-        <Slider fx:id="slider">
+        <Slider fx:id="slider" majorTickUnit="3.0" max="10.0" min="1.0" minorTickCount="2" showTickLabels="true" showTickMarks="true">
          <tooltip>
             <Tooltip text="Geschwindigkeit" />
          </tooltip></Slider>

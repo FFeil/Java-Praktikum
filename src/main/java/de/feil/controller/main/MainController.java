@@ -2,22 +2,19 @@ package de.feil.controller.main;
 
 import de.feil.controller.editor.EditorController;
 import de.feil.model.base.Automaton;
+import de.feil.util.FileLoader;
+import de.feil.util.MVCSetCreator;
 import de.feil.view.dialog.ChangeSizeDialog;
 import de.feil.view.dialog.ErrorAlert;
 import de.feil.view.dialog.NewAutomatonDialog;
-import de.feil.view.stage.MainStage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
-import javax.tools.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -72,11 +69,11 @@ public class MainController {
     @FXML
     private ScrollPane populationPanelScrollPane;
 
-    private final MainStage mainStage;
+    private final Stage mainStage;
     private final Automaton automaton;
-    private EditorController editorController;
+    private final EditorController editorController;
 
-    public MainController(MainStage mainStage, Automaton automaton, EditorController editorController) {
+    public MainController(Stage mainStage, Automaton automaton, EditorController editorController) {
         this.mainStage = mainStage;
         this.automaton = automaton;
         this.editorController = editorController;
@@ -152,7 +149,14 @@ public class MainController {
                         lines.set(11, lines.get(11).replace("DefaultAutomaton", name));
                         Files.write(Path.of(file.getPath()), lines, StandardCharsets.UTF_8);
 
-                        createNewMainStage(file, name);
+                        FileLoader.loadAutomaton(name, file).ifPresent(obj -> {
+                            try {
+                                new MVCSetCreator(name, obj);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
                     }
                 } catch (Exception e) {
                     ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
@@ -161,20 +165,6 @@ public class MainController {
                 ErrorAlert.show("Der Name ist bereits vergeben!");
             }
         }));
-    }
-
-    private void createNewMainStage(File file, String name) {
-        try {
-            // Quelle: https://blog.frankel.ch/compilation-java-code-on-the-fly/
-            ToolProvider.getSystemJavaCompiler().run(null, null, null, file.getAbsolutePath());
-            URL classUrl = file.getParentFile().toURI().toURL();
-            URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{classUrl});
-            Class<?> newAutomatonClass = Class.forName(name, true, classLoader);
-
-            new MainStage(name, (Automaton) newAutomatonClass.getDeclaredConstructor().newInstance());
-        } catch (Exception e) {
-            ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
-        }
     }
 
     @FXML
@@ -187,13 +177,20 @@ public class MainController {
 
         File selectedFile = fileChooser.showOpenDialog(mainStage);
         if (selectedFile != null) {
-            createNewMainStage(selectedFile, selectedFile.getName().replace(".java", ""));
+            String name = selectedFile.getName().replace(".java", "");
+            FileLoader.loadAutomaton(name, selectedFile).ifPresent(obj -> {
+                try {
+                    new MVCSetCreator(name, obj);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 
     @FXML
     public void onEditorAction() throws IOException {
-        Path path = Paths.get("automata/" + mainStage.getFileName() + ".java");
+        Path path = Paths.get("automata/" + editorController.getName() + ".java");
         StringBuilder text = new StringBuilder();
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 

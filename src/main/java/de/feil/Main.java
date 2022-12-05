@@ -1,8 +1,7 @@
 package de.feil;
 
-import de.feil.model.base.Automaton;
-import de.feil.model.implementation.KruemelmonsterAutomaton;
-import de.feil.view.stage.MainStage;
+import de.feil.util.FileLoader;
+import de.feil.util.MVCSetCreator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -18,11 +17,16 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
-        Automaton automaton = new KruemelmonsterAutomaton(30, 30, 6, true);
-        automaton.randomPopulation();
-
-        new MainStage("KruemelmonsterAutomaton", automaton).show();
+    public void start(Stage stage) {
+        FileLoader.loadAutomaton("KruemelmonsterAutomaton",
+                new File("automata/KruemelmonsterAutomaton.java")).ifPresent(automaton -> {
+            automaton.randomPopulation();
+            try {
+                new MVCSetCreator("KruemelmonsterAutomaton", automaton);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

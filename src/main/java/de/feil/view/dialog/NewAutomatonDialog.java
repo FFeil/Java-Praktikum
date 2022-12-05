@@ -11,9 +11,7 @@ public class NewAutomatonDialog extends TextInputDialog {
 
     public NewAutomatonDialog() {
         setTitle("Neuer Automat");
-        setHeaderText("Wie soll der neue Automat heißen?\n" +
-                "Du musst dich an die Namenskonventionen\n" +
-                "von Java halten!");
+        setHeaderText("Wie soll der neue Automat heißen?\nDu musst dich an die Namenskonventionen\nvon Java halten!");
         setContentText("Name:");
 
         BooleanBinding binding = Bindings.createBooleanBinding(
