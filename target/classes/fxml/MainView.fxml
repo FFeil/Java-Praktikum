@@ -21,11 +21,11 @@
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <MenuBar>
         <Menu text="_Automat">
-            <MenuItem id="neuMenuItem" text="_Neu...">
+            <MenuItem id="neuMenuItem" onAction="#onNewAction" text="_Neu...">
             <accelerator>
                <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem id="ladenMenuItem" text="_Laden...">
+            <MenuItem id="ladenMenuItem" onAction="#onLoadAction" text="_Laden...">
             <accelerator>
                <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
@@ -109,11 +109,11 @@
         </Menu>
     </MenuBar>
     <ToolBar>
-        <Button mnemonicParsing="false" style="-fx-graphic: url(icons/New24.gif);">
+        <Button mnemonicParsing="false" onAction="#onNewAction" style="-fx-graphic: url(icons/New24.gif);">
          <tooltip>
             <Tooltip text="Neu" />
          </tooltip></Button>
-        <Button mnemonicParsing="false" style="-fx-graphic: url(icons/Load24.gif);">
+        <Button mnemonicParsing="false" onAction="#onLoadAction" style="-fx-graphic: url(icons/Load24.gif);">
          <tooltip>
             <Tooltip text="Laden" />
          </tooltip></Button>

@@ -1,6 +1,6 @@
 package de.feil.controller.panel;
 
-import de.feil.controller.main.Controller;
+import de.feil.controller.main.MainController;
 import de.feil.model.base.Automaton;
 import de.feil.view.panel.PopulationPanel;
 import javafx.event.ActionEvent;
@@ -13,7 +13,7 @@ public class PopulationPanelController {
 
     private Automaton automaton;
 
-    private final Controller controller;
+    private final MainController controller;
     private final StatePanelController statePanelController;
     private final PopulationPanel populationPanel;
 
@@ -21,7 +21,7 @@ public class PopulationPanelController {
     private int columnDragStart;
 
 
-    public PopulationPanelController(Automaton automaton, Controller controller,
+    public PopulationPanelController(Automaton automaton, MainController controller,
                                      StatePanelController statePanelController, PopulationPanel populationPanel) {
         this.automaton = automaton;
         this.controller = controller;

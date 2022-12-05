@@ -2,7 +2,7 @@
 neuMenuItem
 */
 #neuMenuItem > .label {
-    -fx-graphic: url("icons/New16.gif");
+    -fx-graphic: url("../icons/New16.gif");
 }
 #neuMenuItem .accelerator-text{
     -fx-graphic: none;
@@ -12,7 +12,7 @@ neuMenuItem
 ladenMenuItem
 */
 #ladenMenuItem > .label {
-    -fx-graphic:  url("icons/Load16.gif");
+    -fx-graphic:  url("../icons/Load16.gif");
 }
 
 #ladenMenuItem .accelerator-text{
@@ -33,7 +33,7 @@ schrittMenuItem
 startMenuItem
 */
 #startMenuItem > .label {
-    -fx-graphic:  url("icons/Start16.gif");
+    -fx-graphic:  url("../icons/Start16.gif");
 }
 
 #startMenuItem .accelerator-text {
@@ -44,7 +44,7 @@ startMenuItem
 stopMenuItem
 */
 #stopMenuItem > .label {
-      -fx-graphic:  url("icons/Stop16.gif");
+      -fx-graphic:  url("../icons/Stop16.gif");
 }
 
 #stopMenuItem .accelerator-text {

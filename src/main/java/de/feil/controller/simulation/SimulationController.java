@@ -1,13 +1,14 @@
 package de.feil.controller.simulation;
 
-import de.feil.controller.main.Controller;
+import de.feil.controller.main.MainController;
 import de.feil.model.base.Automaton;
+import de.feil.view.dialog.ErrorAlert;
 import javafx.event.ActionEvent;
 
 public class SimulationController {
 
     private Automaton automaton;
-    private final Controller controller;
+    private final MainController controller;
 
     final static int DEF_SPEED = 800;
     final static int MIN_SPEED = 100;
@@ -17,23 +18,23 @@ public class SimulationController {
 
     private SimulationThread simulationThread;
 
-    public SimulationController(Automaton automaton, Controller controller) {
+    public SimulationController(Automaton automaton, MainController mainController) {
         this.automaton = automaton;
-        this.controller = controller;
+        this.controller = mainController;
         this.speed = DEF_SPEED;
 
-        controller.getSlider().setMin(MIN_SPEED);
-        controller.getSlider().setMax(MAX_SPEED);
-        controller.getSlider().setValue(DEF_SPEED);
+        mainController.getSlider().setMin(MIN_SPEED);
+        mainController.getSlider().setMax(MAX_SPEED);
+        mainController.getSlider().setValue(DEF_SPEED);
 
-        controller.getStepMenuItem().setOnAction(this::onStepAction);
-        controller.getStepButton().setOnAction(this::onStepAction);
-        controller.getStartMenuItem().setOnAction(this::onStartAction);
-        controller.getStartButton().setOnAction(this::onStartAction);
-        controller.getStopMenuItem().setOnAction(this::onStopAction);
-        controller.getStopButton().setOnAction(this::onStopAction);
+        mainController.getStepMenuItem().setOnAction(this::onStepAction);
+        mainController.getStepButton().setOnAction(this::onStepAction);
+        mainController.getStartMenuItem().setOnAction(this::onStartAction);
+        mainController.getStartButton().setOnAction(this::onStartAction);
+        mainController.getStopMenuItem().setOnAction(this::onStopAction);
+        mainController.getStopButton().setOnAction(this::onStopAction);
 
-        controller.getSlider().valueProperty().addListener(
+        mainController.getSlider().valueProperty().addListener(
                 (obs, o, n) -> speed = Math.abs(n.intValue() - MAX_SPEED - MIN_SPEED));
 
         simulationThread = null;
@@ -44,8 +45,10 @@ public class SimulationController {
             automaton.nextGeneration();
         } catch (Throwable e) {
             e.printStackTrace();
+            ErrorAlert.show("Laufzeitfehler in der transform-Methode: " + e);
         }
     }
+
 
     private void onStartAction(ActionEvent event) {
         controller.getStepMenuItem().setDisable(true);
@@ -94,6 +97,7 @@ public class SimulationController {
                     interrupt();
                 } catch (Throwable e) {
                     e.printStackTrace();
+                    ErrorAlert.show("Laufzeitfehler in der transform-Methode: " + e);
                 }
             }
         }

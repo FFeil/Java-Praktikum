@@ -19,7 +19,7 @@ public class ChangeSizeDialog extends Dialog<Pair<Integer>> {
         setHeaderText("Welche Größe soll der Automat haben?" +
                 "\n 5 <= Anzahl < =500");
 
-        getDialogPane().getButtonTypes().add(ButtonType.OK);
+        getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         // Grid mit TextFields und Labels erstellen
         TextField rows = new TextField();
