@@ -183,5 +183,5 @@
          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
       </VBox.margin>
    </HBox>
-   <Label maxWidth="1.7976931348623157E308" style="-fx-background-color: grey;" text="Hallo!" VBox.vgrow="ALWAYS" />
+   <Label maxWidth="1.7976931348623157E308" text="Hallo!" VBox.vgrow="ALWAYS" />
 </VBox>

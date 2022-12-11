@@ -1,12 +1,13 @@
 package de.feil;
 
 import de.feil.util.FileLoader;
-import de.feil.util.MVCSetCreator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -30,10 +31,10 @@ public class Main extends Application {
     }
 
     @Override
-    public void stop() {
-        for (File f : Objects.requireNonNull(new File("automata").listFiles())) {
-            if (f.getName().endsWith(".class")) {
-                f.delete();
+    public void stop() throws IOException {
+        for (File file : Objects.requireNonNull(new File("automata").listFiles())) {
+            if (file.getName().endsWith(".class")) {
+                Files.delete(Path.of(file.getPath()));
             }
         }
     }

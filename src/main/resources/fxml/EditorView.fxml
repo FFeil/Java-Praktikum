@@ -51,6 +51,6 @@
          </items>
       </ToolBar>
       <TextArea fx:id="codeTextArea" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-      <Label maxWidth="1.7976931348623157E308" text="Label" VBox.vgrow="ALWAYS" />
+      <Label maxWidth="1.7976931348623157E308" text="Moin!" VBox.vgrow="ALWAYS" />
    </children>
 </VBox>

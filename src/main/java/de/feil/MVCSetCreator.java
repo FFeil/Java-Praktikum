@@ -1,6 +1,5 @@
-package de.feil.util;
+package de.feil;
 
-import de.feil.Main;
 import de.feil.controller.editor.EditorController;
 import de.feil.controller.main.MainController;
 import de.feil.controller.panel.PopulationPanelController;
@@ -18,7 +17,6 @@ import java.io.IOException;
 
 public class MVCSetCreator {
 
-
     public MVCSetCreator(String name, Automaton automaton) throws IOException {
         Stage mainStage = new Stage();
 
@@ -28,8 +26,6 @@ public class MVCSetCreator {
         FXMLLoader editorLoader = new FXMLLoader(Main.class.getResource("/fxml/EditorView.fxml"));
         EditorController editorController = new EditorController(name, editorStage);
         editorLoader.setController(editorController);
-        editorStage.setScene(new Scene(editorLoader.load(), 400, 400));
-        editorStage.setTitle("Editor");
 
         // View
         StatePanel statePanel = new StatePanel(automaton.getNumberOfStates());
@@ -39,7 +35,7 @@ public class MVCSetCreator {
         FXMLLoader mainLoader = new FXMLLoader(Main.class.getResource("/fxml/MainView.fxml"));
         MainController controller = new MainController(mainStage, automaton, editorController);
         mainLoader.setController(controller);
-        Parent root = mainLoader.load();
+        Parent mainRoot = mainLoader.load();
 
         controller.initialize();
 
@@ -55,7 +51,7 @@ public class MVCSetCreator {
         new SimulationController(automaton, controller);
 
         // Init main Stage
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(mainRoot, 800, 600);
         scene.getStylesheets().add("/css/main.css");
         mainStage.setScene(scene);
 
@@ -63,5 +59,11 @@ public class MVCSetCreator {
         mainStage.setMinHeight(568);
         mainStage.setMinWidth(736);
         mainStage.show();
+
+        // Init editor Stage
+        editorStage.setScene(new Scene(editorLoader.load(), 400, 400));
+        editorStage.setTitle("Editor");
+        editorStage.setMinHeight(300);
+        editorStage.setMinWidth(300);
     }
 }

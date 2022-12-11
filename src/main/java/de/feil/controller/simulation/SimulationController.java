@@ -7,20 +7,19 @@ import javafx.event.ActionEvent;
 
 public class SimulationController {
 
-    private Automaton automaton;
-    private final MainController controller;
+    static final int DEF_SPEED = 4;
+    static final int MIN_SPEED = 1;
+    static final int MAX_SPEED = 10;
 
-    final static int DEF_SPEED = 4;
-    final static int MIN_SPEED = 1;
-    final static int MAX_SPEED = 10;
-
-    private volatile int speed;
+    private final Automaton automaton;
+    private final MainController mainController;
 
     private SimulationThread simulationThread;
+    private volatile int speed;
 
     public SimulationController(Automaton automaton, MainController mainController) {
         this.automaton = automaton;
-        this.controller = mainController;
+        this.mainController = mainController;
         this.speed = 3000 / DEF_SPEED;
 
         mainController.getSlider().setMin(MIN_SPEED);
@@ -51,12 +50,12 @@ public class SimulationController {
 
 
     private void onStartAction(ActionEvent event) {
-        controller.getStepMenuItem().setDisable(true);
-        controller.getStepButton().setDisable(true);
-        controller.getStartMenuItem().setDisable(true);
-        controller.getStartButton().setDisable(true);
-        controller.getStopMenuItem().setDisable(false);
-        controller.getStopButton().setDisable(false);
+        mainController.getStepMenuItem().setDisable(true);
+        mainController.getStepButton().setDisable(true);
+        mainController.getStartMenuItem().setDisable(true);
+        mainController.getStartButton().setDisable(true);
+        mainController.getStopMenuItem().setDisable(false);
+        mainController.getStopButton().setDisable(false);
 
         if (simulationThread == null) {
             simulationThread = new SimulationThread();
@@ -75,12 +74,12 @@ public class SimulationController {
             }
         }
 
-        controller.getStepMenuItem().setDisable(false);
-        controller.getStepButton().setDisable(false);
-        controller.getStartMenuItem().setDisable(false);
-        controller.getStartButton().setDisable(false);
-        controller.getStopMenuItem().setDisable(true);
-        controller.getStopButton().setDisable(true);
+        mainController.getStepMenuItem().setDisable(false);
+        mainController.getStepButton().setDisable(false);
+        mainController.getStartMenuItem().setDisable(false);
+        mainController.getStartButton().setDisable(false);
+        mainController.getStopMenuItem().setDisable(true);
+        mainController.getStopButton().setDisable(true);
 
         simulationThread = null;
     }
@@ -89,7 +88,7 @@ public class SimulationController {
 
         @Override
         public void run() {
-            while (!isInterrupted()) {
+            while (!isInterrupted() && mainController.getMainStage().isShowing()) {
                 try {
                     automaton.nextGeneration();
                     Thread.sleep(speed);

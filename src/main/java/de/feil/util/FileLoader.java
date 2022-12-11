@@ -15,9 +15,10 @@ public class FileLoader {
 
     public static Optional<Automaton> loadAutomaton(String name, File file) {
         try {
-            // Quelle: https://blog.frankel.ch/compilation-java-code-on-the-fly/
+            // Klasse kompilieren
             ToolProvider.getSystemJavaCompiler().run(null, null, null, file.getAbsolutePath());
 
+            // Klasse laden
             URL classUrl = file.getParentFile().toURI().toURL();
             URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{classUrl});
             Class<?> newAutomatonClass = Class.forName(name, true, classLoader);

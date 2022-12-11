@@ -3,7 +3,7 @@ package de.feil.controller.main;
 import de.feil.controller.editor.EditorController;
 import de.feil.model.base.Automaton;
 import de.feil.util.FileLoader;
-import de.feil.util.MVCSetCreator;
+import de.feil.MVCSetCreator;
 import de.feil.view.dialog.ChangeSizeDialog;
 import de.feil.view.dialog.ErrorAlert;
 import de.feil.view.dialog.NewAutomatonDialog;
@@ -136,6 +136,10 @@ public class MainController {
         return slider;
     }
 
+    public Stage getMainStage() {
+        return mainStage;
+    }
+
     @FXML
     public void onNewAction() {
         Platform.runLater(() -> new NewAutomatonDialog().showAndWait().ifPresent(name -> {
@@ -178,13 +182,21 @@ public class MainController {
         File selectedFile = fileChooser.showOpenDialog(mainStage);
         if (selectedFile != null) {
             String name = selectedFile.getName().replace(".java", "");
-            FileLoader.loadAutomaton(name, selectedFile).ifPresent(obj -> {
-                try {
-                    new MVCSetCreator(name, obj);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+
+            if (!new File("automata/" + name + ".class").exists()) {
+                FileLoader.loadAutomaton(name, selectedFile).ifPresent(obj -> {
+                    try {
+                        new MVCSetCreator(name, obj);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } else {
+                ErrorAlert.show("Der ausgewählte Automat wird bereits benutzt!");
+            }
+        }
+        else {
+            ErrorAlert.show("Ups, da ist was schief gelaufen!");
         }
     }
 
