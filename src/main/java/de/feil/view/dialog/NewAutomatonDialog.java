@@ -5,20 +5,25 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 public class NewAutomatonDialog extends TextInputDialog {
 
     public NewAutomatonDialog() {
         setTitle("Neuer Automat");
-        setHeaderText("Wie soll der neue Automat heißen?\nDu musst dich an die Namenskonventionen\nvon Java halten!");
+        setHeaderText("Wie soll der neue Automat heißen?\nDu musst dich an die Namenskonventionen" +
+                "\nvon Java halten und du darfst Namen nicht \ndoppelt verwenden!");
         setContentText("Name:");
 
-        BooleanBinding binding = Bindings.createBooleanBinding(
-                () -> Pattern.matches("\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*"
-                        , getEditor().getText()), getEditor().textProperty());
+        BooleanBinding javaClassNameBinding = Bindings.createBooleanBinding(
+                () -> Pattern.matches("\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*",
+                        getEditor().getText()), getEditor().textProperty());
 
+        BooleanBinding nameExistsBinding = Bindings.createBooleanBinding(
+                () -> (new File("automata", getEditor().getText() + ".java").exists()),
+                        getEditor().textProperty());
         getDialogPane().lookupButton(ButtonType.OK).disableProperty()
-                .bind(binding.not());
+                .bind(javaClassNameBinding.not().or(nameExistsBinding));
     }
 }

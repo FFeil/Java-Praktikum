@@ -2,7 +2,7 @@ package de.feil.controller.main;
 
 import de.feil.controller.editor.EditorController;
 import de.feil.model.base.Automaton;
-import de.feil.util.FileLoader;
+import de.feil.util.FileHelper;
 import de.feil.MVCSetCreator;
 import de.feil.view.dialog.ChangeSizeDialog;
 import de.feil.view.dialog.ErrorAlert;
@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainController {
@@ -77,11 +80,8 @@ public class MainController {
         this.mainStage = mainStage;
         this.automaton = automaton;
         this.editorController = editorController;
-    }
 
-    public void initialize() {
-        torusToggleButton.setSelected(automaton.isTorus());
-        torusCheckMenuItem.setSelected(automaton.isTorus());
+        mainStage.setOnCloseRequest(this::onCloseRequest);
     }
 
     public ScrollPane getStatePanelScrollPane() {
@@ -140,34 +140,24 @@ public class MainController {
         return mainStage;
     }
 
+    public void initialize() {
+        torusToggleButton.setSelected(automaton.isTorus());
+        torusCheckMenuItem.setSelected(automaton.isTorus());
+    }
+
+    private void onCloseRequest(WindowEvent event) {
+        try {
+            Files.delete(Paths.get("automata/" + editorController.getName() + ".class"));
+        } catch (IOException e) {
+            ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
+        }
+    }
+
     @FXML
     public void onNewAction() {
         Platform.runLater(() -> new NewAutomatonDialog().showAndWait().ifPresent(name -> {
-            File file = new File("automata", name + ".java");
-            if (!file.exists()) {
-                try {
-                    if (file.createNewFile()) {
-                        List<String> lines = Files.readAllLines(Paths.get("automata/DefaultAutomaton"),
-                                StandardCharsets.UTF_8);
-                        lines.set(3, lines.get(3).replace("DefaultAutomaton", name));
-                        lines.set(11, lines.get(11).replace("DefaultAutomaton", name));
-                        Files.write(Path.of(file.getPath()), lines, StandardCharsets.UTF_8);
-
-                        FileLoader.loadAutomaton(name, file).ifPresent(obj -> {
-                            try {
-                                new MVCSetCreator(name, obj);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-
-                    }
-                } catch (Exception e) {
-                    ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
-                }
-            } else {
-                ErrorAlert.show("Der Name ist bereits vergeben!");
-            }
+            FileHelper.createFile(name);
+            FileHelper.loadAutomaton(name).ifPresent(obj -> MVCSetCreator.create(name, obj));
         }));
     }
 
@@ -184,19 +174,10 @@ public class MainController {
             String name = selectedFile.getName().replace(".java", "");
 
             if (!new File("automata/" + name + ".class").exists()) {
-                FileLoader.loadAutomaton(name, selectedFile).ifPresent(obj -> {
-                    try {
-                        new MVCSetCreator(name, obj);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                FileHelper.loadAutomaton(name).ifPresent(obj -> MVCSetCreator.create(name, obj));
             } else {
                 ErrorAlert.show("Der ausgewählte Automat wird bereits benutzt!");
             }
-        }
-        else {
-            ErrorAlert.show("Ups, da ist was schief gelaufen!");
         }
     }
 
@@ -213,7 +194,7 @@ public class MainController {
             }
         }
 
-        editorController.showStage(String.valueOf(text));
+        editorController.showStage(text.toString());
     }
 
     @FXML

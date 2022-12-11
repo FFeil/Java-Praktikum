@@ -1,14 +1,8 @@
 package de.feil;
 
-import de.feil.util.FileLoader;
+import de.feil.util.FileHelper;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Objects;
 
 public class Main extends Application {
 
@@ -19,23 +13,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        FileLoader.loadAutomaton("KruemelmonsterAutomaton",
-                new File("automata/KruemelmonsterAutomaton.java")).ifPresent(automaton -> {
-            automaton.randomPopulation();
-            try {
-                new MVCSetCreator("KruemelmonsterAutomaton", automaton);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    @Override
-    public void stop() throws IOException {
-        for (File file : Objects.requireNonNull(new File("automata").listFiles())) {
-            if (file.getName().endsWith(".class")) {
-                Files.delete(Path.of(file.getPath()));
-            }
-        }
+        FileHelper.loadAutomaton("KruemelmonsterAutomaton")
+                .ifPresent(automaton -> MVCSetCreator.create("KruemelmonsterAutomaton", automaton));
     }
 }

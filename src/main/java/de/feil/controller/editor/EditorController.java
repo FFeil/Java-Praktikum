@@ -47,14 +47,11 @@ public class EditorController {
         try {
             event.consume();
 
-            ArrayList<String> textAreaLines = new ArrayList<>(Arrays.asList(codeTextArea.getText().split("\n")));
-            List<String> realLines = Files.readAllLines(Paths.get("automata/" + name + ".java"),
+            List<String> newLines = new ArrayList<>(Arrays.asList(codeTextArea.getText().split("\n")));
+            List<String> oldLines = Files.readAllLines(Paths.get("automata/" + name + ".java"),
                     StandardCharsets.UTF_8);
-            realLines.remove(realLines.size() - 1);
 
-            if (textAreaLines.equals(realLines)) {
-                editorStage.close();
-            } else {
+            if (!newLines.equals(oldLines)) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                             "Bist du sicher? Du hast noch nicht gespeichert!");
@@ -62,9 +59,11 @@ public class EditorController {
                         editorStage.close();
                     }
                 });
+            } else {
+                editorStage.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
         }
     }
 
