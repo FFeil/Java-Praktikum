@@ -4,9 +4,10 @@ import de.feil.controller.editor.EditorController;
 import de.feil.controller.main.MainController;
 import de.feil.controller.panel.PopulationPanelController;
 import de.feil.controller.panel.StatePanelController;
+import de.feil.controller.references.ReferencesHandler;
 import de.feil.controller.simulation.SimulationController;
 import de.feil.model.base.Automaton;
-import de.feil.view.dialog.ErrorAlert;
+import de.feil.view.dialog.AlertHelper;
 import de.feil.view.panel.PopulationPanel;
 import de.feil.view.panel.StatePanel;
 import javafx.fxml.FXMLLoader;
@@ -22,37 +23,41 @@ public class MVCSetCreator {
 
     public static void create(String name, Automaton automaton) {
         try {
+            // View: Stages + StatePanel
             Stage mainStage = new Stage();
-
-            // EditorController + load editor fxml
             Stage editorStage = new Stage();
             editorStage.initOwner(mainStage);
+            StatePanel statePanel = new StatePanel(automaton.getNumberOfStates());
+
+            // ReferencesHandler
+            ReferencesHandler referencesHandler = new ReferencesHandler(name, automaton, mainStage, editorStage,
+                    statePanel);
+
+            // View: PopulationPanel
+            PopulationPanel populationPanel = new PopulationPanel(referencesHandler, statePanel.getColorPickers());
+
+            // Controller: Editor + Main
+            EditorController editorController = new EditorController(referencesHandler);
+            MainController mainController = new MainController(referencesHandler);
+
+            // Load EditorView.fxml
             FXMLLoader editorLoader = new FXMLLoader(Main.class.getResource("/fxml/EditorView.fxml"));
-            EditorController editorController = new EditorController(name, editorStage);
             editorLoader.setController(editorController);
 
-            // View
-            StatePanel statePanel = new StatePanel(automaton.getNumberOfStates());
-            PopulationPanel populationPanel = new PopulationPanel(automaton, statePanel.getColorPickers());
-
-            // MainController + load main fxml
+            // Load MainView.fxml
             FXMLLoader mainLoader = new FXMLLoader(Main.class.getResource("/fxml/MainView.fxml"));
-            MainController controller = new MainController(mainStage, automaton, editorController);
-            mainLoader.setController(controller);
+            mainLoader.setController(mainController);
             Parent mainRoot = mainLoader.load();
+            mainController.initialize();
 
-            controller.initialize();
+            // Controller: StatePanel + PopulationPanel + Simulation
+            new StatePanelController(referencesHandler);
+            new PopulationPanelController(referencesHandler);
+            new SimulationController(referencesHandler);
 
             // Panels zu ScrollPanes hinzufügen
-            controller.getStatePanelScrollPane().setContent(statePanel);
-            controller.getPopulationPanelScrollPane().setContent(populationPanel);
-
-            // Panel Controller
-            new PopulationPanelController(automaton, controller
-                    , new StatePanelController(populationPanel, statePanel), populationPanel);
-
-            // Simulation Controller
-            new SimulationController(automaton, controller);
+            mainController.getStatePanelScrollPane().setContent(statePanel);
+            mainController.getPopulationPanelScrollPane().setContent(populationPanel);
 
             // Init main Stage
             Scene scene = new Scene(mainRoot, 800, 600);
@@ -70,7 +75,7 @@ public class MVCSetCreator {
             editorStage.setMinHeight(300);
             editorStage.setMinWidth(300);
         } catch (IOException e) {
-            ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
         }
     }
 }

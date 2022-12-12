@@ -1,8 +1,7 @@
 package de.feil.controller.simulation;
 
-import de.feil.controller.main.MainController;
-import de.feil.model.base.Automaton;
-import de.feil.view.dialog.ErrorAlert;
+import de.feil.controller.references.ReferencesHandler;
+import de.feil.view.dialog.AlertHelper;
 import javafx.event.ActionEvent;
 
 public class SimulationController {
@@ -11,29 +10,27 @@ public class SimulationController {
     static final int MIN_SPEED = 1;
     static final int MAX_SPEED = 10;
 
-    private final Automaton automaton;
-    private final MainController mainController;
+    private final ReferencesHandler referencesHandler;
 
     private SimulationThread simulationThread;
     private volatile int speed;
 
-    public SimulationController(Automaton automaton, MainController mainController) {
-        this.automaton = automaton;
-        this.mainController = mainController;
+    public SimulationController(ReferencesHandler referencesHandler) {
+        this.referencesHandler = referencesHandler;
         this.speed = 3000 / DEF_SPEED;
 
-        mainController.getSlider().setMin(MIN_SPEED);
-        mainController.getSlider().setMax(MAX_SPEED);
-        mainController.getSlider().setValue(DEF_SPEED);
+        referencesHandler.getMainController().getSlider().setMin(MIN_SPEED);
+        referencesHandler.getMainController().getSlider().setMax(MAX_SPEED);
+        referencesHandler.getMainController().getSlider().setValue(DEF_SPEED);
 
-        mainController.getStepMenuItem().setOnAction(this::onStepAction);
-        mainController.getStepButton().setOnAction(this::onStepAction);
-        mainController.getStartMenuItem().setOnAction(this::onStartAction);
-        mainController.getStartButton().setOnAction(this::onStartAction);
-        mainController.getStopMenuItem().setOnAction(this::onStopAction);
-        mainController.getStopButton().setOnAction(this::onStopAction);
+        referencesHandler.getMainController().getStepMenuItem().setOnAction(this::onStepAction);
+        referencesHandler.getMainController().getStepButton().setOnAction(this::onStepAction);
+        referencesHandler.getMainController().getStartMenuItem().setOnAction(this::onStartAction);
+        referencesHandler.getMainController().getStartButton().setOnAction(this::onStartAction);
+        referencesHandler.getMainController().getStopMenuItem().setOnAction(this::onStopAction);
+        referencesHandler.getMainController().getStopButton().setOnAction(this::onStopAction);
 
-        mainController.getSlider().valueProperty().addListener(
+        referencesHandler.getMainController().getSlider().valueProperty().addListener(
                 (obs, o, n) -> speed =  3000 / n.intValue());
 
         simulationThread = null;
@@ -41,21 +38,21 @@ public class SimulationController {
 
     private void onStepAction(ActionEvent event) {
         try {
-            automaton.nextGeneration();
+            referencesHandler.getAutomaton().nextGeneration();
         } catch (Throwable e) {
             e.printStackTrace();
-            ErrorAlert.show("Laufzeitfehler in der transform-Methode: " + e);
+            AlertHelper.showError("Laufzeitfehler in der transform-Methode: " + e);
         }
     }
 
 
     private void onStartAction(ActionEvent event) {
-        mainController.getStepMenuItem().setDisable(true);
-        mainController.getStepButton().setDisable(true);
-        mainController.getStartMenuItem().setDisable(true);
-        mainController.getStartButton().setDisable(true);
-        mainController.getStopMenuItem().setDisable(false);
-        mainController.getStopButton().setDisable(false);
+        referencesHandler.getMainController().getStepMenuItem().setDisable(true);
+        referencesHandler.getMainController().getStepButton().setDisable(true);
+        referencesHandler.getMainController().getStartMenuItem().setDisable(true);
+        referencesHandler.getMainController().getStartButton().setDisable(true);
+        referencesHandler.getMainController().getStopMenuItem().setDisable(false);
+        referencesHandler.getMainController().getStopButton().setDisable(false);
 
         if (simulationThread == null) {
             simulationThread = new SimulationThread();
@@ -74,12 +71,12 @@ public class SimulationController {
             }
         }
 
-        mainController.getStepMenuItem().setDisable(false);
-        mainController.getStepButton().setDisable(false);
-        mainController.getStartMenuItem().setDisable(false);
-        mainController.getStartButton().setDisable(false);
-        mainController.getStopMenuItem().setDisable(true);
-        mainController.getStopButton().setDisable(true);
+        referencesHandler.getMainController().getStepMenuItem().setDisable(false);
+        referencesHandler.getMainController().getStepButton().setDisable(false);
+        referencesHandler.getMainController().getStartMenuItem().setDisable(false);
+        referencesHandler.getMainController().getStartButton().setDisable(false);
+        referencesHandler.getMainController().getStopMenuItem().setDisable(true);
+        referencesHandler.getMainController().getStopButton().setDisable(true);
 
         simulationThread = null;
     }
@@ -88,15 +85,15 @@ public class SimulationController {
 
         @Override
         public void run() {
-            while (!isInterrupted() && mainController.getMainStage().isShowing()) {
+            while (!isInterrupted() && referencesHandler.getMainController().getMainStage().isShowing()) {
                 try {
-                    automaton.nextGeneration();
+                    referencesHandler.getAutomaton().nextGeneration();
                     Thread.sleep(speed);
                 } catch (InterruptedException e) {
                     interrupt();
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    ErrorAlert.show("Laufzeitfehler in der transform-Methode: " + e);
+                    AlertHelper.showError("Laufzeitfehler in der transform-Methode: " + e);
                 }
             }
         }

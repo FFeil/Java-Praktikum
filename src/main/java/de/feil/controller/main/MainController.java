@@ -1,11 +1,10 @@
 package de.feil.controller.main;
 
-import de.feil.controller.editor.EditorController;
-import de.feil.model.base.Automaton;
+import de.feil.controller.references.ReferencesHandler;
 import de.feil.util.FileHelper;
 import de.feil.MVCSetCreator;
 import de.feil.view.dialog.ChangeSizeDialog;
-import de.feil.view.dialog.ErrorAlert;
+import de.feil.view.dialog.AlertHelper;
 import de.feil.view.dialog.NewAutomatonDialog;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -20,8 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainController {
@@ -72,15 +69,15 @@ public class MainController {
     @FXML
     private ScrollPane populationPanelScrollPane;
 
+    private final ReferencesHandler referencesHandler;
+
     private final Stage mainStage;
-    private final Automaton automaton;
-    private final EditorController editorController;
 
-    public MainController(Stage mainStage, Automaton automaton, EditorController editorController) {
-        this.mainStage = mainStage;
-        this.automaton = automaton;
-        this.editorController = editorController;
+    public MainController(ReferencesHandler referencesHandler) {
+        this.referencesHandler = referencesHandler;
+        this.mainStage = referencesHandler.getMainStage();
 
+        referencesHandler.setMainController(this);
         mainStage.setOnCloseRequest(this::onCloseRequest);
     }
 
@@ -141,15 +138,15 @@ public class MainController {
     }
 
     public void initialize() {
-        torusToggleButton.setSelected(automaton.isTorus());
-        torusCheckMenuItem.setSelected(automaton.isTorus());
+        torusToggleButton.setSelected(referencesHandler.getAutomaton().isTorus());
+        torusCheckMenuItem.setSelected(referencesHandler.getAutomaton().isTorus());
     }
 
     private void onCloseRequest(WindowEvent event) {
         try {
-            Files.delete(Paths.get("automata/" + editorController.getName() + ".class"));
+            Files.delete(Paths.get("automata/" + referencesHandler.getName() + ".class"));
         } catch (IOException e) {
-            ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
         }
     }
 
@@ -170,20 +167,23 @@ public class MainController {
         fileChooser.getExtensionFilters().add(javaFilter);
 
         File selectedFile = fileChooser.showOpenDialog(mainStage);
-        if (selectedFile != null) {
-            String name = selectedFile.getName().replace(".java", "");
 
-            if (!new File("automata/" + name + ".class").exists()) {
-                FileHelper.loadAutomaton(name).ifPresent(obj -> MVCSetCreator.create(name, obj));
-            } else {
-                ErrorAlert.show("Der ausgewählte Automat wird bereits benutzt!");
-            }
+        if (selectedFile == null) {
+            return;
+        }
+
+        String name = selectedFile.getName().replace(".java", "");
+
+        if (!new File("automata/" + name + ".class").exists()) {
+            FileHelper.loadAutomaton(name).ifPresent(obj -> MVCSetCreator.create(name, obj));
+        } else {
+            AlertHelper.showError("Der ausgewählte Automat wird bereits benutzt!");
         }
     }
 
     @FXML
     public void onEditorAction() throws IOException {
-        Path path = Paths.get("automata/" + editorController.getName() + ".java");
+        Path path = Paths.get("automata/" + referencesHandler.getName() + ".java");
         StringBuilder text = new StringBuilder();
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
@@ -194,7 +194,7 @@ public class MainController {
             }
         }
 
-        editorController.showStage(text.toString());
+        referencesHandler.getEditorController().showStage(text.toString());
     }
 
     @FXML
@@ -204,25 +204,28 @@ public class MainController {
 
     @FXML
     public void onResetAction() {
-        automaton.clearPopulation();
+        referencesHandler.getAutomaton().clearPopulation();
     }
 
     @FXML
     public void onRandomAction() {
-        automaton.randomPopulation();
+        referencesHandler.getAutomaton().randomPopulation();
     }
 
     @FXML
     public void onTorusAction() {
-        automaton.setTorus(!automaton.isTorus());
+        referencesHandler.getAutomaton().setTorus(!referencesHandler.getAutomaton().isTorus());
 
-        torusToggleButton.setSelected(automaton.isTorus());
-        torusCheckMenuItem.setSelected(automaton.isTorus());
+        torusToggleButton.setSelected(referencesHandler.getAutomaton().isTorus());
+        torusCheckMenuItem.setSelected(referencesHandler.getAutomaton().isTorus());
     }
 
     @FXML
     public void onChangeSizeAction() {
-        Platform.runLater(() -> new ChangeSizeDialog(automaton.getNumberOfRows(), automaton.getNumberOfColumns())
-                .showAndWait().ifPresent(resultPair -> automaton.changeSize(resultPair.value1(), resultPair.value2())));
+        Platform.runLater(() -> new ChangeSizeDialog(referencesHandler.getAutomaton().getNumberOfRows(),
+                    referencesHandler.getAutomaton().getNumberOfColumns())
+                .showAndWait()
+                .ifPresent(resultPair ->
+                        referencesHandler.getAutomaton().changeSize(resultPair.value1(), resultPair.value2())));
     }
 }

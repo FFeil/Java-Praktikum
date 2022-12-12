@@ -23,7 +23,7 @@
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem onAction="#onCompileAction" text="_Complilieren">
+                  <MenuItem onAction="#onCompileAction" text="_Kompilieren">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="K" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -46,7 +46,7 @@
                </tooltip></Button>
             <Button mnemonicParsing="false" onAction="#onCompileAction" style="-fx-graphic: url(icons/Compile24.gif);">
                <tooltip>
-                  <Tooltip text="Complilieren" />
+                  <Tooltip text="Kompilieren" />
                </tooltip></Button>
          </items>
       </ToolBar>

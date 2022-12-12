@@ -1,6 +1,6 @@
 package de.feil.view.panel;
 
-import de.feil.model.base.Automaton;
+import de.feil.controller.references.ReferencesHandler;
 import de.feil.util.Observer;
 import de.feil.util.Pair;
 import javafx.application.Platform;
@@ -22,20 +22,21 @@ public class PopulationPanel extends Region implements Observer {
     private static final double BORDER_WIDTH = 10;
     private static final double BORDER_HEIGHT = 10;
 
-    private final Automaton automaton;
+    private final ReferencesHandler referencesHandler;
     private final Canvas canvas;
 
     private final ArrayList<ColorPicker> colorPickers;
 
-    public PopulationPanel(Automaton automaton, List<ColorPicker> colorPickers) {
-        this.automaton = automaton;
+    public PopulationPanel(ReferencesHandler referencesHandler, List<ColorPicker> colorPickers) {
+        this.referencesHandler = referencesHandler;
         this.canvas = new Canvas(calcCanvasWidth(), calcCanvasHeight());
         this.getChildren().add(canvas);
         this.colorPickers = (ArrayList<ColorPicker>) colorPickers;
 
-        paintCanvas();
+        referencesHandler.setPopulationPanel(this);
+        referencesHandler.getAutomaton().add(this);
 
-        automaton.add(this);
+        paintCanvas();
     }
 
     public Canvas getCanvas() {
@@ -52,9 +53,9 @@ public class PopulationPanel extends Region implements Observer {
         gc.setLineWidth(.8);
         gc.setStroke(Color.GRAY);
 
-        for (int i = 0; i < automaton.getNumberOfRows(); i++) {
-            for (int j = 0; j < automaton.getNumberOfColumns(); j++) {
-                gc.setFill(colorPickers.get(automaton.getCell(i, j).getState()).getValue());
+        for (int i = 0; i < referencesHandler.getAutomaton().getNumberOfRows(); i++) {
+            for (int j = 0; j < referencesHandler.getAutomaton().getNumberOfColumns(); j++) {
+                gc.setFill(colorPickers.get(referencesHandler.getAutomaton().getCell(i, j).getState()).getValue());
                 gc.fillRect(BORDER_WIDTH + j * AUTOMATON_WIDTH, BORDER_HEIGHT + i * AUTOMATON_HEIGHT, AUTOMATON_WIDTH,
                         AUTOMATON_HEIGHT);
                 gc.strokeRect(BORDER_WIDTH + j * AUTOMATON_WIDTH, BORDER_HEIGHT + i * AUTOMATON_HEIGHT, AUTOMATON_WIDTH,
@@ -64,11 +65,11 @@ public class PopulationPanel extends Region implements Observer {
     }
 
     public double calcCanvasWidth() {
-        return 2 * BORDER_WIDTH + AUTOMATON_WIDTH * automaton.getNumberOfColumns();
+        return 2 * BORDER_WIDTH + AUTOMATON_WIDTH * referencesHandler.getAutomaton().getNumberOfColumns();
     }
 
     public double calcCanvasHeight() {
-        return 2 * BORDER_HEIGHT + AUTOMATON_HEIGHT * automaton.getNumberOfRows();
+        return 2 * BORDER_HEIGHT + AUTOMATON_HEIGHT * referencesHandler.getAutomaton().getNumberOfRows();
     }
 
     public boolean canZoomIn() {
@@ -90,10 +91,12 @@ public class PopulationPanel extends Region implements Observer {
     }
 
     public Optional<Pair<Integer>> getRowAndCol(double x, double y) {
-        if (x < BORDER_WIDTH || y < BORDER_HEIGHT || x > BORDER_WIDTH + automaton.getNumberOfColumns() * AUTOMATON_WIDTH
-                || y > BORDER_HEIGHT + automaton.getNumberOfRows() * AUTOMATON_HEIGHT) {
+        if (x < BORDER_WIDTH || y < BORDER_HEIGHT
+                || x > BORDER_WIDTH + referencesHandler.getAutomaton().getNumberOfColumns() * AUTOMATON_WIDTH
+                || y > BORDER_HEIGHT + referencesHandler.getAutomaton().getNumberOfRows() * AUTOMATON_HEIGHT) {
             return Optional.empty();
         }
+
         int row = (int) ((y - BORDER_HEIGHT) / AUTOMATON_HEIGHT);
         int col = (int) ((x - BORDER_WIDTH) / AUTOMATON_WIDTH);
 

@@ -1,7 +1,6 @@
 package de.feil.controller.panel;
 
-import de.feil.controller.main.MainController;
-import de.feil.model.base.Automaton;
+import de.feil.controller.references.ReferencesHandler;
 import de.feil.view.panel.PopulationPanel;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
@@ -11,30 +10,25 @@ import static javafx.scene.input.MouseEvent.MOUSE_PRESSED;
 
 public class PopulationPanelController {
 
-    private Automaton automaton;
+    private final ReferencesHandler referencesHandler;
 
-    private final MainController controller;
-    private final StatePanelController statePanelController;
     private final PopulationPanel populationPanel;
 
     private int rowDragStart;
     private int columnDragStart;
 
 
-    public PopulationPanelController(Automaton automaton, MainController controller,
-                                     StatePanelController statePanelController, PopulationPanel populationPanel) {
-        this.automaton = automaton;
-        this.controller = controller;
-        this.statePanelController = statePanelController;
-        this.populationPanel = populationPanel;
+    public PopulationPanelController(ReferencesHandler referencesHandler) {
+        this.referencesHandler = referencesHandler;
+        this.populationPanel = referencesHandler.getPopulationPanel();
 
         populationPanel.getCanvas().addEventHandler(MOUSE_PRESSED, this::onMousePressed);
         populationPanel.getCanvas().addEventHandler(MOUSE_DRAGGED, this::onMouseDragged);
 
-        controller.getZoomInButton().setOnAction(this::onZoomInAction);
-        controller.getZoomInMenuItem().setOnAction(this::onZoomInAction);
-        controller.getZoomOutButton().setOnAction(this::onZoomOutAction);
-        controller.getZoomOutMenuItem().setOnAction(this::onZoomOutAction);
+        referencesHandler.getMainController().getZoomInButton().setOnAction(this::onZoomInAction);
+        referencesHandler.getMainController().getZoomInMenuItem().setOnAction(this::onZoomInAction);
+        referencesHandler.getMainController().getZoomOutButton().setOnAction(this::onZoomOutAction);
+        referencesHandler.getMainController().getZoomOutMenuItem().setOnAction(this::onZoomOutAction);
     }
 
     private void onMousePressed(MouseEvent event) {
@@ -42,7 +36,8 @@ public class PopulationPanelController {
             rowDragStart = rowCol.value1();
             columnDragStart = rowCol.value2();
 
-            automaton.setState(rowDragStart, columnDragStart, statePanelController.getSelectedState());
+            referencesHandler.getAutomaton().setState(rowDragStart, columnDragStart,
+                    referencesHandler.getStatePanelController().getSelectedState());
         });
     }
 
@@ -54,14 +49,15 @@ public class PopulationPanelController {
             int colEnd = Math.max(columnDragStart, rowCol.value2()) + 1;
 
             // Sonst Index out of bounds Exception
-            if (rowEnd > automaton.getNumberOfRows()) {
+            if (rowEnd > referencesHandler.getAutomaton().getNumberOfRows()) {
                 rowEnd--;
             }
-            if (colEnd > automaton.getNumberOfColumns()) {
+            if (colEnd > referencesHandler.getAutomaton().getNumberOfColumns()) {
                 colEnd--;
             }
 
-            automaton.setState(rowStart, colStart, rowEnd, colEnd, statePanelController.getSelectedState());
+            referencesHandler.getAutomaton().setState(rowStart, colStart, rowEnd, colEnd,
+                    referencesHandler.getStatePanelController().getSelectedState());
         });
     }
 
@@ -70,13 +66,12 @@ public class PopulationPanelController {
       populationPanel.paintCanvas();
 
       if (!populationPanel.canZoomIn()) {
-          controller.getZoomInButton().setDisable(true);
-          controller.getZoomInButton().setDisable(true);
+          referencesHandler.getMainController().getZoomInButton().setDisable(true);
       }
 
-      if (controller.getZoomOutButton().isDisable()) {
-          controller.getZoomOutButton().setDisable(false);
-          controller.getZoomOutMenuItem().setDisable(false);
+      if (referencesHandler.getMainController().getZoomOutButton().isDisable()) {
+          referencesHandler.getMainController().getZoomOutButton().setDisable(false);
+          referencesHandler.getMainController().getZoomOutMenuItem().setDisable(false);
       }
   }
 
@@ -85,13 +80,13 @@ public class PopulationPanelController {
       populationPanel.paintCanvas();
 
       if (!populationPanel.canZoomOut()) {
-          controller.getZoomOutButton().setDisable(true);
-          controller.getZoomOutMenuItem().setDisable(true);
+          referencesHandler.getMainController().getZoomOutButton().setDisable(true);
+          referencesHandler.getMainController().getZoomOutMenuItem().setDisable(true);
       }
 
-      if (controller.getZoomInButton().isDisable()) {
-          controller.getZoomInButton().setDisable(false);
-          controller.getZoomInButton().setDisable(false);
+      if (referencesHandler.getMainController().getZoomInButton().isDisable()) {
+          referencesHandler.getMainController().getZoomInButton().setDisable(false);
+          referencesHandler.getMainController().getZoomInButton().setDisable(false);
       }
   }
 }

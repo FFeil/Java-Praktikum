@@ -1,6 +1,8 @@
 package de.feil.controller.editor;
 
-import de.feil.view.dialog.ErrorAlert;
+import de.feil.controller.references.ReferencesHandler;
+import de.feil.util.FileHelper;
+import de.feil.view.dialog.AlertHelper;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -21,20 +23,18 @@ import java.util.List;
 
 public class EditorController {
 
-    private final String name;
+    private final ReferencesHandler referencesHandler;
     private final Stage editorStage;
+
     @FXML
     private TextArea codeTextArea;
 
-    public EditorController(String name, Stage editorStage) {
-        this.name = name;
-        this.editorStage = editorStage;
+    public EditorController(ReferencesHandler referencesHandler) {
+        this.referencesHandler = referencesHandler;
+        this.editorStage = referencesHandler.getEditorStage();
 
+        referencesHandler.setEditorController(this);
         editorStage.setOnCloseRequest(this::onCloseRequest);
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void showStage(String code) {
@@ -48,10 +48,12 @@ public class EditorController {
             event.consume();
 
             List<String> newLines = new ArrayList<>(Arrays.asList(codeTextArea.getText().split("\n")));
-            List<String> oldLines = Files.readAllLines(Paths.get("automata/" + name + ".java"),
+            List<String> oldLines = Files.readAllLines(Paths.get("automata/" + referencesHandler.getName() + ".java"),
                     StandardCharsets.UTF_8);
 
-            if (!newLines.equals(oldLines)) {
+            if (newLines.equals(oldLines)) {
+                editorStage.close();
+            } else {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                             "Bist du sicher? Du hast noch nicht gespeichert!");
@@ -59,11 +61,9 @@ public class EditorController {
                         editorStage.close();
                     }
                 });
-            } else {
-                editorStage.close();
             }
         } catch (IOException e) {
-            ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
         }
     }
 
@@ -75,16 +75,21 @@ public class EditorController {
         lines.add(code);
 
         try {
-            File file = new File("automata", name + ".java");
+            File file = new File("automata", referencesHandler.getName() + ".java");
             Files.write(Path.of(file.getPath()), lines, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
         }
     }
 
     @FXML
     public void onCompileAction() {
-        //TODO
+        onSaveAction();
+
+        FileHelper.loadAutomaton(referencesHandler.getName()).ifPresent(automaton -> {
+            referencesHandler.setAutomaton(automaton);
+            AlertHelper.showInformation("Kompilieren erfolgreich!");
+        });
     }
 
     @FXML

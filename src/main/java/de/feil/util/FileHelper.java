@@ -1,9 +1,11 @@
 package de.feil.util;
 
 import de.feil.model.base.Automaton;
-import de.feil.view.dialog.ErrorAlert;
+import de.feil.view.dialog.AlertHelper;
 
+import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -21,16 +23,28 @@ public class FileHelper {
 
     public static void createFile(String name){
         try {
-            Path path = Path.of("automata/" + name + ".java");
-            Files.createFile(path);
+            File file = new File("automata/" + name + ".java");
 
-            List<String> lines = Files.readAllLines(Paths.get("automata/DefaultAutomaton"),
-                    StandardCharsets.UTF_8);
+            // .java File existiert bereits
+            if (file.exists()) {
+                return;
+            }
+
+            // automata Ordner existiert nicht
+            if (!Files.exists(Path.of("automata"))) {
+                Files.createDirectories(Path.of("automata"));
+            }
+
+            Files.createFile(Path.of(file.getPath()));
+
+            List<String> lines = Files.readAllLines(
+                    Paths.get("src/main/resources/defaultAutomaton/DefaultAutomaton"), StandardCharsets.UTF_8);
             lines.set(3, lines.get(3).replace("DefaultAutomaton", name));
             lines.set(11, lines.get(11).replace("DefaultAutomaton", name));
-            Files.write(path, lines, StandardCharsets.UTF_8);
+
+            Files.write(Path.of(file.getPath()), lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
         }
     }
 
@@ -39,16 +53,24 @@ public class FileHelper {
             File file = new File("automata/" + name + ".java");
 
             // Klasse kompilieren
-            ToolProvider.getSystemJavaCompiler().run(null, null, null, file.getAbsolutePath());
+            JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
+            ByteArrayOutputStream err = new ByteArrayOutputStream();
+            boolean success = javac.run(null, null, err, file.getPath()) == 0;
 
-            // Klasse laden
-            URL classUrl = file.getParentFile().toURI().toURL();
-            URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{classUrl});
-            Class<?> newAutomatonClass = Class.forName(name, true, classLoader);
+            if (!success) {
+                AlertHelper.showError(err.toString());
 
-            return Optional.of((Automaton) newAutomatonClass.getDeclaredConstructor().newInstance());
+                return Optional.empty();
+            } else {
+                // Klasse laden
+                URL classUrl = file.getParentFile().toURI().toURL();
+                URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{classUrl});
+                Class<?> newAutomatonClass = Class.forName(name, true, classLoader);
+
+                return Optional.of((Automaton) newAutomatonClass.getDeclaredConstructor().newInstance());
+            }
         } catch (Exception e) {
-            ErrorAlert.show("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
         }
         return Optional.empty();
     }
