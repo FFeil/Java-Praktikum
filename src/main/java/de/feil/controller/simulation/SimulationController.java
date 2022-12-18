@@ -6,9 +6,9 @@ import javafx.event.ActionEvent;
 
 public class SimulationController {
 
-    static final int DEF_SPEED = 4;
+    static final int DEF_SPEED = 50;
     static final int MIN_SPEED = 1;
-    static final int MAX_SPEED = 10;
+    static final int MAX_SPEED = 100;
 
     private final ReferencesHandler referencesHandler;
 
@@ -44,7 +44,6 @@ public class SimulationController {
             AlertHelper.showError("Laufzeitfehler in der transform-Methode: " + e);
         }
     }
-
 
     private void onStartAction(ActionEvent event) {
         referencesHandler.getMainController().getStepMenuItem().setDisable(true);
@@ -93,7 +92,7 @@ public class SimulationController {
                     interrupt();
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    AlertHelper.showError("Laufzeitfehler in der transform-Methode: " + e);
+                    AlertHelper.showError("Laufzeitfehler in der transform-Methode:\n" + e);
                 }
             }
         }

@@ -36,19 +36,6 @@ public class ReferencesHandler {
         return name;
     }
 
-    public void setAutomaton(Automaton automaton) {
-        if (this.automaton == null) {
-            return;
-        }
-
-        automaton.addAll(this.automaton);
-        this.automaton.clear();
-        this.automaton = automaton;
-
-        mainController.initialize();
-        statePanelController.updateStatePanel();
-        populationPanel.paintCanvas();
-    }
 
     public Automaton getAutomaton() {
         return automaton;
@@ -80,6 +67,20 @@ public class ReferencesHandler {
 
     public PopulationPanel getPopulationPanel() {
         return populationPanel;
+    }
+
+    public void setAutomaton(Automaton automaton) {
+        if (this.automaton == null) {
+            return;
+        }
+
+        automaton.addAll(this.automaton);
+        this.automaton.clear();
+        this.automaton = automaton;
+
+        mainController.initialize();
+        statePanelController.updateStatePanel();
+        populationPanel.paintCanvas();
     }
 
     public void setMainController(MainController mainController) {
