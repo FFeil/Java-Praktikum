@@ -3,11 +3,11 @@ import de.feil.model.base.Cell;
 
 public class DefaultAutomaton extends Automaton {
 
-    final private static int initNumberOfRows = 50;
-    final private static int initNumberOfColumns = 50;
-    final private static int numberOfStates = 2;
-    final private static boolean mooreNeighborhood = true;
-    final private static boolean initTorus = true;
+    private static final int initNumberOfRows = 50;
+    private static final int initNumberOfColumns = 50;
+    private static final int numberOfStates = 2;
+    private static final boolean mooreNeighborhood = true;
+    private static final boolean initTorus = true;
 
     public DefaultAutomaton() {
         super(initNumberOfRows, initNumberOfColumns,

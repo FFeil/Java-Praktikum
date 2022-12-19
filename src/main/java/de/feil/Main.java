@@ -13,8 +13,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        FileHelper.createFile("DefaultAutomaton");
-        FileHelper.loadAutomaton("DefaultAutomaton")
-                .ifPresent(automaton -> MVCSetCreator.create("DefaultAutomaton", automaton));
+        final String initialAutomaton = "DefaultAutomaton";
+
+        FileHelper.createFile(initialAutomaton);
+        FileHelper.loadAutomaton(initialAutomaton)
+                .ifPresent(automaton -> MVCSetCreator.create(initialAutomaton, automaton));
     }
 }

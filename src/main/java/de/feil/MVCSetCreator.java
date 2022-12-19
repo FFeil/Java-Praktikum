@@ -4,7 +4,7 @@ import de.feil.controller.editor.EditorController;
 import de.feil.controller.main.MainController;
 import de.feil.controller.panel.PopulationPanelController;
 import de.feil.controller.panel.StatePanelController;
-import de.feil.controller.references.ReferencesHandler;
+import de.feil.controller.references.ReferenceHandler;
 import de.feil.controller.simulation.SimulationController;
 import de.feil.model.base.Automaton;
 import de.feil.view.dialog.AlertHelper;
@@ -29,16 +29,16 @@ public class MVCSetCreator {
             editorStage.initOwner(mainStage);
             StatePanel statePanel = new StatePanel(automaton.getNumberOfStates());
 
-            // ReferencesHandler
-            ReferencesHandler referencesHandler = new ReferencesHandler(name, automaton, mainStage, editorStage,
+            // ReferenceHandler
+            ReferenceHandler referenceHandler = new ReferenceHandler(name, automaton, mainStage, editorStage,
                     statePanel);
 
             // View: PopulationPanel
-            PopulationPanel populationPanel = new PopulationPanel(referencesHandler, statePanel.getColorPickers());
+            PopulationPanel populationPanel = new PopulationPanel(referenceHandler, statePanel.getColorPickers());
 
             // Controller: Editor + Main
-            EditorController editorController = new EditorController(referencesHandler);
-            MainController mainController = new MainController(referencesHandler);
+            EditorController editorController = new EditorController(referenceHandler);
+            MainController mainController = new MainController(referenceHandler);
 
             // Load EditorView.fxml
             FXMLLoader editorLoader = new FXMLLoader(Main.class.getResource("/fxml/EditorView.fxml"));
@@ -51,9 +51,9 @@ public class MVCSetCreator {
             mainController.initialize();
 
             // Controller: StatePanel + PopulationPanel + Simulation
-            new StatePanelController(referencesHandler);
-            new PopulationPanelController(referencesHandler);
-            new SimulationController(referencesHandler);
+            new StatePanelController(referenceHandler);
+            new PopulationPanelController(referenceHandler);
+            new SimulationController(referenceHandler);
 
             // Panels zu ScrollPanes hinzufügen
             mainController.getStatePanelScrollPane().setContent(statePanel);
@@ -75,7 +75,7 @@ public class MVCSetCreator {
             editorStage.setMinHeight(300);
             editorStage.setMinWidth(300);
         } catch (IOException e) {
-            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Beim Erstellen eines neuen Fensters ist ein Fehler aufgetreten:\n" + e);
         }
     }
 }

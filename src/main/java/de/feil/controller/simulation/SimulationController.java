@@ -1,6 +1,6 @@
 package de.feil.controller.simulation;
 
-import de.feil.controller.references.ReferencesHandler;
+import de.feil.controller.references.ReferenceHandler;
 import de.feil.view.dialog.AlertHelper;
 import javafx.event.ActionEvent;
 
@@ -10,27 +10,27 @@ public class SimulationController {
     static final int MIN_SPEED = 1;
     static final int MAX_SPEED = 100;
 
-    private final ReferencesHandler referencesHandler;
+    private final ReferenceHandler referenceHandler;
 
     private SimulationThread simulationThread;
     private volatile int speed;
 
-    public SimulationController(ReferencesHandler referencesHandler) {
-        this.referencesHandler = referencesHandler;
+    public SimulationController(ReferenceHandler referenceHandler) {
+        this.referenceHandler = referenceHandler;
         this.speed = 3000 / DEF_SPEED;
 
-        referencesHandler.getMainController().getSlider().setMin(MIN_SPEED);
-        referencesHandler.getMainController().getSlider().setMax(MAX_SPEED);
-        referencesHandler.getMainController().getSlider().setValue(DEF_SPEED);
+        referenceHandler.getMainController().getSlider().setMin(MIN_SPEED);
+        referenceHandler.getMainController().getSlider().setMax(MAX_SPEED);
+        referenceHandler.getMainController().getSlider().setValue(DEF_SPEED);
 
-        referencesHandler.getMainController().getStepMenuItem().setOnAction(this::onStepAction);
-        referencesHandler.getMainController().getStepButton().setOnAction(this::onStepAction);
-        referencesHandler.getMainController().getStartMenuItem().setOnAction(this::onStartAction);
-        referencesHandler.getMainController().getStartButton().setOnAction(this::onStartAction);
-        referencesHandler.getMainController().getStopMenuItem().setOnAction(this::onStopAction);
-        referencesHandler.getMainController().getStopButton().setOnAction(this::onStopAction);
+        referenceHandler.getMainController().getStepMenuItem().setOnAction(this::onStepAction);
+        referenceHandler.getMainController().getStepButton().setOnAction(this::onStepAction);
+        referenceHandler.getMainController().getStartMenuItem().setOnAction(this::onStartAction);
+        referenceHandler.getMainController().getStartButton().setOnAction(this::onStartAction);
+        referenceHandler.getMainController().getStopMenuItem().setOnAction(this::onStopAction);
+        referenceHandler.getMainController().getStopButton().setOnAction(this::onStopAction);
 
-        referencesHandler.getMainController().getSlider().valueProperty().addListener(
+        referenceHandler.getMainController().getSlider().valueProperty().addListener(
                 (obs, o, n) -> speed =  3000 / n.intValue());
 
         simulationThread = null;
@@ -38,7 +38,7 @@ public class SimulationController {
 
     private void onStepAction(ActionEvent event) {
         try {
-            referencesHandler.getAutomaton().nextGeneration();
+            referenceHandler.getAutomaton().nextGeneration();
         } catch (Throwable e) {
             e.printStackTrace();
             AlertHelper.showError("Laufzeitfehler in der transform-Methode: " + e);
@@ -46,12 +46,12 @@ public class SimulationController {
     }
 
     private void onStartAction(ActionEvent event) {
-        referencesHandler.getMainController().getStepMenuItem().setDisable(true);
-        referencesHandler.getMainController().getStepButton().setDisable(true);
-        referencesHandler.getMainController().getStartMenuItem().setDisable(true);
-        referencesHandler.getMainController().getStartButton().setDisable(true);
-        referencesHandler.getMainController().getStopMenuItem().setDisable(false);
-        referencesHandler.getMainController().getStopButton().setDisable(false);
+        referenceHandler.getMainController().getStepMenuItem().setDisable(true);
+        referenceHandler.getMainController().getStepButton().setDisable(true);
+        referenceHandler.getMainController().getStartMenuItem().setDisable(true);
+        referenceHandler.getMainController().getStartButton().setDisable(true);
+        referenceHandler.getMainController().getStopMenuItem().setDisable(false);
+        referenceHandler.getMainController().getStopButton().setDisable(false);
 
         if (simulationThread == null) {
             simulationThread = new SimulationThread();
@@ -70,12 +70,12 @@ public class SimulationController {
             }
         }
 
-        referencesHandler.getMainController().getStepMenuItem().setDisable(false);
-        referencesHandler.getMainController().getStepButton().setDisable(false);
-        referencesHandler.getMainController().getStartMenuItem().setDisable(false);
-        referencesHandler.getMainController().getStartButton().setDisable(false);
-        referencesHandler.getMainController().getStopMenuItem().setDisable(true);
-        referencesHandler.getMainController().getStopButton().setDisable(true);
+        referenceHandler.getMainController().getStepMenuItem().setDisable(false);
+        referenceHandler.getMainController().getStepButton().setDisable(false);
+        referenceHandler.getMainController().getStartMenuItem().setDisable(false);
+        referenceHandler.getMainController().getStartButton().setDisable(false);
+        referenceHandler.getMainController().getStopMenuItem().setDisable(true);
+        referenceHandler.getMainController().getStopButton().setDisable(true);
 
         simulationThread = null;
     }
@@ -84,9 +84,9 @@ public class SimulationController {
 
         @Override
         public void run() {
-            while (!isInterrupted() && referencesHandler.getMainController().getMainStage().isShowing()) {
+            while (!isInterrupted() && referenceHandler.getMainController().getMainStage().isShowing()) {
                 try {
-                    referencesHandler.getAutomaton().nextGeneration();
+                    referenceHandler.getAutomaton().nextGeneration();
                     Thread.sleep(speed);
                 } catch (InterruptedException e) {
                     interrupt();

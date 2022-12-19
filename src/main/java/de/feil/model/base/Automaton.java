@@ -207,6 +207,11 @@ public abstract class Automaton extends Observable {
      */
     public void setState(int row, int column, int state) {
         synchronized (this) {
+            if (isTorus) {
+                row %= numberOfRows;
+                column %= numberOfColumns;
+            }
+
             cells[row][column].setState(state);
         }
 
@@ -222,6 +227,7 @@ public abstract class Automaton extends Observable {
      * @param toColumn   Spalte der untersten Zelle
      * @param state      neuer Zustand der Zellen
      */
+
     public void setState(int fromRow, int fromColumn, int toRow,
                          int toColumn, int state) {
         synchronized (this) {
@@ -288,7 +294,6 @@ public abstract class Automaton extends Observable {
         addNeighbor(neighbors, row - 1, column);
         addNeighbor(neighbors, row - 1, column + 1);
         addNeighbor(neighbors, row, column - 1);
-        addNeighbor(neighbors, row, column);
         addNeighbor(neighbors, row, column + 1);
         addNeighbor(neighbors, row + 1, column - 1);
         addNeighbor(neighbors, row + 1, column);
@@ -359,20 +364,22 @@ public abstract class Automaton extends Observable {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        if (this.numberOfRows == ((Automaton) obj).numberOfRows
-                && this.numberOfColumns == ((Automaton) obj).numberOfColumns
-                && this.numberOfStates == ((Automaton) obj).numberOfStates
-                && this.isMooreNeighborHood == ((Automaton) obj).isMooreNeighborHood
-                && this.isTorus == ((Automaton) obj).isTorus) {
-            for (int i = 0; i < numberOfRows; i++) {
-                for (int j = 0; j < numberOfColumns; j++) {
-                   if (this.cells[i][j].getState() != ((Automaton) obj).cells[i][j].getState()) {
-                       return false;
-                   }
+        if (this.numberOfRows != ((Automaton) obj).numberOfRows
+                || this.numberOfColumns != ((Automaton) obj).numberOfColumns
+                || this.numberOfStates != ((Automaton) obj).numberOfStates
+                || this.isMooreNeighborHood != ((Automaton) obj).isMooreNeighborHood
+                || this.isTorus != ((Automaton) obj).isTorus) {
+            return false;
+        }
+
+        for (int i = 0; i < numberOfRows; i++) {
+            for (int j = 0; j < numberOfColumns; j++) {
+                if (this.cells[i][j].getState() != ((Automaton) obj).cells[i][j].getState()) {
+                    return false;
                 }
             }
-            return true;
         }
-        return false;
+
+        return true;
     }
 }

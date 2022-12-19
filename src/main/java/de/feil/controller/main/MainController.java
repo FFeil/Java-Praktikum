@@ -1,6 +1,6 @@
 package de.feil.controller.main;
 
-import de.feil.controller.references.ReferencesHandler;
+import de.feil.controller.references.ReferenceHandler;
 import de.feil.util.FileHelper;
 import de.feil.MVCSetCreator;
 import de.feil.view.dialog.ChangeSizeDialog;
@@ -69,15 +69,15 @@ public class MainController {
     @FXML
     private ScrollPane populationPanelScrollPane;
 
-    private final ReferencesHandler referencesHandler;
+    private final ReferenceHandler referenceHandler;
 
     private final Stage mainStage;
 
-    public MainController(ReferencesHandler referencesHandler) {
-        this.referencesHandler = referencesHandler;
-        this.mainStage = referencesHandler.getMainStage();
+    public MainController(ReferenceHandler referenceHandler) {
+        this.referenceHandler = referenceHandler;
+        this.mainStage = referenceHandler.getMainStage();
 
-        referencesHandler.setMainController(this);
+        referenceHandler.setMainController(this);
         mainStage.setOnCloseRequest(this::onCloseRequest);
     }
 
@@ -138,15 +138,15 @@ public class MainController {
     }
 
     public void initialize() {
-        torusToggleButton.setSelected(referencesHandler.getAutomaton().isTorus());
-        torusCheckMenuItem.setSelected(referencesHandler.getAutomaton().isTorus());
+        torusToggleButton.setSelected(referenceHandler.getAutomaton().isTorus());
+        torusCheckMenuItem.setSelected(referenceHandler.getAutomaton().isTorus());
     }
 
     private void onCloseRequest(WindowEvent event) {
         try {
-            Files.delete(Paths.get("automata/" + referencesHandler.getName() + ".class"));
+            Files.delete(Paths.get("automata/" + referenceHandler.getName() + ".class"));
         } catch (IOException e) {
-            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Beim Schließen des Fensters ist ein Fehler aufgetreten" + e);
         }
     }
 
@@ -183,7 +183,7 @@ public class MainController {
 
     @FXML
     public void onEditorAction() throws IOException {
-        Path path = Paths.get("automata/" + referencesHandler.getName() + ".java");
+        Path path = Paths.get("automata/" + referenceHandler.getName() + ".java");
         StringBuilder text = new StringBuilder();
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
@@ -194,7 +194,7 @@ public class MainController {
             }
         }
 
-        referencesHandler.getEditorController().showStage(text.toString());
+        referenceHandler.getEditorController().showStage(text.toString());
     }
 
     @FXML
@@ -204,28 +204,28 @@ public class MainController {
 
     @FXML
     public void onResetAction() {
-        referencesHandler.getAutomaton().clearPopulation();
+        referenceHandler.getAutomaton().clearPopulation();
     }
 
     @FXML
     public void onRandomAction() {
-        referencesHandler.getAutomaton().randomPopulation();
+        referenceHandler.getAutomaton().randomPopulation();
     }
 
     @FXML
     public void onTorusAction() {
-        referencesHandler.getAutomaton().setTorus(!referencesHandler.getAutomaton().isTorus());
+        referenceHandler.getAutomaton().setTorus(!referenceHandler.getAutomaton().isTorus());
 
-        torusToggleButton.setSelected(referencesHandler.getAutomaton().isTorus());
-        torusCheckMenuItem.setSelected(referencesHandler.getAutomaton().isTorus());
+        torusToggleButton.setSelected(referenceHandler.getAutomaton().isTorus());
+        torusCheckMenuItem.setSelected(referenceHandler.getAutomaton().isTorus());
     }
 
     @FXML
     public void onChangeSizeAction() {
-        Platform.runLater(() -> new ChangeSizeDialog(referencesHandler.getAutomaton().getNumberOfRows(),
-                    referencesHandler.getAutomaton().getNumberOfColumns())
+        Platform.runLater(() -> new ChangeSizeDialog(referenceHandler.getAutomaton().getNumberOfRows(),
+                    referenceHandler.getAutomaton().getNumberOfColumns())
                 .showAndWait()
                 .ifPresent(resultPair ->
-                        referencesHandler.getAutomaton().changeSize(resultPair.value1(), resultPair.value2())));
+                        referenceHandler.getAutomaton().changeSize(resultPair.value1(), resultPair.value2())));
     }
 }

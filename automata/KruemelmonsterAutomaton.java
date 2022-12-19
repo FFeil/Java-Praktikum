@@ -15,7 +15,8 @@ public class KruemelmonsterAutomaton extends Automaton {
 
     @Override
     protected synchronized Cell transform(Cell cell, Cell[] neighbors) {
-        Optional<Cell> anyNeighborCell = Arrays.stream(neighbors)
+        Optional<Cell> anyNeighborCell = Arrays
+                .stream(neighbors)
                 .filter(neighborCell -> cell.getState() == (neighborCell.getState() + 1) % getNumberOfStates())
                 .findAny();
 

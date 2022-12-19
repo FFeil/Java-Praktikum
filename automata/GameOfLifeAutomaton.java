@@ -1,5 +1,5 @@
-import de.feil.model.base.Automaton;
-import de.feil.model.base.Cell;
+import de.feil.model.base.*;
+
 import java.util.Arrays;
 
 public class GameOfLifeAutomaton extends Automaton {
@@ -13,7 +13,8 @@ public class GameOfLifeAutomaton extends Automaton {
     }
 
     protected synchronized Cell transform(Cell cell, Cell[] neighbors) {
-        long numberOfActiveNeighbors = Arrays.stream(neighbors)
+        long numberOfActiveNeighbors = Arrays
+                .stream(neighbors)
                 .filter(neighborCell -> neighborCell.getState() == 1)
                 .count();
 
@@ -22,5 +23,21 @@ public class GameOfLifeAutomaton extends Automaton {
         }
 
         return new Cell();
+    }
+
+    @Callable
+    public void setOscillator(int row, int column)  {
+        setState(row, column, 1);
+        setState(row + 1, column, 1);
+        setState(row + 2, column, 1);
+    }
+
+    @Callable
+    public void setGlider(int row, int column)  {
+        setState(row, column, 1);
+        setState(row + 1, column + 1, 1);
+        setState(row + 2, column - 1, 1);
+        setState(row + 2, column, 1);
+        setState(row + 2, column + 1, 1);
     }
 }

@@ -1,23 +1,20 @@
 package de.feil.controller.panel;
 
-import de.feil.controller.references.ReferencesHandler;
-import de.feil.util.Observable;
+import de.feil.controller.references.ReferenceHandler;
 import de.feil.view.panel.StatePanel;
 import javafx.event.ActionEvent;
 import javafx.scene.control.RadioButton;
 
-// Observer: PopulationPanel
-public class StatePanelController extends Observable {
+public class StatePanelController {
 
-    private final ReferencesHandler referencesHandler;
+    private final ReferenceHandler referenceHandler;
     private final StatePanel statePanel;
 
-    public StatePanelController(ReferencesHandler referencesHandler) {
-        this.referencesHandler = referencesHandler;
-        this.statePanel = referencesHandler.getStatePanel();
+    public StatePanelController(ReferenceHandler referenceHandler) {
+        this.referenceHandler = referenceHandler;
+        this.statePanel = referenceHandler.getStatePanel();
 
-        referencesHandler.setStatePanelController(this);
-        add(referencesHandler.getPopulationPanel());
+        referenceHandler.setStatePanelController(this);
 
         statePanel.getColorPickers().forEach(r -> r.addEventHandler(ActionEvent.ACTION, this::onColorPickerAction));
     }
@@ -27,10 +24,11 @@ public class StatePanelController extends Observable {
     }
 
     private void onColorPickerAction(ActionEvent event) {
-        notifyObserver();
+        referenceHandler.getPopulationPanel().paintCanvas();
     }
 
     public void updateStatePanel() {
-        statePanel.updatePanel(referencesHandler.getAutomaton().getNumberOfStates());
+        statePanel.updatePanel(referenceHandler.getAutomaton().getNumberOfStates());
+        statePanel.getColorPickers().forEach(r -> r.addEventHandler(ActionEvent.ACTION, this::onColorPickerAction));
     }
 }

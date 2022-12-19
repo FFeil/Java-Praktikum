@@ -44,7 +44,7 @@ public class FileHelper {
 
             Files.write(Path.of(file.getPath()), lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Beim Erstellen der Java Datei ist ein Fehler aufgetreten:\n" + e);
         }
     }
 
@@ -70,8 +70,9 @@ public class FileHelper {
                 return Optional.of((Automaton) newAutomatonClass.getDeclaredConstructor().newInstance());
             }
         } catch (Exception e) {
-            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Beim laden des Automaten ist ein Fehler aufgetreten:\n" + e);
         }
+
         return Optional.empty();
     }
 }

@@ -1,6 +1,6 @@
 package de.feil.controller.editor;
 
-import de.feil.controller.references.ReferencesHandler;
+import de.feil.controller.references.ReferenceHandler;
 import de.feil.util.FileHelper;
 import de.feil.view.dialog.AlertHelper;
 import javafx.application.Platform;
@@ -23,17 +23,17 @@ import java.util.List;
 
 public class EditorController {
 
-    private final ReferencesHandler referencesHandler;
+    private final ReferenceHandler referenceHandler;
     private final Stage editorStage;
 
     @FXML
     private TextArea codeTextArea;
 
-    public EditorController(ReferencesHandler referencesHandler) {
-        this.referencesHandler = referencesHandler;
-        this.editorStage = referencesHandler.getEditorStage();
+    public EditorController(ReferenceHandler referenceHandler) {
+        this.referenceHandler = referenceHandler;
+        this.editorStage = referenceHandler.getEditorStage();
 
-        referencesHandler.setEditorController(this);
+        referenceHandler.setEditorController(this);
         editorStage.setOnCloseRequest(this::onCloseRequest);
     }
 
@@ -48,7 +48,7 @@ public class EditorController {
             event.consume();
 
             List<String> newLines = new ArrayList<>(Arrays.asList(codeTextArea.getText().split("\n")));
-            List<String> oldLines = Files.readAllLines(Paths.get("automata/" + referencesHandler.getName() + ".java"),
+            List<String> oldLines = Files.readAllLines(Paths.get("automata/" + referenceHandler.getName() + ".java"),
                     StandardCharsets.UTF_8);
 
             if (newLines.equals(oldLines)) {
@@ -63,7 +63,7 @@ public class EditorController {
                 });
             }
         } catch (IOException e) {
-            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Beim Schließen des Editors ist ein Fehler aufgetreten:\n" + e);
         }
     }
 
@@ -75,10 +75,10 @@ public class EditorController {
         lines.add(code);
 
         try {
-            File file = new File("automata", referencesHandler.getName() + ".java");
+            File file = new File("automata", referenceHandler.getName() + ".java");
             Files.write(Path.of(file.getPath()), lines, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            AlertHelper.showError("Ups, da ist was schief gelaufen:\n" + e);
+            AlertHelper.showError("Beim Speichern des Codes ist ein Fehler aufgetreten:\n" + e);
         }
     }
 
@@ -86,8 +86,8 @@ public class EditorController {
     public void onCompileAction() {
         onSaveAction();
 
-        FileHelper.loadAutomaton(referencesHandler.getName()).ifPresent(automaton -> {
-            referencesHandler.setAutomaton(automaton);
+        FileHelper.loadAutomaton(referenceHandler.getName()).ifPresent(automaton -> {
+            referenceHandler.setAutomaton(automaton);
             AlertHelper.showInformation("Kompilieren erfolgreich!");
         });
     }

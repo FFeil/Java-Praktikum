@@ -8,7 +8,7 @@ import de.feil.view.panel.PopulationPanel;
 import de.feil.view.panel.StatePanel;
 import javafx.stage.Stage;
 
-public class ReferencesHandler {
+public class ReferenceHandler {
 
     private final String name;
     private Automaton automaton;
@@ -23,8 +23,8 @@ public class ReferencesHandler {
     private final StatePanel statePanel;
     private PopulationPanel populationPanel;
 
-    public ReferencesHandler(String name, Automaton automaton, Stage mainStage, Stage editorStage,
-                             StatePanel statePanel) {
+    public ReferenceHandler(String name, Automaton automaton, Stage mainStage, Stage editorStage,
+                            StatePanel statePanel) {
         this.name = name;
         this.automaton = automaton;
         this.mainStage = mainStage;
@@ -35,7 +35,6 @@ public class ReferencesHandler {
     public String getName() {
         return name;
     }
-
 
     public Automaton getAutomaton() {
         return automaton;
