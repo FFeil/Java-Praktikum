@@ -75,7 +75,7 @@ public class MVCSetCreator {
             editorStage.setMinHeight(300);
             editorStage.setMinWidth(300);
         } catch (IOException e) {
-            AlertHelper.showError("Beim Erstellen eines neuen Fensters ist ein Fehler aufgetreten:\n" + e);
+            AlertHelper.showError(name, "Beim Erstellen eines neuen Fensters ist ein Fehler aufgetreten:\n" + e);
         }
     }
 }

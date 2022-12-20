@@ -84,7 +84,8 @@ public class PopulationPanelController {
                 try {
                     method.invoke(referenceHandler.getAutomaton(), lastRowClick, lastColumnClick);
                 } catch (IllegalAccessException | InvocationTargetException e) {
-                    AlertHelper.showError("Beim Ausfuehren der Methode ist ein Fehler aufgetreten:\n" + e);
+                    AlertHelper.showError(referenceHandler.getName(),
+                            "Beim Ausfuehren der Methode ist ein Fehler aufgetreten:\n" + e);
                 }
             });
 

@@ -63,7 +63,8 @@ public class EditorController {
                 });
             }
         } catch (IOException e) {
-            AlertHelper.showError("Beim Schließen des Editors ist ein Fehler aufgetreten:\n" + e);
+            AlertHelper.showError(
+                    referenceHandler.getName(), "Beim Schließen des Editors ist ein Fehler aufgetreten:\n" + e);
         }
     }
 
@@ -78,7 +79,8 @@ public class EditorController {
             File file = new File("automata", referenceHandler.getName() + ".java");
             Files.write(Path.of(file.getPath()), lines, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            AlertHelper.showError("Beim Speichern des Codes ist ein Fehler aufgetreten:\n" + e);
+            AlertHelper.showError(
+                    referenceHandler.getName(), "Beim Speichern des Codes ist ein Fehler aufgetreten:\n" + e);
         }
     }
 
@@ -86,9 +88,9 @@ public class EditorController {
     public void onCompileAction() {
         onSaveAction();
 
-        FileHelper.loadAutomaton(referenceHandler.getName()).ifPresent(automaton -> {
+        FileHelper.loadAutomaton(referenceHandler.getName(), true).ifPresent(automaton -> {
             referenceHandler.setAutomaton(automaton);
-            AlertHelper.showInformation("Kompilieren erfolgreich!");
+            AlertHelper.showInformation(referenceHandler.getName(), "Kompilieren erfolgreich!");
         });
     }
 

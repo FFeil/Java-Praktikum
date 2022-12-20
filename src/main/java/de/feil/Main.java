@@ -1,8 +1,12 @@
 package de.feil;
 
+import de.feil.model.base.Automaton;
 import de.feil.util.FileHelper;
+import de.feil.view.dialog.AlertHelper;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public class Main extends Application {
 
@@ -16,7 +20,24 @@ public class Main extends Application {
         final String initialAutomaton = "DefaultAutomaton";
 
         FileHelper.createFile(initialAutomaton);
-        FileHelper.loadAutomaton(initialAutomaton)
-                .ifPresent(automaton -> MVCSetCreator.create(initialAutomaton, automaton));
+
+        Optional<Automaton> optionalAutomaton = FileHelper.loadAutomaton(initialAutomaton, false);
+        int ctr = 1;
+        String newName = initialAutomaton;
+
+        if (optionalAutomaton.isEmpty()) {
+            AlertHelper.showError(newName, "Beim laden des Standard-Automaten ist ein Fehler augetreten! " +
+                    "Eine Neuer wird nun erstellt.");
+
+            while (optionalAutomaton.isEmpty()) {
+                ctr++;
+                newName = initialAutomaton + ctr;
+                FileHelper.createFile(newName);
+                optionalAutomaton = FileHelper.loadAutomaton(newName, false);
+            }
+        }
+
+        String finalNewName = newName;
+        optionalAutomaton.ifPresent(automaton -> MVCSetCreator.create(finalNewName, automaton));
     }
 }

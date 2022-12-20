@@ -146,7 +146,8 @@ public class MainController {
         try {
             Files.delete(Paths.get("automata/" + referenceHandler.getName() + ".class"));
         } catch (IOException e) {
-            AlertHelper.showError("Beim Schließen des Fensters ist ein Fehler aufgetreten" + e);
+            AlertHelper.showError(
+                    referenceHandler.getName(),"Beim Schließen des Fensters ist ein Fehler aufgetreten" + e);
         }
     }
 
@@ -154,7 +155,7 @@ public class MainController {
     public void onNewAction() {
         Platform.runLater(() -> new NewAutomatonDialog().showAndWait().ifPresent(name -> {
             FileHelper.createFile(name);
-            FileHelper.loadAutomaton(name).ifPresent(obj -> MVCSetCreator.create(name, obj));
+            FileHelper.loadAutomaton(name, true).ifPresent(obj -> MVCSetCreator.create(name, obj));
         }));
     }
 
@@ -175,9 +176,10 @@ public class MainController {
         String name = selectedFile.getName().replace(".java", "");
 
         if (!new File("automata/" + name + ".class").exists()) {
-            FileHelper.loadAutomaton(name).ifPresent(obj -> MVCSetCreator.create(name, obj));
+            FileHelper.loadAutomaton(name, true).ifPresent(obj -> MVCSetCreator.create(name, obj));
         } else {
-            AlertHelper.showError("Der ausgewählte Automat wird bereits benutzt!");
+            AlertHelper.showError(referenceHandler.getName(),
+                    "Der ausgewählte Automat wird bereits benutzt!");
         }
     }
 
@@ -222,7 +224,8 @@ public class MainController {
 
     @FXML
     public void onChangeSizeAction() {
-        Platform.runLater(() -> new ChangeSizeDialog(referenceHandler.getAutomaton().getNumberOfRows(),
+        Platform.runLater(() ->
+                new ChangeSizeDialog(referenceHandler.getAutomaton().getNumberOfRows(),
                     referenceHandler.getAutomaton().getNumberOfColumns())
                 .showAndWait()
                 .ifPresent(resultPair ->

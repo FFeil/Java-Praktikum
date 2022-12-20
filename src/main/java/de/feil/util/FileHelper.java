@@ -44,21 +44,23 @@ public class FileHelper {
 
             Files.write(Path.of(file.getPath()), lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            AlertHelper.showError("Beim Erstellen der Java Datei ist ein Fehler aufgetreten:\n" + e);
+            AlertHelper.showError(name, "Beim Erstellen der Java Datei ist ein Fehler aufgetreten:\n" + e);
         }
     }
 
-    public static Optional<Automaton> loadAutomaton(String name) {
+    public static Optional<Automaton> loadAutomaton(String name, boolean showError) {
         try {
             File file = new File("automata/" + name + ".java");
 
             // Klasse kompilieren
             JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
-            ByteArrayOutputStream err = new ByteArrayOutputStream();
-            boolean success = javac.run(null, null, err, file.getPath()) == 0;
+            ByteArrayOutputStream error = new ByteArrayOutputStream();
+            boolean success = javac.run(null, null, error, file.getPath()) == 0;
 
             if (!success) {
-                AlertHelper.showError(err.toString());
+                if (showError) {
+                    AlertHelper.showError(name, error.toString());
+                }
 
                 return Optional.empty();
             } else {
@@ -70,9 +72,10 @@ public class FileHelper {
                 return Optional.of((Automaton) newAutomatonClass.getDeclaredConstructor().newInstance());
             }
         } catch (Exception e) {
-            AlertHelper.showError("Beim laden des Automaten ist ein Fehler aufgetreten:\n" + e);
+            AlertHelper.showError(name, "Beim laden des Automaten " + name + " ist ein Fehler aufgetreten:\n" + e);
         }
 
         return Optional.empty();
     }
+
 }

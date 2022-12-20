@@ -41,7 +41,7 @@ public class SimulationController {
             referenceHandler.getAutomaton().nextGeneration();
         } catch (Throwable e) {
             e.printStackTrace();
-            AlertHelper.showError("Laufzeitfehler in der transform-Methode: " + e);
+            AlertHelper.showError(referenceHandler.getName(), "Laufzeitfehler in der transform-Methode: " + e);
         }
     }
 
@@ -91,8 +91,7 @@ public class SimulationController {
                 } catch (InterruptedException e) {
                     interrupt();
                 } catch (Throwable e) {
-                    e.printStackTrace();
-                    AlertHelper.showError("Laufzeitfehler in der transform-Methode:\n" + e);
+                    AlertHelper.showError(referenceHandler.getName(), "Laufzeitfehler in der transform-Methode:\n" + e);
                 }
             }
         }
