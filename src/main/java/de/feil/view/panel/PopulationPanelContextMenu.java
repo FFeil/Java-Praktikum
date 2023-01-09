@@ -36,6 +36,7 @@ public class PopulationPanelContextMenu extends ContextMenu {
                     && !Modifier.isAbstract(method.getModifiers())
                     && !Modifier.isStatic(method.getModifiers())
                     && method.isAnnotationPresent(Callable.class)) {
+                method.setAccessible(true);
                 result.add(method);
             }
         }
