@@ -68,21 +68,21 @@
             </accelerator></MenuItem>
             <SeparatorMenuItem />
             <Menu text="_Speichern">
-                <MenuItem text="_XML">
+                <MenuItem text="_XML" fx:id="xmlSerializeMenuItem">
                <accelerator>
                   <KeyCodeCombination alt="UP" code="X" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>
-                <MenuItem text="_Serialisieren">
+                <MenuItem fx:id="serializeMenuItem" text="_Serialisieren">
                <accelerator>
                   <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>
             </Menu>
             <Menu text="L_aden">
-                <MenuItem text="_XML">
+                <MenuItem text="_XML" fx:id="xmlDeserializeMenuItem">
                <accelerator>
                   <KeyCodeCombination alt="DOWN" code="X" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>
-                <MenuItem text="_Deserialisieren">
+                <MenuItem fx:id="deserializeMenuItem" text="_Deserialisieren">
                <accelerator>
                   <KeyCodeCombination alt="DOWN" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>

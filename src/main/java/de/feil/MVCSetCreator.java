@@ -5,6 +5,8 @@ import de.feil.controller.main.MainController;
 import de.feil.controller.panel.PopulationPanelController;
 import de.feil.controller.panel.StatePanelController;
 import de.feil.controller.references.ReferenceHandler;
+import de.feil.controller.serialization.SerializationController;
+import de.feil.controller.serialization.XMLSerializationController;
 import de.feil.controller.simulation.SimulationController;
 import de.feil.model.base.Automaton;
 import de.feil.view.dialog.AlertHelper;
@@ -50,10 +52,12 @@ public class MVCSetCreator {
             Parent mainRoot = mainLoader.load();
             mainController.initialize();
 
-            // Controller: StatePanel + PopulationPanel + Simulation
+            // Controller: StatePanel + PopulationPanel + Simulation + Serialization + XML-Serialization
             new StatePanelController(referenceHandler);
             new PopulationPanelController(referenceHandler);
             new SimulationController(referenceHandler);
+            new SerializationController(referenceHandler);
+            //new XMLSerializationController(referenceHandler);
 
             // Panels zu ScrollPanes hinzufügen
             mainController.getStatePanelScrollPane().setContent(statePanel);

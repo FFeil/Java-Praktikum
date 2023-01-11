@@ -69,9 +69,28 @@ public class MainController {
     @FXML
     private ScrollPane populationPanelScrollPane;
 
-    private final ReferenceHandler referenceHandler;
+    // Serialize
+    @FXML
+    private MenuItem xmlSerializeMenuItem;
+    @FXML
+    private MenuItem serializeMenuItem;
 
+    // Deserialize
+    @FXML
+    private MenuItem xmlDeserializeMenuItem;
+    @FXML
+    private MenuItem deserializeMenuItem;
+
+    private static FileChooser javaFileChooser;
+    private final ReferenceHandler referenceHandler;
     private final Stage mainStage;
+
+    static {
+        javaFileChooser = new FileChooser();
+        javaFileChooser.setTitle("Automat wählen");
+        javaFileChooser.setInitialDirectory(new File("automata"));
+        javaFileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JAVA files (*.java)", "*.java"));
+    }
 
     public MainController(ReferenceHandler referenceHandler) {
         this.referenceHandler = referenceHandler;
@@ -137,6 +156,22 @@ public class MainController {
         return mainStage;
     }
 
+    public MenuItem getXmlSerializeMenuItem() {
+        return xmlSerializeMenuItem;
+    }
+
+    public MenuItem getSerializeMenuItem() {
+        return serializeMenuItem;
+    }
+
+    public MenuItem getXmlDeserializeMenuItem() {
+        return xmlDeserializeMenuItem;
+    }
+
+    public MenuItem getDeserializeMenuItem() {
+        return deserializeMenuItem;
+    }
+
     public void initialize() {
         torusToggleButton.setSelected(referenceHandler.getAutomaton().isTorus());
         torusCheckMenuItem.setSelected(referenceHandler.getAutomaton().isTorus());
@@ -161,13 +196,7 @@ public class MainController {
 
     @FXML
     public void onLoadAction() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Automat wählen");
-        fileChooser.setInitialDirectory(new File("automata"));
-        FileChooser.ExtensionFilter javaFilter = new FileChooser.ExtensionFilter("JAVA files (*.java)", "*.java");
-        fileChooser.getExtensionFilters().add(javaFilter);
-
-        File selectedFile = fileChooser.showOpenDialog(mainStage);
+        File selectedFile = javaFileChooser.showOpenDialog(mainStage);
 
         if (selectedFile == null) {
             return;

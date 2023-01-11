@@ -16,20 +16,9 @@ public class PopulationPanelContextMenu extends ContextMenu {
     private final List<Method> methods;
 
     public PopulationPanelContextMenu(ReferenceHandler referenceHandler) {
-        methods = getValidMethods(referenceHandler.getAutomaton());
+        methods = new ArrayList<>();
 
-        for (Method method : methods) {
-            getItems().add(new MenuItem(method.getName()));
-        }
-    }
-
-    public List<Method> getMethods() {
-        return methods;
-    }
-
-    private List<Method> getValidMethods(Automaton automaton) {
-        List<Method> result = new ArrayList<>();
-        for (Method method : automaton.getClass().getDeclaredMethods()) {
+        for (Method method : referenceHandler.getAutomaton().getClass().getDeclaredMethods()) {
             if (method.getParameterCount() == 2
                     && method.getParameterTypes()[0].equals(int.class)
                     && method.getParameterTypes()[1].equals(int.class)
@@ -37,10 +26,14 @@ public class PopulationPanelContextMenu extends ContextMenu {
                     && !Modifier.isStatic(method.getModifiers())
                     && method.isAnnotationPresent(Callable.class)) {
                 method.setAccessible(true);
-                result.add(method);
+                getItems().add(new MenuItem(method.getReturnType().getName() + " "
+                        + method.getName() + "(int row, int column)"));
+                methods.add(method);
             }
         }
+    }
 
-        return result;
+    public List<Method> getMethods() {
+        return methods;
     }
 }

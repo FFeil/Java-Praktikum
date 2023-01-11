@@ -88,9 +88,9 @@ public class PopulationPanelController {
                             "Beim Ausfuehren der Methode ist ein Fehler aufgetreten:\n" + e);
                 }
             });
-
-            contextMenu.show(populationPanel.getScene().getWindow(), event.getScreenX(), event.getScreenY());
         }
+
+        contextMenu.show(populationPanel.getScene().getWindow(), event.getScreenX(), event.getScreenY());
     }
 
     private void onZoomInAction(ActionEvent event) {

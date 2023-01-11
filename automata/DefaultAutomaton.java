@@ -1,7 +1,7 @@
 import de.feil.model.base.Automaton;
 import de.feil.model.base.Cell;
 
-public class DefaultAutomaton extends Automatn {
+public class DefaultAutomaton extends Automaton {
 
     private static final int initNumberOfRows = 50;
     private static final int initNumberOfColumns = 50;
