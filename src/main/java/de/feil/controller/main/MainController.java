@@ -81,7 +81,7 @@ public class MainController {
     @FXML
     private MenuItem deserializeMenuItem;
 
-    private static FileChooser javaFileChooser;
+    private static final FileChooser javaFileChooser;
     private final ReferenceHandler referenceHandler;
     private final Stage mainStage;
 

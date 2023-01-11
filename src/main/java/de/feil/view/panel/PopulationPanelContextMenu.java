@@ -1,7 +1,6 @@
 package de.feil.view.panel;
 
 import de.feil.controller.references.ReferenceHandler;
-import de.feil.model.base.Automaton;
 import de.feil.model.base.Callable;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;

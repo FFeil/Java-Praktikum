@@ -1,5 +1,6 @@
 package de.feil.model.base;
 
+import de.feil.model.base.exception.AutomatonTransformationException;
 import de.feil.util.Observable;
 
 import java.util.ArrayList;
@@ -62,10 +63,10 @@ public abstract class Automaton extends Observable {
      * @return eine neu erzeugte Zelle, die gemäß der
      * Transformationsregel aus der
      * betroffenen Zelle hervorgeht
-     * @throws Throwable moeglicherweise wirft die Methode eine Exception
+     * @throws AutomatonTransformationException moeglicherweise wirft die Methode eine AutomatonTransformationException
      */
     protected abstract Cell transform(Cell cell, Cell[] neighbors)
-            throws Throwable;
+            throws AutomatonTransformationException;
 
     /**
      * Liefert die Anzahl an Zuständen des Automaten; gültige Zustände sind
@@ -227,7 +228,6 @@ public abstract class Automaton extends Observable {
      * @param toColumn   Spalte der untersten Zelle
      * @param state      neuer Zustand der Zellen
      */
-
     public void setState(int fromRow, int fromColumn, int toRow,
                          int toColumn, int state) {
         synchronized (this) {
@@ -242,15 +242,29 @@ public abstract class Automaton extends Observable {
     }
 
     /**
+     * Tauscht das Cell-Array mit einem Anderen aus
+     *
+     * @param cells Neues Cell-Array
+     */
+    public void swapCells(Cell[][] cells) {
+        synchronized (this) {
+            this.cells = cells;
+            changeSize(cells.length, cells[0].length);
+        }
+
+        notifyObserver();
+    }
+
+    /**
      * überführt den Automaten in die nächste Generation; ruft dabei die
      * abstrakte Methode "transform" für alle Zellen auf; Hinweis: zu
      * berücksichtigen sind die Nachbarschaftseigenschaft und die
      * Torus-Eigenschaft des Automaten
      *
-     * @throws Throwable Exceptions der transform-Methode werden
+     * @throws AutomatonTransformationException Exceptions der transform-Methode werden
      *                   weitergeleitet
      */
-    public void nextGeneration() throws Throwable {
+    public void nextGeneration() throws AutomatonTransformationException {
         synchronized (this) {
             Cell[][] newCells = new Cell[numberOfRows][numberOfColumns];
 
@@ -262,6 +276,7 @@ public abstract class Automaton extends Observable {
 
             cells = newCells;
         }
+
         notifyObserver();
     }
 

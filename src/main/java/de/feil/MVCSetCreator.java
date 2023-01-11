@@ -57,7 +57,7 @@ public class MVCSetCreator {
             new PopulationPanelController(referenceHandler);
             new SimulationController(referenceHandler);
             new SerializationController(referenceHandler);
-            //new XMLSerializationController(referenceHandler);
+            new XMLSerializationController(referenceHandler);
 
             // Panels zu ScrollPanes hinzufügen
             mainController.getStatePanelScrollPane().setContent(statePanel);
