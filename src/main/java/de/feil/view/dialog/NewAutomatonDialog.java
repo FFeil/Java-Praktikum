@@ -22,10 +22,10 @@ public class NewAutomatonDialog extends TextInputDialog {
         BooleanBinding defaultAutomatonBinding = Bindings.createBooleanBinding(
                 () -> Pattern.matches("[DefaultAutomaton][\\d*]",
                         getEditor().getText()), getEditor().textProperty());
-
         BooleanBinding nameExistsBinding = Bindings.createBooleanBinding(
                 () -> (new File("automata", getEditor().getText() + ".java").exists()),
                         getEditor().textProperty());
+
         getDialogPane().lookupButton(ButtonType.OK).disableProperty()
                 .bind(javaClassNameBinding.not().or(nameExistsBinding).or(defaultAutomatonBinding));
     }

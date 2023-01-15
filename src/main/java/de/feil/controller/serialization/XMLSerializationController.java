@@ -41,7 +41,7 @@ public class XMLSerializationController {
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             writeXML(referenceHandler, outputStream);
         } catch (Exception e) {
-            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Laden:\n" + e);
+            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Laden der Population:\n" + e);
         }
     }
 
@@ -57,7 +57,7 @@ public class XMLSerializationController {
         try (FileInputStream inputStream = new FileInputStream(file)) {
             loadXML(referenceHandler, inputStream);
         } catch (Exception e) {
-            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Laden:\n" + e);
+            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Laden der Population:\n" + e);
         }
     }
 
@@ -123,7 +123,7 @@ public class XMLSerializationController {
                 if (parser.getEventType() == XMLStreamConstants.START_ELEMENT) {
                     String element = parser.getLocalName();
                     if ("automaton".equals(element)) {
-                        // Fehler, wenn #Zuständen nicht passend
+                        // Exception, wenn #Zuständen nicht passend
                         int numberOfStates = Integer.parseInt(parser.getAttributeValue(null,
                                 "numberOfStates"));
                         if (numberOfStates != automaton.getNumberOfStates()) {
@@ -158,7 +158,7 @@ public class XMLSerializationController {
 
             automaton.swapCells(cells);
         } catch (Exception e) {
-            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Laden:\n" + e);
+            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Laden der Population:\n" + e);
         } finally {
             if (parser != null) {
                 parser.close();

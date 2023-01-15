@@ -39,7 +39,7 @@ public class SimulationController {
     private void onStepAction(ActionEvent event) {
         try {
             referenceHandler.getAutomaton().nextGeneration();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             e.printStackTrace();
             AlertHelper.showError(referenceHandler.getName(), "Laufzeitfehler in der transform-Methode: " + e);
         }
@@ -90,7 +90,7 @@ public class SimulationController {
                     Thread.sleep(speed);
                 } catch (InterruptedException e) {
                     interrupt();
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     AlertHelper.showError(referenceHandler.getName(), "Laufzeitfehler in der transform-Methode:\n" + e);
                 }
             }

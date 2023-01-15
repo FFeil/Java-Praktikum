@@ -43,7 +43,7 @@ public class SerializationController {
                 outputStream.writeObject(automaton.getCells());
             }
         } catch (Exception e) {
-            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Speichern:\n" + e);
+            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Speichern der Population:\n" + e);
         }
     }
 
@@ -63,7 +63,7 @@ public class SerializationController {
 
             automaton.swapCells((Cell[][]) inputStream.readObject());
         } catch (Exception e) {
-            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Laden:\n" + e);
+            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Laden der Population:\n" + e);
         }
     }
 }
