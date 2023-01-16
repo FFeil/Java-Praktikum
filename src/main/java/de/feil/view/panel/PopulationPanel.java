@@ -17,8 +17,8 @@ import java.util.Optional;
 // Observe: Automaton
 public class PopulationPanel extends Region implements Observer {
 
-    private static double AUTOMATON_WIDTH = 15;
-    private static double AUTOMATON_HEIGHT = 15;
+    private static int CELL_WIDTH = 15;
+    private static int CELL_HEIGHT = 15;
     private static final double BORDER_WIDTH = 10;
     private static final double BORDER_HEIGHT = 10;
 
@@ -39,8 +39,21 @@ public class PopulationPanel extends Region implements Observer {
         paintCanvas();
     }
 
+    public static int getCellWidth() {
+        return CELL_WIDTH;
+    }
+
+    public static int getCellHeight() {
+        return CELL_HEIGHT;
+    }
+
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    public void setCellSize(int height, int width) {
+        CELL_HEIGHT = height;
+        CELL_WIDTH = width;
     }
 
     public void paintCanvas() {
@@ -56,49 +69,49 @@ public class PopulationPanel extends Region implements Observer {
         for (int i = 0; i < referenceHandler.getAutomaton().getNumberOfRows(); i++) {
             for (int j = 0; j < referenceHandler.getAutomaton().getNumberOfColumns(); j++) {
                 gc.setFill(colorPickers.get(referenceHandler.getAutomaton().getCell(i, j).getState()).getValue());
-                gc.fillRect(BORDER_WIDTH + j * AUTOMATON_WIDTH, BORDER_HEIGHT + i * AUTOMATON_HEIGHT, AUTOMATON_WIDTH,
-                        AUTOMATON_HEIGHT);
-                gc.strokeRect(BORDER_WIDTH + j * AUTOMATON_WIDTH, BORDER_HEIGHT + i * AUTOMATON_HEIGHT, AUTOMATON_WIDTH,
-                        AUTOMATON_HEIGHT);
+                gc.fillRect(BORDER_WIDTH + j * CELL_WIDTH, BORDER_HEIGHT + i * CELL_HEIGHT, CELL_WIDTH,
+                        CELL_HEIGHT);
+                gc.strokeRect(BORDER_WIDTH + j * CELL_WIDTH, BORDER_HEIGHT + i * CELL_HEIGHT, CELL_WIDTH,
+                        CELL_HEIGHT);
             }
         }
     }
 
     public double calcCanvasWidth() {
-        return 2 * BORDER_WIDTH + AUTOMATON_WIDTH * referenceHandler.getAutomaton().getNumberOfColumns();
+        return 2 * BORDER_WIDTH + CELL_WIDTH * referenceHandler.getAutomaton().getNumberOfColumns();
     }
 
     public double calcCanvasHeight() {
-        return 2 * BORDER_HEIGHT + AUTOMATON_HEIGHT * referenceHandler.getAutomaton().getNumberOfRows();
+        return 2 * BORDER_HEIGHT + CELL_HEIGHT * referenceHandler.getAutomaton().getNumberOfRows();
     }
 
     public boolean canZoomIn() {
-        return AUTOMATON_WIDTH < 65 && AUTOMATON_HEIGHT < 65;
+        return CELL_WIDTH < 65 && CELL_HEIGHT < 65;
     }
 
     public void zoomIn() {
-        AUTOMATON_WIDTH += 2;
-        AUTOMATON_HEIGHT += 2;
+        CELL_WIDTH += 2;
+        CELL_HEIGHT += 2;
     }
 
     public boolean canZoomOut() {
-        return AUTOMATON_WIDTH > 3 && AUTOMATON_HEIGHT > 3;
+        return CELL_WIDTH > 3 && CELL_HEIGHT > 3;
     }
 
     public void zoomOut() {
-        AUTOMATON_WIDTH -= 2;
-        AUTOMATON_HEIGHT -= 2;
+        CELL_WIDTH -= 2;
+        CELL_HEIGHT -= 2;
     }
 
     public Optional<Pair<Integer>> getRowAndCol(double x, double y) {
         if (x < BORDER_WIDTH || y < BORDER_HEIGHT
-                || x > BORDER_WIDTH + referenceHandler.getAutomaton().getNumberOfColumns() * AUTOMATON_WIDTH
-                || y > BORDER_HEIGHT + referenceHandler.getAutomaton().getNumberOfRows() * AUTOMATON_HEIGHT) {
+                || x > BORDER_WIDTH + referenceHandler.getAutomaton().getNumberOfColumns() * CELL_WIDTH
+                || y > BORDER_HEIGHT + referenceHandler.getAutomaton().getNumberOfRows() * CELL_HEIGHT) {
             return Optional.empty();
         }
 
-        int row = (int) ((y - BORDER_HEIGHT) / AUTOMATON_HEIGHT);
-        int col = (int) ((x - BORDER_WIDTH) / AUTOMATON_WIDTH);
+        int row = (int) ((y - BORDER_HEIGHT) / CELL_HEIGHT);
+        int col = (int) ((x - BORDER_WIDTH) / CELL_WIDTH);
 
         return Optional.of(new Pair<>(row, col));
     }

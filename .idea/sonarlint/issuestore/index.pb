@@ -1,0 +1,19 @@
+
+{
+Ksrc/main/java/de/feil/controller/serialization/SerializationController.java,c\9\c926cb9e932fbaac2754d500aa23e771e82a459e
+_
+/src/main/java/de/feil/model/base/Automaton.java,1\e\1ee293a9dbfd2619ae37d8dfab141530c270f325
+~
+Nsrc/main/java/de/feil/controller/serialization/XMLSerializationController.java,4\f\4f8ea6e537bb971a28b5f5e25ab2b83c519aede8
+O
+src/main/java/de/feil/Main.java,3\a\3aea4bd0e598ac9d30c7351a40b81f8f5b27e6e3
+p
+@src/main/java/de/feil/view/panel/PopulationPanelContextMenu.java,8\7\877bd558f29a277280be8982309a428e38d06e55
+`
+0src/main/java/de/feil/view/panel/StatePanel.java,5\1\5104cf46b7198908b229a54136fa4d64bf42120c
+i
+9src/main/java/de/feil/view/dialog/NewAutomatonDialog.java,a\5\a57f8fd2adb9268eae1858a166a4b728a33b2a66
+g
+7src/main/java/de/feil/view/dialog/ChangeSizeDialog.java,0\8\0887ad27797a22b8a27ad31af6108e30474e6ec0
+u
+Esrc/main/java/de/feil/controller/panel/PopulationPanelController.java,d\d\dd3b78f397f75f21ee31840a176f5f4d4e74f4c6

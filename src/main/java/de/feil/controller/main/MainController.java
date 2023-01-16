@@ -81,6 +81,14 @@ public class MainController {
     @FXML
     private MenuItem deserializeMenuItem;
 
+    // Settings
+    @FXML
+    private MenuItem saveSettingsMenuItem;
+    @FXML
+    private MenuItem restoreSettingsMenuItem;
+    @FXML
+    private MenuItem deleteSettingsMenuItem;
+
     private static final FileChooser javaFileChooser;
     private final ReferenceHandler referenceHandler;
     private final Stage mainStage;
@@ -170,6 +178,18 @@ public class MainController {
 
     public MenuItem getDeserializeMenuItem() {
         return deserializeMenuItem;
+    }
+
+    public MenuItem getSaveSettingsMenuItem() {
+        return saveSettingsMenuItem;
+    }
+
+    public MenuItem getRestoreSettingsMenuItem() {
+        return restoreSettingsMenuItem;
+    }
+
+    public MenuItem getDeleteSettingsMenuItem() {
+        return deleteSettingsMenuItem;
     }
 
     public void initialize() {

@@ -107,6 +107,13 @@
                <KeyCodeCombination alt="DOWN" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
         </Menu>
+      <Menu text="_Einstellungen">
+        <items>
+          <MenuItem fx:id="saveSettingsMenuItem" text="_Speichern" />
+            <MenuItem fx:id="restoreSettingsMenuItem" text="_Wiederherstellen" />
+            <MenuItem fx:id="deleteSettingsMenuItem" text="_Löschen" />
+        </items>
+      </Menu>
     </MenuBar>
     <ToolBar>
         <Button mnemonicParsing="false" onAction="#onNewAction" style="-fx-graphic: url(icons/New24.gif);">

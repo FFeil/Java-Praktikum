@@ -3,6 +3,7 @@ package de.feil.controller.references;
 import de.feil.controller.editor.EditorController;
 import de.feil.controller.main.MainController;
 import de.feil.controller.panel.StatePanelController;
+import de.feil.controller.simulation.SimulationController;
 import de.feil.model.base.Automaton;
 import de.feil.view.panel.PopulationPanel;
 import de.feil.view.panel.StatePanel;
@@ -16,6 +17,7 @@ public class ReferenceHandler {
     private MainController mainController;
     private StatePanelController statePanelController;
     private EditorController editorController;
+    private SimulationController simulationController;
 
     private final Stage mainStage;
     private final Stage editorStage;
@@ -68,6 +70,10 @@ public class ReferenceHandler {
         return populationPanel;
     }
 
+    public SimulationController getSimulationController() {
+        return simulationController;
+    }
+
     public void setAutomaton(Automaton automaton) {
         if (this.automaton == null) {
             return;
@@ -96,5 +102,9 @@ public class ReferenceHandler {
 
     public void setPopulationPanel(PopulationPanel populationPanel) {
         this.populationPanel = populationPanel;
+    }
+
+    public void setSimulationController(SimulationController simulationController) {
+        this.simulationController = simulationController;
     }
 }

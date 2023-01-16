@@ -5,23 +5,23 @@ import de.feil.view.dialog.AlertHelper;
 import javafx.event.ActionEvent;
 
 public class SimulationController {
-
-    static final int DEF_SPEED = 50;
-    static final int MIN_SPEED = 1;
-    static final int MAX_SPEED = 100;
-
     private final ReferenceHandler referenceHandler;
 
+    static final int MAX_TIME = 3000;
+    static final int INITIAL_TIME = 1500;
+    static final int INCREMENT_TIME = 270;
     private SimulationThread simulationThread;
     private volatile int speed;
 
     public SimulationController(ReferenceHandler referenceHandler) {
         this.referenceHandler = referenceHandler;
-        this.speed = 3000 / DEF_SPEED;
+        this.speed = INITIAL_TIME;
 
-        referenceHandler.getMainController().getSlider().setMin(MIN_SPEED);
-        referenceHandler.getMainController().getSlider().setMax(MAX_SPEED);
-        referenceHandler.getMainController().getSlider().setValue(DEF_SPEED);
+        referenceHandler.setSimulationController(this);
+
+        referenceHandler.getMainController().getSlider().setMin(1);
+        referenceHandler.getMainController().getSlider().setMax(100);
+        referenceHandler.getMainController().getSlider().setValue(50);
 
         referenceHandler.getMainController().getStepMenuItem().setOnAction(this::onStepAction);
         referenceHandler.getMainController().getStepButton().setOnAction(this::onStepAction);
@@ -31,16 +31,20 @@ public class SimulationController {
         referenceHandler.getMainController().getStopButton().setOnAction(this::onStopAction);
 
         referenceHandler.getMainController().getSlider().valueProperty().addListener(
-                (obs, o, n) -> speed =  3000 / n.intValue());
+                (obs, o, n) -> speed =  MAX_TIME - INCREMENT_TIME * n.intValue());
+
 
         simulationThread = null;
+    }
+
+    public void setSpeed(int sliderSpeed) {
+        referenceHandler.getMainController().getSlider().setValue(sliderSpeed);
     }
 
     private void onStepAction(ActionEvent event) {
         try {
             referenceHandler.getAutomaton().nextGeneration();
         } catch (Exception e) {
-            e.printStackTrace();
             AlertHelper.showError(referenceHandler.getName(), "Laufzeitfehler in der transform-Methode: " + e);
         }
     }
