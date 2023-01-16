@@ -64,8 +64,8 @@ public class XMLSerializationController {
     // XML-Format
     // <?xml version="1.0" ?>
     // <automaton numberOfStates="2" numberOfRows="3" numberOfColumns="2">
-    // <cell row="0" column="0" state="0"></lamp>                               (*)
-    // <cell row="0" column="1" state="1"></lamp>
+    // <cell row="0" column="0" state="0"></cell>                               (*)
+    // <cell row="0" column="1" state="1"></cell>
     // ...
     // </automaton>                                                             (**)
     private static void writeXML(ReferenceHandler referenceHandler, OutputStream outputStream) throws Exception {
