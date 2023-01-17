@@ -5,17 +5,19 @@ import de.feil.view.dialog.AlertHelper;
 import javafx.event.ActionEvent;
 
 public class SimulationController {
-    private final ReferenceHandler referenceHandler;
 
     static final int MAX_TIME = 3000;
-    static final int INITIAL_TIME = 1500;
-    static final int INCREMENT_TIME = 270;
+    static final int START_TIME = 1500;
+    static final int INCREMENT_TIME = 28;
+
+    private final ReferenceHandler referenceHandler;
+
     private SimulationThread simulationThread;
     private volatile int speed;
 
     public SimulationController(ReferenceHandler referenceHandler) {
         this.referenceHandler = referenceHandler;
-        this.speed = INITIAL_TIME;
+        this.speed = START_TIME;
 
         referenceHandler.setSimulationController(this);
 
@@ -32,7 +34,6 @@ public class SimulationController {
 
         referenceHandler.getMainController().getSlider().valueProperty().addListener(
                 (obs, o, n) -> speed =  MAX_TIME - INCREMENT_TIME * n.intValue());
-
 
         simulationThread = null;
     }

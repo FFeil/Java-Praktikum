@@ -5,7 +5,6 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 
-import java.io.File;
 import java.util.regex.Pattern;
 
 public class SaveSettingsDialog extends TextInputDialog {

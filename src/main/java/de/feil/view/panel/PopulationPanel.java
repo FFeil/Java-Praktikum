@@ -54,6 +54,8 @@ public class PopulationPanel extends Region implements Observer {
     public void setCellSize(int height, int width) {
         CELL_HEIGHT = height;
         CELL_WIDTH = width;
+
+        paintCanvas();
     }
 
     public void paintCanvas() {

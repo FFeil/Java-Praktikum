@@ -39,26 +39,14 @@ public class DatabaseController {
     private static final String DELETE_STATEMENT = "DELETE FROM " + TABLENAME + " WHERE name = ?";
     private Connection connection = null;
 
-    private ReferenceHandler referenceHandler;
+    private final ReferenceHandler referenceHandler;
 
     public DatabaseController(ReferenceHandler referenceHandler) {
         this.referenceHandler = referenceHandler;
         if (init()) {
-            referenceHandler.getMainController().getSaveSettingsMenuItem().setOnAction(e -> {
-                try {
-                    saveSettings();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
+            referenceHandler.getMainController().getSaveSettingsMenuItem().setOnAction(e -> saveSettings());
             referenceHandler.getMainController().getRestoreSettingsMenuItem().setOnAction(e -> restoreSettings());
-            referenceHandler.getMainController().getDeleteSettingsMenuItem().setOnAction(e -> {
-                try {
-                    deleteSettings();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
+            referenceHandler.getMainController().getDeleteSettingsMenuItem().setOnAction(e -> deleteSettings());
         }
     }
 
@@ -67,8 +55,8 @@ public class DatabaseController {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             AlertHelper.showError(referenceHandler.getName(), "Beim Laden der Datenbank ist etwas schief gelaufen:\n" + e);
-            referenceHandler.getMainController().getSaveSettingsMenuItem().setDisable(true);
             referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(true);
+            referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(true);
 
             return false;
         }
@@ -132,33 +120,37 @@ public class DatabaseController {
             }
         }
     }
-    private void saveSettings() throws SQLException {
-        Connection conn = getConnection();
-        if (conn == null) {
-            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim schreiben ist aufgetreten!");
+    private void saveSettings() {
+        try {
+            Connection conn = getConnection();
+            if (conn == null) {
+                AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler ist beim Schreiben aufgetreten!");
 
-            return;
-        }
+                return;
+            }
 
-        Optional<String> name = new SaveSettingsDialog().showAndWait();
-        if (name.isEmpty()) {
-            return;
-        }
+            Optional<String> name = new SaveSettingsDialog().showAndWait();
+            if (name.isEmpty()) {
+                return;
+            }
 
-        if (rowExists(name.get())) {
-            updateRow(name.get());
-        } else {
-            insertRow(name.get());
+            if (rowExists(name.get())) {
+                updateRow(name.get());
+            } else {
+                insertRow(name.get());
 
-            referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(false);
-            referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(false);
+                referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(false);
+                referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(false);
+            }
+        } catch (SQLException e) {
+            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler ist beim Schreiben aufgetreten!");
         }
     }
 
     private void restoreSettings() {
         Connection conn = getConnection();
         if (conn == null) {
-            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim schreiben ist aufgetreten!");
+            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Lesen ist aufgetreten!");
 
             return;
         }
@@ -189,45 +181,49 @@ public class DatabaseController {
 
             }
         } catch (SQLException e) {
-            AlertHelper.showError("Ein Datenbankfehler ist aufgetreten:\n" + e);
+            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Lesen ist aufgetreten!");
         }
     }
 
-    private void deleteSettings() throws SQLException {
-        Connection conn = getConnection();
-        if (conn == null) {
-            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim schreiben ist aufgetreten!");
+    private void deleteSettings(){
+        try {
+            Connection conn = getConnection();
+            if (conn == null) {
+                AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Löschen ist aufgetreten!");
 
-            return;
-        }
-
-        try (PreparedStatement deleteStmt = connection.prepareStatement(DELETE_STATEMENT)) {
-            connection.setAutoCommit(false);
-            ArrayList<String> settings = selectAllNames();
-
-            if (settings.isEmpty()) {
                 return;
             }
 
-            Optional<String> settingToDelete = new ChooseSettingDialog(settings
-                    , "Einstellung löschen").showAndWait();
+            try (PreparedStatement deleteStmt = connection.prepareStatement(DELETE_STATEMENT)) {
+                connection.setAutoCommit(false);
+                ArrayList<String> settings = selectAllNames();
 
-            if (settingToDelete.isEmpty()) {
-                return;
-            }
+                if (settings.isEmpty()) {
+                    return;
+                }
 
-            deleteStmt.setString(1, settingToDelete.get());
-            deleteStmt.execute();
-            connection.commit();
+                Optional<String> settingToDelete = new ChooseSettingDialog(settings
+                        , "Einstellung löschen").showAndWait();
 
-            if (selectAllNames().isEmpty()) {
-                referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(true);
-                referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(true);
+                if (settingToDelete.isEmpty()) {
+                    return;
+                }
+
+                deleteStmt.setString(1, settingToDelete.get());
+                deleteStmt.execute();
+                connection.commit();
+
+                if (selectAllNames().isEmpty()) {
+                    referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(true);
+                    referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(true);
+                }
+            } catch (SQLException e) {
+                AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Löschen ist aufgetreten!");
+            } finally {
+                connection.setAutoCommit(true);
             }
         } catch (SQLException e) {
-            AlertHelper.showError("Ein Datenbankfehler ist aufgetreten:\n" + e);
-        } finally {
-            connection.setAutoCommit(true);
+            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Löschen ist aufgetreten!");
         }
     }
 
@@ -263,7 +259,7 @@ public class DatabaseController {
             insertStmt.execute();
             connection.commit();
         } catch (SQLException e) {
-            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim schreiben ist aufgetreten:\n" + e);
+            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler ist beim Scheiben aufgetreten:\n" + e);
             connection.rollback();
 
             throw e;
@@ -288,7 +284,7 @@ public class DatabaseController {
             updateStmt.execute();
             connection.commit();
         } catch (SQLException e) {
-            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim schreiben ist aufgetreten:\n" + e);
+            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler ist beim Scheiben aufgetreten:\n" + e);
             connection.rollback();
 
             throw e;
@@ -307,7 +303,7 @@ public class DatabaseController {
                 result.add(resultSet.getString("name"));
             }
         } catch (SQLException e) {
-            AlertHelper.showError("Ein Datenbankfehler ist aufgetreten:\n" + e);
+            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler ist beim Lesen aufgetreten:\n" + e);
         }
 
         return result;
