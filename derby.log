@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Tue Jan 17 00:59:58 CET 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0185-bd06-81cd-000001b9c700 
+Tue Jan 17 02:05:52 CET 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0185-bd42-d602-000001a74ac0 
 on database directory C:\Users\feilf\IdeaProjects\FelixFeilSimulatorIJMVN19\SettingsDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@7cc355be 
 Loaded from file:/C:/Users/feilf/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Oracle Corporation

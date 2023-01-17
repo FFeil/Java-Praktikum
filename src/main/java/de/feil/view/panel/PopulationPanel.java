@@ -17,8 +17,8 @@ import java.util.Optional;
 // Observe: Automaton
 public class PopulationPanel extends Region implements Observer {
 
-    private static int CELL_WIDTH = 15;
-    private static int CELL_HEIGHT = 15;
+    private int CELL_WIDTH = 15;
+    private int CELL_HEIGHT = 15;
     private static final double BORDER_WIDTH = 10;
     private static final double BORDER_HEIGHT = 10;
 
@@ -39,11 +39,11 @@ public class PopulationPanel extends Region implements Observer {
         paintCanvas();
     }
 
-    public static int getCellWidth() {
+    public int getCellWidth() {
         return CELL_WIDTH;
     }
 
-    public static int getCellHeight() {
+    public int getCellHeight() {
         return CELL_HEIGHT;
     }
 

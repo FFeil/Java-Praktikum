@@ -1,16 +1,16 @@
 package de.feil.controller.database;
 
 import de.feil.controller.references.ReferenceHandler;
+import de.feil.util.Observer;
 import de.feil.view.dialog.AlertHelper;
 import de.feil.view.dialog.ChooseSettingDialog;
 import de.feil.view.dialog.SaveSettingsDialog;
-import de.feil.view.panel.PopulationPanel;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class DatabaseController {
+public class DatabaseController{
 
     private static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     private static final String DB_NAME = "SettingsDB";
@@ -43,6 +43,8 @@ public class DatabaseController {
 
     public DatabaseController(ReferenceHandler referenceHandler) {
         this.referenceHandler = referenceHandler;
+
+        referenceHandler.setDatabaseController(this);
         if (init()) {
             referenceHandler.getMainController().getSaveSettingsMenuItem().setOnAction(e -> saveSettings());
             referenceHandler.getMainController().getRestoreSettingsMenuItem().setOnAction(e -> restoreSettings());
@@ -54,19 +56,18 @@ public class DatabaseController {
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
-            AlertHelper.showError(referenceHandler.getName(), "Beim Laden der Datenbank ist etwas schief gelaufen:\n" + e);
             referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(true);
             referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(true);
+            AlertHelper.showError(referenceHandler.getName(), "Beim Laden der Datenbank ist etwas schief gelaufen:\n" + e);
 
             return false;
         }
 
         try (Connection connection = DriverManager.getConnection(DB_URL_CREATE);
              ResultSet resultSet = connection.getMetaData().getTables(null, null, TABLENAME, null)) {
+            updateMenuItems();
             if (!resultSet.next()) {
                 createTable(connection);
-                referenceHandler.getMainController().getSaveSettingsMenuItem().setDisable(true);
-                referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(true);
             }
         } catch (SQLException e) {
             AlertHelper.showError(referenceHandler.getName(), "Beim Laden der Datenbank ist etwas schief gelaufen:\n" + e);
@@ -139,8 +140,11 @@ public class DatabaseController {
             } else {
                 insertRow(name.get());
 
-                referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(false);
-                referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(false);
+                if (!selectAllNames().isEmpty()) {
+                    for (ReferenceHandler refHandler: referenceHandler.getReferenceHandlers()) {
+                        refHandler.getDatabaseController().updateMenuItems();
+                    }
+                }
             }
         } catch (SQLException e) {
             AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler ist beim Schreiben aufgetreten!");
@@ -185,7 +189,7 @@ public class DatabaseController {
         }
     }
 
-    private void deleteSettings(){
+    private void deleteSettings() {
         try {
             Connection conn = getConnection();
             if (conn == null) {
@@ -194,33 +198,12 @@ public class DatabaseController {
                 return;
             }
 
-            try (PreparedStatement deleteStmt = connection.prepareStatement(DELETE_STATEMENT)) {
-                connection.setAutoCommit(false);
-                ArrayList<String> settings = selectAllNames();
+            deleteRow();
 
-                if (settings.isEmpty()) {
-                    return;
+            if (selectAllNames().isEmpty()) {
+                for (ReferenceHandler refHandler: referenceHandler.getReferenceHandlers()) {
+                    refHandler.getDatabaseController().updateMenuItems();
                 }
-
-                Optional<String> settingToDelete = new ChooseSettingDialog(settings
-                        , "Einstellung löschen").showAndWait();
-
-                if (settingToDelete.isEmpty()) {
-                    return;
-                }
-
-                deleteStmt.setString(1, settingToDelete.get());
-                deleteStmt.execute();
-                connection.commit();
-
-                if (selectAllNames().isEmpty()) {
-                    referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(true);
-                    referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(true);
-                }
-            } catch (SQLException e) {
-                AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Löschen ist aufgetreten!");
-            } finally {
-                connection.setAutoCommit(true);
             }
         } catch (SQLException e) {
             AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Löschen ist aufgetreten!");
@@ -252,8 +235,8 @@ public class DatabaseController {
             insertStmt.setDouble(3, referenceHandler.getMainStage().getY());
             insertStmt.setDouble(4, referenceHandler.getMainStage().getHeight());
             insertStmt.setDouble(5, referenceHandler.getMainStage().getWidth());
-            insertStmt.setInt(6, PopulationPanel.getCellWidth());
-            insertStmt.setInt(7, PopulationPanel.getCellHeight());
+            insertStmt.setInt(6, referenceHandler.getPopulationPanel().getCellWidth());
+            insertStmt.setInt(7, referenceHandler.getPopulationPanel().getCellHeight());
             insertStmt.setDouble(8, referenceHandler.getMainController().getSlider().getValue());
 
             insertStmt.execute();
@@ -276,8 +259,8 @@ public class DatabaseController {
             updateStmt.setDouble(2, referenceHandler.getMainStage().getY());
             updateStmt.setDouble(3, referenceHandler.getMainStage().getHeight());
             updateStmt.setDouble(4, referenceHandler.getMainStage().getWidth());
-            updateStmt.setInt(5, PopulationPanel.getCellWidth());
-            updateStmt.setInt(6, PopulationPanel.getCellHeight());
+            updateStmt.setInt(5, referenceHandler.getPopulationPanel().getCellWidth());
+            updateStmt.setInt(6, referenceHandler.getPopulationPanel().getCellHeight());
             updateStmt.setDouble(7, referenceHandler.getMainController().getSlider().getValue());
             updateStmt.setString(8, name);
 
@@ -294,6 +277,13 @@ public class DatabaseController {
     }
 
     private ArrayList<String> selectAllNames() {
+        Connection conn = getConnection();
+        if (conn == null) {
+            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Löschen ist aufgetreten!");
+
+            return new ArrayList<>();
+        }
+
         ArrayList<String> result = new ArrayList<>();
 
         try (Statement selectStmt = connection.createStatement();
@@ -307,5 +297,39 @@ public class DatabaseController {
         }
 
         return result;
+    }
+
+    private void deleteRow() throws SQLException {
+        ArrayList<String> settings = selectAllNames();
+        if (settings.isEmpty()) {
+            return;
+        }
+
+        Optional<String> settingToDelete = new ChooseSettingDialog(settings, "Einstellung löschen").showAndWait();
+        if (settingToDelete.isEmpty()) {
+            return;
+        }
+
+        try (PreparedStatement deleteStmt = connection.prepareStatement(DELETE_STATEMENT)) {
+            connection.setAutoCommit(false);
+
+            deleteStmt.setString(1, settingToDelete.get());
+            deleteStmt.execute();
+            connection.commit();
+        } catch (SQLException e) {
+            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Löschen ist aufgetreten!");
+        } finally {
+            connection.setAutoCommit(true);
+        }
+    }
+
+    public void updateMenuItems() {
+        if (selectAllNames().isEmpty()) {
+            referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(true);
+            referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(true);
+        } else {
+            referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(false);
+            referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(false);
+        }
     }
 }

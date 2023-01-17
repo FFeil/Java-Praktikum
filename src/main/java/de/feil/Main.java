@@ -6,6 +6,7 @@ import de.feil.view.dialog.AlertHelper;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class Main extends Application {
@@ -38,6 +39,6 @@ public class Main extends Application {
         }
 
         String finalNewName = newName;
-        optionalAutomaton.ifPresent(automaton -> MVCSetCreator.create(finalNewName, automaton));
+        optionalAutomaton.ifPresent(automaton -> MVCSetCreator.create(finalNewName, new ArrayList<>(), automaton));
     }
 }

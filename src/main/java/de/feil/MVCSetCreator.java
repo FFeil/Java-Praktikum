@@ -19,12 +19,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MVCSetCreator {
 
     private MVCSetCreator() {}
 
-    public static void create(String name, Automaton automaton) {
+    public static void create(String name, List<ReferenceHandler> referenceHandlers, Automaton automaton) {
         try {
             // View: Stages + StatePanel
             Stage mainStage = new Stage();
@@ -33,7 +35,7 @@ public class MVCSetCreator {
             StatePanel statePanel = new StatePanel(automaton.getNumberOfStates());
 
             // ReferenceHandler
-            ReferenceHandler referenceHandler = new ReferenceHandler(name, automaton, mainStage, editorStage,
+            ReferenceHandler referenceHandler = new ReferenceHandler(name, referenceHandlers, automaton, mainStage, editorStage,
                     statePanel);
 
             // View: PopulationPanel

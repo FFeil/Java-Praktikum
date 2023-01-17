@@ -94,6 +94,7 @@ public class PopulationPanelController {
     }
 
     private void onZoomInAction(ActionEvent event) {
+        System.out.println(1);
         populationPanel.zoomIn();
         populationPanel.paintCanvas();
 

@@ -199,6 +199,8 @@ public class MainController {
 
     private void onCloseRequest(WindowEvent event) {
         try {
+            referenceHandler.getReferenceHandlers().remove(referenceHandler);
+
             Files.delete(Paths.get("automata/" + referenceHandler.getName() + ".class"));
         } catch (IOException e) {
             AlertHelper.showError(
@@ -210,7 +212,8 @@ public class MainController {
     public void onNewAction() {
         Platform.runLater(() -> new NewAutomatonDialog().showAndWait().ifPresent(name -> {
             FileHelper.createFile(name);
-            FileHelper.loadAutomaton(name, true).ifPresent(obj -> MVCSetCreator.create(name, obj));
+            FileHelper.loadAutomaton(name, true)
+                    .ifPresent(obj -> MVCSetCreator.create(name, referenceHandler.getReferenceHandlers(), obj));
         }));
     }
 
@@ -225,7 +228,8 @@ public class MainController {
         String name = selectedFile.getName().replace(".java", "");
 
         if (!new File("automata/" + name + ".class").exists()) {
-            FileHelper.loadAutomaton(name, true).ifPresent(obj -> MVCSetCreator.create(name, obj));
+            FileHelper.loadAutomaton(name, true)
+                    .ifPresent(obj -> MVCSetCreator.create(name, referenceHandler.getReferenceHandlers(), obj));
         } else {
             AlertHelper.showError(referenceHandler.getName(),
                     "Der ausgewählte Automat wird bereits benutzt!");
