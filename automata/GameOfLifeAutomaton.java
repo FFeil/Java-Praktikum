@@ -1,5 +1,4 @@
 import de.feil.model.base.*;
-
 import java.util.Arrays;
 
 public class GameOfLifeAutomaton extends Automaton {

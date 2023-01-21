@@ -1,7 +1,6 @@
 package de.feil.controller.database;
 
 import de.feil.controller.references.ReferenceHandler;
-import de.feil.util.Observer;
 import de.feil.view.dialog.AlertHelper;
 import de.feil.view.dialog.ChooseSettingDialog;
 import de.feil.view.dialog.SaveSettingsDialog;
@@ -35,7 +34,7 @@ public class DatabaseController{
                     "WHERE name = ?";
     private static final String SELECT_ROW_STATEMENT = "SELECT * FROM " + TABLENAME + " WHERE name = ?";
     private static final String SELECT_NAMES_STATEMENT = "SELECT name FROM " + TABLENAME;
-    private static final String CONTAINS_STATEMENT = "SELECT COUNT(*) FROM " + TABLENAME + " WHERE name = ?";
+    private static final String COUNT_STATEMENT = "SELECT COUNT(*) FROM " + TABLENAME + " WHERE name = ?";
     private static final String DELETE_STATEMENT = "DELETE FROM " + TABLENAME + " WHERE name = ?";
     private Connection connection = null;
 
@@ -49,6 +48,8 @@ public class DatabaseController{
             referenceHandler.getMainController().getSaveSettingsMenuItem().setOnAction(e -> saveSettings());
             referenceHandler.getMainController().getRestoreSettingsMenuItem().setOnAction(e -> restoreSettings());
             referenceHandler.getMainController().getDeleteSettingsMenuItem().setOnAction(e -> deleteSettings());
+
+            updateMenuItems();
         }
     }
 
@@ -64,8 +65,7 @@ public class DatabaseController{
         }
 
         try (Connection connection = DriverManager.getConnection(DB_URL_CREATE);
-             ResultSet resultSet = connection.getMetaData().getTables(null, null, TABLENAME, null)) {
-            updateMenuItems();
+            ResultSet resultSet = connection.getMetaData().getTables(null, null, TABLENAME, null)) {
             if (!resultSet.next()) {
                 createTable(connection);
             }
@@ -212,13 +212,11 @@ public class DatabaseController{
 
 
     private boolean rowExists(String name) {
-        try (PreparedStatement containsStmt = connection.prepareStatement(CONTAINS_STATEMENT)) {
-            containsStmt.setString(1, name);
-            ResultSet resultSet = containsStmt.executeQuery();
+        try (PreparedStatement countStmt = connection.prepareStatement(COUNT_STATEMENT)) {
+            countStmt.setString(1, name);
+            ResultSet resultSet = countStmt.executeQuery();
 
-            if (resultSet.next()) {
-                return resultSet.getInt(1) > 0;
-            }
+            return resultSet.next() && resultSet.getInt(1) > 0;
         } catch (SQLException e) {
             AlertHelper.showError("Ein Datenbankfehler ist aufgetreten:\n" + e);
         }

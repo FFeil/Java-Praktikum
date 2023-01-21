@@ -1,7 +1,7 @@
 package de.feil.controller.serialization;
 
 import de.feil.controller.references.ReferenceHandler;
-import de.feil.controller.serialization.exception.InvalidNumberOfStatesException;
+import de.feil.controller.serialization.exception.TooManyStatesException;
 import de.feil.model.base.Automaton;
 import de.feil.model.base.Cell;
 import de.feil.view.dialog.AlertHelper;
@@ -57,8 +57,8 @@ public class SerializationController {
         }
 
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file))) {
-            if (inputStream.readInt() != automaton.getNumberOfStates()) {
-                throw new InvalidNumberOfStatesException("Die Anzahl der Zustände stimmen nicht überein!");
+            if (inputStream.readInt() > automaton.getNumberOfStates()) {
+                throw new TooManyStatesException("Die gespeicherte Population hat zu viele Zustände!");
             }
 
             automaton.swapCells((Cell[][]) inputStream.readObject());

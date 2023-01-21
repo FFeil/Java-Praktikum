@@ -2,7 +2,7 @@ package de.feil.controller.serialization;
 
 import de.feil.controller.references.ReferenceHandler;
 import de.feil.controller.serialization.exception.CellArrayNotInitializedException;
-import de.feil.controller.serialization.exception.InvalidNumberOfStatesException;
+import de.feil.controller.serialization.exception.TooManyStatesException;
 import de.feil.model.base.Automaton;
 import de.feil.model.base.Cell;
 import de.feil.view.dialog.AlertHelper;
@@ -126,8 +126,8 @@ public class XMLSerializationController {
                         // Exception, wenn #Zuständen nicht passend
                         int numberOfStates = Integer.parseInt(parser.getAttributeValue(null,
                                 "numberOfStates"));
-                        if (numberOfStates != automaton.getNumberOfStates()) {
-                            throw new InvalidNumberOfStatesException("Die Anzahl der Zustände stimmen nicht überein!");
+                        if (numberOfStates > automaton.getNumberOfStates()) {
+                            throw new TooManyStatesException("Die gespeicherte Population hat zu viele Zustände!");
                         }
 
                         // Sonst Cell-Array initialisieren
