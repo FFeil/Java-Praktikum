@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
@@ -20,12 +21,12 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <MenuBar>
-        <Menu text="_Automat">
-            <MenuItem id="neuMenuItem" onAction="#onNewAction" text="_Neu...">
+        <Menu fx:id="automatonMenu" text="_Automat">
+            <MenuItem id="neuMenuItem" fx:id="newAutomatonMenuItem" onAction="#onNewAction" text="_Neu...">
             <accelerator>
                <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem id="ladenMenuItem" onAction="#onLoadAction" text="_Laden...">
+            <MenuItem id="ladenMenuItem" fx:id="loadAutomatonMenuItem" onAction="#onLoadAction" text="_Laden...">
             <accelerator>
                <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
@@ -35,21 +36,21 @@
                <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem onAction="#onExitAction" text="_Beenden">
+            <MenuItem fx:id="stopAutomatonMenuItem" onAction="#onExitAction" text="_Beenden">
             <accelerator>
                <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
         </Menu>
         <Menu text="_Population">
-            <MenuItem onAction="#onChangeSizeAction" text="_Größe ändern...">
+            <MenuItem fx:id="changeSizeMenuItem" onAction="#onChangeSizeAction" text="_Größe ändern">
             <accelerator>
                <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem onAction="#onResetAction" text="_Löschen...">
+            <MenuItem fx:id="resetPopulationMenuItem" onAction="#onResetAction" text="_Zurücksetzen">
             <accelerator>
                <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
-            <MenuItem onAction="#onRandomAction" text="_Erzeugen...">
+            <MenuItem fx:id="randomPopulationMenuItem" onAction="#onRandomAction" text="Z_ufällig">
             <accelerator>
                <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
@@ -67,7 +68,7 @@
                <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
             </accelerator></MenuItem>
             <SeparatorMenuItem />
-            <Menu text="_Speichern">
+            <Menu fx:id="savePopulationMenu" text="_Speichern">
                 <MenuItem text="_XML" fx:id="xmlSerializeMenuItem">
                <accelerator>
                   <KeyCodeCombination alt="UP" code="X" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
@@ -77,7 +78,7 @@
                   <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                </accelerator></MenuItem>
             </Menu>
-            <Menu text="L_aden">
+            <Menu fx:id="loadPopulationMenu" text="L_aden">
                 <MenuItem text="_XML" fx:id="xmlDeserializeMenuItem">
                <accelerator>
                   <KeyCodeCombination alt="DOWN" code="X" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
@@ -88,7 +89,7 @@
                </accelerator></MenuItem>
             </Menu>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem text="_Drucken">
+            <MenuItem fx:id="printMenuItem" text="_Drucken">
             <accelerator>
                <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
@@ -107,11 +108,17 @@
                <KeyCodeCombination alt="DOWN" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator></MenuItem>
         </Menu>
-      <Menu text="_Einstellungen">
+      <Menu fx:id="settingsMenu" text="_Einstellungen">
         <items>
           <MenuItem fx:id="saveSettingsMenuItem" text="_Speichern" />
             <MenuItem fx:id="restoreSettingsMenuItem" text="_Wiederherstellen" />
             <MenuItem fx:id="deleteSettingsMenuItem" text="_Löschen" />
+        </items>
+      </Menu>
+      <Menu fx:id="languageMenu" mnemonicParsing="false" text="Sprache">
+        <items>
+          <RadioMenuItem fx:id="languageEnglishRadioMenuItem" mnemonicParsing="false" text="Englisch" />
+            <RadioMenuItem fx:id="languageGermanRadioMenuItem" mnemonicParsing="false" text="Deutsch" />
         </items>
       </Menu>
     </MenuBar>
@@ -190,5 +197,5 @@
          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
       </VBox.margin>
    </HBox>
-   <Label maxWidth="1.7976931348623157E308" text="Hallo!" VBox.vgrow="ALWAYS" />
+   <Label fx:id="helloLabel" maxWidth="1.7976931348623157E308" text="Hallo!" VBox.vgrow="ALWAYS" />
 </VBox>

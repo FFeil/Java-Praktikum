@@ -2,6 +2,7 @@ package de.feil;
 
 import de.feil.controller.database.DatabaseController;
 import de.feil.controller.editor.EditorController;
+import de.feil.controller.language.LanguageController;
 import de.feil.controller.main.MainController;
 import de.feil.controller.panel.PopulationPanelController;
 import de.feil.controller.panel.StatePanelController;
@@ -19,7 +20,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MVCSetCreator {
@@ -63,16 +63,23 @@ public class MVCSetCreator {
             new XMLSerializationController(referenceHandler);
             new DatabaseController(referenceHandler);
 
+
             // Panels zu ScrollPanes hinzufügen
             mainController.getStatePanelScrollPane().setContent(statePanel);
             mainController.getPopulationPanelScrollPane().setContent(populationPanel);
+
+            // Initialize language menu + bind string properties
+            mainController.intLanguageMenu();
+            mainController.bindStringProperties();
+
+            // Controller: Language
+            new LanguageController(referenceHandler);
 
             // Init main Stage
             Scene scene = new Scene(mainRoot, 800, 600);
             scene.getStylesheets().add("/css/main.css");
             mainStage.setScene(scene);
 
-            mainStage.setTitle("Zellulärer Automat: " + name);
             mainStage.setMinHeight(568);
             mainStage.setMinWidth(736);
             mainStage.show();

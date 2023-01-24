@@ -6,17 +6,16 @@ import de.feil.controller.main.MainController;
 import de.feil.controller.panel.StatePanelController;
 import de.feil.controller.simulation.SimulationController;
 import de.feil.model.base.Automaton;
-import de.feil.util.Observable;
 import de.feil.view.panel.PopulationPanel;
 import de.feil.view.panel.StatePanel;
 import javafx.stage.Stage;
 
 import java.util.List;
 
-public class ReferenceHandler extends Observable {
+public class ReferenceHandler{
 
     private final String name;
-    private List<ReferenceHandler> referenceHandlers; // Alle ReferenceHandler
+    private final List<ReferenceHandler> referenceHandlers; // Alle ReferenceHandler
 
     private Automaton automaton;
 

@@ -57,8 +57,6 @@ public class DatabaseController{
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
-            referenceHandler.getMainController().getRestoreSettingsMenuItem().setDisable(true);
-            referenceHandler.getMainController().getDeleteSettingsMenuItem().setDisable(true);
             AlertHelper.showError(referenceHandler.getName(), "Beim Laden der Datenbank ist etwas schief gelaufen:\n" + e);
 
             return false;
@@ -83,7 +81,6 @@ public class DatabaseController{
             stmt.execute(CREATE_TABLE_STATEMENT);
         } catch (SQLException e) {
             AlertHelper.showError(referenceHandler.getName(), "Beim Laden der Datenbank ist etwas schief gelaufen:" + e);
-            connection.rollback();
 
             throw e;
         }
@@ -117,10 +114,11 @@ public class DatabaseController{
             try {
                 DriverManager.getConnection("jdbc:derby:;shutdown=true");
             } catch (SQLException e) {
-                AlertHelper.showError("Beim schließen der Datenbank ist etwas schiefgelaufen:\n" + e);
+
             }
         }
     }
+
     private void saveSettings() {
         try {
             Connection conn = getConnection();

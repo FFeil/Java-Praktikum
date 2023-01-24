@@ -1,6 +1,7 @@
 package de.feil.controller.main;
 
 import de.feil.controller.references.ReferenceHandler;
+import de.feil.controller.resource.ResourcesController;
 import de.feil.util.FileHelper;
 import de.feil.MVCSetCreator;
 import de.feil.view.dialog.ChangeSizeDialog;
@@ -23,45 +24,91 @@ import java.util.List;
 
 public class MainController {
 
-    // Zoom in
     @FXML
-    private MenuItem zoomInMenuItem;
-    @FXML
-    private Button zoomInButton;
+    private Label helloLabel;
 
-    // Zoom out
+    // Automaton
     @FXML
-    private MenuItem zoomOutMenuItem;
-    @FXML
-    private Button zoomOutButton;
+    private Menu automatonMenu;
+        @FXML
+        private MenuItem newAutomatonMenuItem;
+        @FXML
+        private MenuItem loadAutomatonMenuItem;
+        @FXML
+        private MenuItem stopAutomatonMenuItem;
 
-    // Step
-    @FXML
-    private MenuItem stepMenuItem;
-    @FXML
-    private Button stepButton;
+    // Population
+        @FXML
+        private MenuItem changeSizeMenuItem;
+        @FXML
+        private MenuItem resetPopulationMenuItem;
+        @FXML
+        private MenuItem randomPopulationMenuItem;
+        @FXML
+        private CheckMenuItem torusCheckMenuItem;
+        @FXML
+        private MenuItem zoomInMenuItem;
+        @FXML
+        private MenuItem zoomOutMenuItem;
+        // Save
+        @FXML
+        private Menu savePopulationMenu;
+            @FXML
+            private MenuItem xmlSerializeMenuItem;
+            @FXML
+            private MenuItem serializeMenuItem;
+        // Load
+        @FXML
+        private Menu loadPopulationMenu;
+            @FXML
+            private MenuItem xmlDeserializeMenuItem;
+            @FXML
+            private MenuItem deserializeMenuItem;
+        @FXML
+        private MenuItem printMenuItem;
 
-    // Start
-    @FXML
-    private MenuItem startMenuItem;
-    @FXML
-    private Button startButton;
+    // Simulation
+        @FXML
+        private MenuItem stepMenuItem;
+        @FXML
+        private MenuItem startMenuItem;
+        @FXML
+        private MenuItem stopMenuItem;
 
-    // Stop
+    // Settings
     @FXML
-    private MenuItem stopMenuItem;
-    @FXML
-    private Button stopButton;
+    private Menu settingsMenu;
+        @FXML
+        private MenuItem saveSettingsMenuItem;
+        @FXML
+        private MenuItem restoreSettingsMenuItem;
+        @FXML
+        private MenuItem deleteSettingsMenuItem;
 
-    // Slider
+    // Language
     @FXML
-    private Slider slider;
+    private Menu languageMenu;
+        @FXML
+        private RadioMenuItem languageEnglishRadioMenuItem;
+        @FXML
+        private RadioMenuItem languageGermanRadioMenuItem;
+    private ToggleGroup languageGroup;
 
-    // Torus
+    // ToolBar
     @FXML
     private ToggleButton torusToggleButton;
     @FXML
-    private CheckMenuItem torusCheckMenuItem;
+    private Button zoomInButton;
+    @FXML
+    private Button zoomOutButton;
+    @FXML
+    private Button stepButton;
+    @FXML
+    private Button startButton;
+    @FXML
+    private Button stopButton;
+    @FXML
+    private Slider slider;
 
     // ScrollPanes
     @FXML
@@ -69,29 +116,10 @@ public class MainController {
     @FXML
     private ScrollPane populationPanelScrollPane;
 
-    // Serialize
-    @FXML
-    private MenuItem xmlSerializeMenuItem;
-    @FXML
-    private MenuItem serializeMenuItem;
-
-    // Deserialize
-    @FXML
-    private MenuItem xmlDeserializeMenuItem;
-    @FXML
-    private MenuItem deserializeMenuItem;
-
-    // Settings
-    @FXML
-    private MenuItem saveSettingsMenuItem;
-    @FXML
-    private MenuItem restoreSettingsMenuItem;
-    @FXML
-    private MenuItem deleteSettingsMenuItem;
-
     private static final FileChooser javaFileChooser;
     private final ReferenceHandler referenceHandler;
     private final Stage mainStage;
+    private final ResourcesController resourcesController;
 
     static {
         javaFileChooser = new FileChooser();
@@ -102,18 +130,12 @@ public class MainController {
 
     public MainController(ReferenceHandler referenceHandler) {
         this.referenceHandler = referenceHandler;
-        this.mainStage = referenceHandler.getMainStage();
+        mainStage = referenceHandler.getMainStage();
+        resourcesController = ResourcesController.getResourceController();
 
         referenceHandler.setMainController(this);
+
         mainStage.setOnCloseRequest(this::onCloseRequest);
-    }
-
-    public ScrollPane getStatePanelScrollPane() {
-        return statePanelScrollPane;
-    }
-
-    public ScrollPane getPopulationPanelScrollPane() {
-        return populationPanelScrollPane;
     }
 
     public MenuItem getZoomInMenuItem() {
@@ -122,46 +144,6 @@ public class MainController {
 
     public MenuItem getZoomOutMenuItem() {
         return zoomOutMenuItem;
-    }
-
-    public Button getZoomInButton() {
-        return zoomInButton;
-    }
-
-    public Button getZoomOutButton() {
-        return zoomOutButton;
-    }
-
-    public MenuItem getStepMenuItem() {
-        return stepMenuItem;
-    }
-
-    public Button getStepButton() {
-        return stepButton;
-    }
-
-    public MenuItem getStartMenuItem() {
-        return startMenuItem;
-    }
-
-    public Button getStartButton() {
-        return startButton;
-    }
-
-    public MenuItem getStopMenuItem() {
-        return stopMenuItem;
-    }
-
-    public Button getStopButton() {
-        return stopButton;
-    }
-
-    public Slider getSlider() {
-        return slider;
-    }
-
-    public Stage getMainStage() {
-        return mainStage;
     }
 
     public MenuItem getXmlSerializeMenuItem() {
@@ -180,6 +162,18 @@ public class MainController {
         return deserializeMenuItem;
     }
 
+    public MenuItem getStepMenuItem() {
+        return stepMenuItem;
+    }
+
+    public MenuItem getStartMenuItem() {
+        return startMenuItem;
+    }
+
+    public MenuItem getStopMenuItem() {
+        return stopMenuItem;
+    }
+
     public MenuItem getSaveSettingsMenuItem() {
         return saveSettingsMenuItem;
     }
@@ -192,6 +186,58 @@ public class MainController {
         return deleteSettingsMenuItem;
     }
 
+    public RadioMenuItem getLanguageEnglishRadioMenuItem() {
+        return languageEnglishRadioMenuItem;
+    }
+
+    public RadioMenuItem getLanguageGermanRadioMenuItem() {
+        return languageGermanRadioMenuItem;
+    }
+
+    public Button getZoomInButton() {
+        return zoomInButton;
+    }
+
+    public Button getZoomOutButton() {
+        return zoomOutButton;
+    }
+
+    public Button getStepButton() {
+        return stepButton;
+    }
+
+    public Button getStartButton() {
+        return startButton;
+    }
+
+    public Button getStopButton() {
+        return stopButton;
+    }
+
+    public Slider getSlider() {
+        return slider;
+    }
+
+    public ScrollPane getStatePanelScrollPane() {
+        return statePanelScrollPane;
+    }
+
+    public ScrollPane getPopulationPanelScrollPane() {
+        return populationPanelScrollPane;
+    }
+
+    public ReferenceHandler getReferenceHandler() {
+        return referenceHandler;
+    }
+
+    public Stage getMainStage() {
+        return mainStage;
+    }
+
+    public ToggleGroup getLanguageGroup() {
+        return languageGroup;
+    }
+
     public void initialize() {
         torusToggleButton.setSelected(referenceHandler.getAutomaton().isTorus());
         torusCheckMenuItem.setSelected(referenceHandler.getAutomaton().isTorus());
@@ -199,6 +245,7 @@ public class MainController {
 
     private void onCloseRequest(WindowEvent event) {
         try {
+            referenceHandler.getDatabaseController().shutdown();
             referenceHandler.getReferenceHandlers().remove(referenceHandler);
 
             Files.delete(Paths.get("automata/" + referenceHandler.getName() + ".class"));
@@ -283,5 +330,59 @@ public class MainController {
                 .showAndWait()
                 .ifPresent(resultPair ->
                         referenceHandler.getAutomaton().changeSize(resultPair.value1(), resultPair.value2())));
+    }
+
+    public void intLanguageMenu() {
+        languageGroup = new ToggleGroup();
+
+        languageEnglishRadioMenuItem.setToggleGroup(this.languageGroup);
+        languageEnglishRadioMenuItem
+           .setSelected(ResourcesController.getResourceController().getLocale().getLanguage().equals("en"));
+
+        languageGermanRadioMenuItem.setToggleGroup(this.languageGroup);
+        languageGermanRadioMenuItem
+           .setSelected(ResourcesController.getResourceController().getLocale().getLanguage().equals("de"));
+    }
+
+
+    public void bindStringProperties() {
+        mainStage.titleProperty().bind(resourcesController.i18n("title").concat(referenceHandler.getName()));
+        helloLabel.textProperty().bind(resourcesController.i18n("hello"));
+
+        //Automaton
+        automatonMenu.textProperty().bind(resourcesController.i18n("automatonMenu"));
+        newAutomatonMenuItem.textProperty().bind(resourcesController.i18n("newAutomatonMenuItem"));
+        loadAutomatonMenuItem.textProperty().bind(resourcesController.i18n("loadAutomatonMenuItem"));
+        stopAutomatonMenuItem.textProperty().bind(resourcesController.i18n("stopAutomatonMenuItem"));
+
+        // Population
+        changeSizeMenuItem.textProperty().bind(resourcesController.i18n("changeSizeMenuItem"));
+        resetPopulationMenuItem.textProperty().bind(resourcesController.i18n("resetPopulationMenuItem"));
+        randomPopulationMenuItem.textProperty().bind(resourcesController.i18n("randomPopulationMenuItem"));
+        zoomInMenuItem.textProperty().bind(resourcesController.i18n("zoomInMenuItem"));
+        zoomOutMenuItem.textProperty().bind(resourcesController.i18n("zoomOutMenuItem"));
+        savePopulationMenu.textProperty().bind(resourcesController.i18n("savePopulationMenu"));
+        xmlSerializeMenuItem.textProperty().bind(resourcesController.i18n("xmlSerializeMenuItem"));
+        serializeMenuItem.textProperty().bind(resourcesController.i18n("serializeMenuItem"));
+        loadPopulationMenu.textProperty().bind(resourcesController.i18n("loadPopulationMenu"));
+        xmlDeserializeMenuItem.textProperty().bind(resourcesController.i18n("xmlDeserializeMenuItem"));
+        deserializeMenuItem.textProperty().bind(resourcesController.i18n("deserializeMenuItem"));
+        printMenuItem.textProperty().bind(resourcesController.i18n("printMenuItem"));
+
+        // Simulation
+        stepMenuItem.textProperty().bind(resourcesController.i18n("stepMenuItem"));
+        startMenuItem.textProperty().bind(resourcesController.i18n("startMenuItem"));
+        stopMenuItem.textProperty().bind(resourcesController.i18n("stopMenuItem"));
+
+        // Settings
+        settingsMenu.textProperty().bind(resourcesController.i18n("settingsMenu"));
+        saveSettingsMenuItem.textProperty().bind(resourcesController.i18n("saveSettingMenuItem"));
+        restoreSettingsMenuItem.textProperty().bind(resourcesController.i18n("restoreSettingMenuItems"));
+        deleteSettingsMenuItem.textProperty().bind(resourcesController.i18n("deleteSettingsMenuItem"));
+
+        //Language
+        languageMenu.textProperty().bind(resourcesController.i18n("languageMenu"));
+        languageEnglishRadioMenuItem.textProperty().bind(resourcesController.i18n("languageEnglishRadioMenuItem"));
+        languageGermanRadioMenuItem.textProperty().bind(resourcesController.i18n("languageGermanRadioMenuItem"));
     }
 }

@@ -1,11 +1,11 @@
 
-X
-(SettingsDB/README_DO_NOT_TOUCH_FILES.txt,8\a\8abc839148ed6680d64ab1e8c32e8b03f1ce37ba
-\
-,SettingsDB/log/README_DO_NOT_TOUCH_FILES.txt,1\9\19f4a7992b455e3d14da409efd4eede755502c2e
-Œ
-\src/main/java/de/feil/controller/serialization/exception/InvalidNumberOfStatesException.java,1\3\130cae528c0d02c2dbb7333692835b622c0605c9
-]
--SettingsDB/seg0/README_DO_NOT_TOUCH_FILES.txt,f\e\fefc3a860b1fbb9482cdb81c53184112981475d8
-M
-SettingsDB/service.properties,0\0\0051f05ad5df3aac1626f2f418b0212a5b005281
+w
+G.idea/sonarlint/issuestore/1/9/19f4a7992b455e3d14da409efd4eede755502c2e,3\4\340abe07ebd88d10dd8bb2ddb1e5864120bc37a2
+w
+G.idea/sonarlint/issuestore/1/3/130cae528c0d02c2dbb7333692835b622c0605c9,2\f\2f2d5edcfaf31e59b028766b51e874abb1663a0e
+w
+G.idea/sonarlint/issuestore/8/a/8abc839148ed6680d64ab1e8c32e8b03f1ce37ba,3\2\32f9e8e84005cb8fc9937aa5c4d1beb557a38089
+w
+G.idea/sonarlint/issuestore/0/0/0051f05ad5df3aac1626f2f418b0212a5b005281,8\8\88fcb5607c162e9aaa81f66188dd94a770ff651b
+w
+G.idea/sonarlint/issuestore/f/e/fefc3a860b1fbb9482cdb81c53184112981475d8,b\a\ba23fe65152c6422c571aea09bb0606896afb014
