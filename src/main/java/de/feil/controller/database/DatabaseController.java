@@ -128,7 +128,7 @@ public class DatabaseController{
                 return;
             }
 
-            Optional<String> name = new SaveSettingsDialog().showAndWait();
+            Optional<String> name = new SaveSettingsDialog(selectAllNames()).showAndWait();
             if (name.isEmpty()) {
                 return;
             }
