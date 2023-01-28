@@ -1,6 +1,5 @@
 package de.feil.view.dialog;
 
-import de.feil.controller.database.DatabaseController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.scene.control.ButtonType;

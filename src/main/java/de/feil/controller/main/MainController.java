@@ -27,7 +27,7 @@ public class MainController {
     @FXML
     private Label helloLabel;
 
-    // Automaton
+    // Menu: Automaton
     @FXML
     private Menu automatonMenu;
         @FXML
@@ -37,7 +37,7 @@ public class MainController {
         @FXML
         private MenuItem stopAutomatonMenuItem;
 
-    // Population
+    // Menu: Population
         @FXML
         private MenuItem changeSizeMenuItem;
         @FXML
@@ -50,14 +50,14 @@ public class MainController {
         private MenuItem zoomInMenuItem;
         @FXML
         private MenuItem zoomOutMenuItem;
-        // Save
+        // Submenu: Save
         @FXML
         private Menu savePopulationMenu;
             @FXML
             private MenuItem xmlSerializeMenuItem;
             @FXML
             private MenuItem serializeMenuItem;
-        // Load
+        // Submenu: Load
         @FXML
         private Menu loadPopulationMenu;
             @FXML
@@ -67,7 +67,7 @@ public class MainController {
         @FXML
         private MenuItem printMenuItem;
 
-    // Simulation
+    // Menu: Simulation
         @FXML
         private MenuItem stepMenuItem;
         @FXML
@@ -75,7 +75,7 @@ public class MainController {
         @FXML
         private MenuItem stopMenuItem;
 
-    // Settings
+    // Menu: Settings
     @FXML
     private Menu settingsMenu;
         @FXML
@@ -85,7 +85,7 @@ public class MainController {
         @FXML
         private MenuItem deleteSettingsMenuItem;
 
-    // Language
+    // Menu: Language
     @FXML
     private Menu languageMenu;
         @FXML
@@ -345,11 +345,11 @@ public class MainController {
     }
 
 
-    public void bindStringProperties() {
+    public void bindStringProperties() { // Von helloLabel, Titel mainStage, MenuBar
         mainStage.titleProperty().bind(resourcesController.i18n("title").concat(referenceHandler.getName()));
         helloLabel.textProperty().bind(resourcesController.i18n("hello"));
 
-        //Automaton
+        // Automaton
         automatonMenu.textProperty().bind(resourcesController.i18n("automatonMenu"));
         newAutomatonMenuItem.textProperty().bind(resourcesController.i18n("newAutomatonMenuItem"));
         loadAutomatonMenuItem.textProperty().bind(resourcesController.i18n("loadAutomatonMenuItem"));

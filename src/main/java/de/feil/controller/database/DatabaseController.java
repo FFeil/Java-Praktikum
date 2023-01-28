@@ -42,8 +42,8 @@ public class DatabaseController{
 
     public DatabaseController(ReferenceHandler referenceHandler) {
         this.referenceHandler = referenceHandler;
-
         referenceHandler.setDatabaseController(this);
+
         if (init()) {
             referenceHandler.getMainController().getSaveSettingsMenuItem().setOnAction(e -> saveSettings());
             referenceHandler.getMainController().getRestoreSettingsMenuItem().setOnAction(e -> restoreSettings());
@@ -96,6 +96,7 @@ public class DatabaseController{
                 return getConnection();
             }
             connection = DriverManager.getConnection(DB_URL);
+
             return connection;
         } catch (SQLException exc) {
             return null;
@@ -114,7 +115,6 @@ public class DatabaseController{
             try {
                 DriverManager.getConnection("jdbc:derby:;shutdown=true");
             } catch (SQLException e) {
-
             }
         }
     }
