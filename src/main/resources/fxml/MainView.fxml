@@ -115,10 +115,10 @@
             <MenuItem fx:id="deleteSettingsMenuItem" text="_Löschen" />
         </items>
       </Menu>
-      <Menu fx:id="languageMenu" mnemonicParsing="false" text="Sprache">
+      <Menu fx:id="languageMenu" text="Sp_rache">
         <items>
-          <RadioMenuItem fx:id="languageEnglishRadioMenuItem" mnemonicParsing="false" text="Englisch" />
-            <RadioMenuItem fx:id="languageGermanRadioMenuItem" mnemonicParsing="false" text="Deutsch" />
+          <RadioMenuItem fx:id="languageEnglishRadioMenuItem" text="_Englisch" />
+            <RadioMenuItem fx:id="languageGermanRadioMenuItem" text="_Deutsch" />
         </items>
       </Menu>
     </MenuBar>
