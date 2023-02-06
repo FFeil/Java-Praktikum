@@ -6,6 +6,8 @@ import de.feil.view.dialog.AlertHelper;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -18,19 +20,31 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        // automata Ordner überprüfen
+        try {
+            if (!Files.exists(Path.of("automata"))) {
+                Files.createDirectories(Path.of("automata"));
+            }
+        } catch (Exception e) { // .jar in .zip
+            AlertHelper.showError("Beim Erstellen des Automata Verzeichnis ist ein Fehler aufgetreten. " +
+                    "Vielleicht ist die .jar Datei noch in einem .zip Ordner:\n" + e);
+
+            return;
+        }
+
+        // Automat erstellen/laden
         final String initialAutomaton = "DefaultAutomaton";
-
         FileHelper.createFile(initialAutomaton);
-
         Optional<Automaton> optionalAutomaton = FileHelper.loadAutomaton(initialAutomaton, false);
+
         int ctr = 1;
         String newName = initialAutomaton;
 
-        if (optionalAutomaton.isEmpty()) {
+        if (optionalAutomaton.isEmpty()) { // DefaultAutomaton kann nicht geladen werden
             AlertHelper.showError(newName, "Beim laden des Standard-Automaten ist ein Fehler augetreten! " +
                     "Eine Neuer wird nun erstellt.");
 
-            while (optionalAutomaton.isEmpty()) {
+            while (optionalAutomaton.isEmpty()) { //DefaultAutomaton + i erstellen, i aus [ , 1, 2, ...]
                 ctr++;
                 newName = initialAutomaton + ctr;
                 FileHelper.createFile(newName);
@@ -38,6 +52,7 @@ public class Main extends Application {
             }
         }
 
+        // MVC-Set erstellen
         String finalNewName = newName;
         optionalAutomaton.ifPresent(automaton -> MVCSetCreator.create(finalNewName, new ArrayList<>(), automaton));
     }

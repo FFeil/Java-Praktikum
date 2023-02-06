@@ -13,7 +13,8 @@ import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,21 +31,17 @@ public class FileHelper {
                 return;
             }
 
-            // automata Ordner existiert nicht
-            if (!Files.exists(Path.of("automata"))) {
-                Files.createDirectories(Path.of("automata"));
-            }
-
-            Files.createFile(Path.of(file.getPath()));
-
-            List<String> lines = Files.readAllLines(
-                    Paths.get("src/main/resources/defaultAutomaton/DefaultAutomaton"), StandardCharsets.UTF_8);
+            // Namen ersetzen
+            List<String> lines = new ArrayList<>(Arrays.asList(Resources.readResourcesFile(
+                    "defaultAutomaton/DefaultAutomaton").split(System.lineSeparator())));
             lines.set(3, lines.get(3).replace("DefaultAutomaton", name));
             lines.set(11, lines.get(11).replace("DefaultAutomaton", name));
 
+            // In File schreiben
             Files.write(Path.of(file.getPath()), lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            AlertHelper.showError(name, "Beim Erstellen der Java Datei ist ein Fehler aufgetreten:\n" + e);
+            AlertHelper.showError("Beim Erstellen oder Validieren der Java-Datei des Automaten ist ein " +
+                    "Fehler aufgetreten:\n" + e);
         }
     }
 
@@ -72,7 +69,7 @@ public class FileHelper {
                 return Optional.of((Automaton) newAutomatonClass.getDeclaredConstructor().newInstance());
             }
         } catch (Exception e) {
-            AlertHelper.showError(name, "Beim laden des Automaten " + name + " ist ein Fehler aufgetreten:\n" + e);
+            AlertHelper.showError("Beim laden des Automaten " + name + " ist ein Fehler aufgetreten:\n" + e);
         }
 
         return Optional.empty();

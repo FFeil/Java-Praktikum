@@ -123,7 +123,7 @@ public class DatabaseController{
         try {
             Connection conn = getConnection();
             if (conn == null) {
-                AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler ist beim Schreiben aufgetreten!");
+                AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Schreiben ist aufgetreten!");
 
                 return;
             }
@@ -145,7 +145,7 @@ public class DatabaseController{
                 }
             }
         } catch (SQLException e) {
-            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler ist beim Schreiben aufgetreten!");
+            AlertHelper.showError(referenceHandler.getName(), "Ein Datenbankfehler beim Schreiben ist aufgetreten!");
         }
     }
 
