@@ -125,9 +125,7 @@ public class ReferenceHandler{
         this.simulationController = simulationController;
     }
 
-
     public void setDatabaseController(DatabaseController databaseController) {
         this.databaseController = databaseController;
     }
-
 }

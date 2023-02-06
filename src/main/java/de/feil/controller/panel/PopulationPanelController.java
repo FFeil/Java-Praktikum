@@ -45,7 +45,6 @@ public class PopulationPanelController {
             lastColumnClick = rowCol.value2();
 
             if (event.getButton() == MouseButton.PRIMARY) {
-
                 referenceHandler.getAutomaton().setState(lastRowClick, lastColumnClick,
                         referenceHandler.getStatePanelController().getSelectedState());
             }

@@ -51,13 +51,13 @@ public class EditorController {
             List<String> oldLines = Files.readAllLines(Paths.get("automata/" + referenceHandler.getName() + ".java"),
                     StandardCharsets.UTF_8);
 
-            if (newLines.equals(oldLines)) {
+            if (newLines.equals(oldLines)) { // Keine Änderungen
                 editorStage.close();
-            } else {
+            } else { // Ungespeicherte Änderungen
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                             "Bist du sicher? Du hast noch nicht gespeichert!");
-                    if (alert.showAndWait().filter(buttonType -> buttonType == ButtonType.OK).isPresent()) {
+                    if (alert.showAndWait().filter(buttonType -> buttonType == ButtonType.OK).isPresent()) { // Nicht speichern
                         editorStage.close();
                     }
                 });

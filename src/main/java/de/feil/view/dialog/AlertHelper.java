@@ -7,13 +7,13 @@ public class AlertHelper {
 
     private AlertHelper() {}
 
-    public static void showError(String nameOfAutomaton, String msg) { // Mit Name von Automat im Titel
+    public static void showError(String nameOfAutomaton, String msg) { // Mit Name vom Automat im Titel
         Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
         alert.setTitle(alert.getTitle() + ": " + nameOfAutomaton);
         alert.showAndWait();
     }
 
-    public static void showError(String msg) { // Ohne Name von Automat im Titel
+    public static void showError(String msg) { // Ohne Name vom Automat im Titel
         Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
         alert.showAndWait();
     }

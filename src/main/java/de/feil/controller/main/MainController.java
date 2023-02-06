@@ -345,7 +345,7 @@ public class MainController {
     }
 
 
-    public void bindStringProperties() { // Von helloLabel, Titel mainStage, MenuBar
+    public void bindTextProperties() { // Von helloLabel, Titel mainStage, MenuBar
         mainStage.titleProperty().bind(resourcesController.i18n("title").concat(referenceHandler.getName()));
         helloLabel.textProperty().bind(resourcesController.i18n("hello"));
 

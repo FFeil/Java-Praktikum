@@ -15,9 +15,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public class ResourcesController {
 
 	private static final String PROPERTIES_FILE = "automaton.properties";
-	private static final String PROPERTIES_EN_CLASS = "i18n_resources.text";
-	private static final String PROPERTIES_DE_CLASS = "i18n_resources.text_de";
-	private static String PROPERTIES_CLASS = PROPERTIES_DE_CLASS;
+	private static String PROPERTIES_CLASS = "i18n_resources.text";
 
 	private static ResourcesController resourcesController = null;
 	private Locale locale;
@@ -46,7 +44,7 @@ public class ResourcesController {
 	private ResourcesController() {
 		try {
 			String localLanguage = PropertiesController.getPropertiesController().getLanguage();
-
+			System.out.println(localLanguage);
 			if (localLanguage == null) {
 				this.locale = Locale.getDefault();
 			} else {
@@ -55,9 +53,7 @@ public class ResourcesController {
 		} catch (Throwable e) {
 			this.locale = Locale.getDefault();
 		}
-		if (locale.getLanguage().equals("en")) { // Standard ist "de"
-			switchPropertyClass();
-		}
+
 		Locale.setDefault(this.locale);
 		this.bundle = ResourceBundle.getBundle(PROPERTIES_CLASS, this.locale);
 		this.resourceFactory = new ObservableResourceFactory();
@@ -77,22 +73,11 @@ public class ResourcesController {
 	}
 
 	public void setLocale(Locale loc) {
-		switchPropertyClass();
-
 		this.locale = loc;
 		Locale.setDefault(this.locale);
 		this.bundle = ResourceBundle.getBundle(PROPERTIES_CLASS, this.locale);
 
 		this.resourceFactory.setResources(this.bundle);
-	}
-
-	public static void switchPropertyClass() {
-		if (PROPERTIES_CLASS.equals(PROPERTIES_DE_CLASS)) {
-			PROPERTIES_CLASS = PROPERTIES_EN_CLASS;
-			return;
-		}
-
-		PROPERTIES_CLASS = PROPERTIES_DE_CLASS;
 	}
 }
 

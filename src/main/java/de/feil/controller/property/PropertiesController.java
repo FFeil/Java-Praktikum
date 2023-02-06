@@ -17,6 +17,7 @@ public class PropertiesController {
 
 	private PropertiesController() {
 		this.properties = new Properties();
+
 		try (FileInputStream propertyFile = new FileInputStream(PropertiesController.PROPERTIES_FILE)) {
 			this.properties.load(propertyFile);
 		} catch (IOException e) {

@@ -69,7 +69,7 @@ public class MVCSetCreator {
 
             // Initialize language menu + bind string properties
             mainController.intLanguageMenu();
-            mainController.bindStringProperties();
+            mainController.bindTextProperties();
 
             // Controller: Language
             new LanguageController(referenceHandler);

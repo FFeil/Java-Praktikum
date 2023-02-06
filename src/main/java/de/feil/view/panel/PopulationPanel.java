@@ -64,7 +64,6 @@ public class PopulationPanel extends Region implements Observer {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
         gc.setLineWidth(.8);
         gc.setStroke(Color.GRAY);
 
