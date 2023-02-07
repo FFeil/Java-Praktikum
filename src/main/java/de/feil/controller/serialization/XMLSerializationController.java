@@ -22,6 +22,8 @@ public class XMLSerializationController {
     }
 
     public XMLSerializationController(ReferenceHandler referenceHandler) {
+        // Populations-Ordner ex. bereits durch SerializationController
+
         referenceHandler.getMainController().getXmlSerializeMenuItem().setOnAction(e -> savePopulation(referenceHandler));
         referenceHandler.getMainController().getXmlDeserializeMenuItem().setOnAction(e -> loadPopulation(referenceHandler));
     }
@@ -41,7 +43,7 @@ public class XMLSerializationController {
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             writeXML(referenceHandler, outputStream);
         } catch (Exception e) {
-            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Laden der Population:\n" + e);
+            AlertHelper.showError(referenceHandler.getName(), "Fehler beim Speichern der Population:\n" + e);
         }
     }
 

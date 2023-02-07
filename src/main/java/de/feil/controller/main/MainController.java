@@ -245,8 +245,11 @@ public class MainController {
 
     private void onCloseRequest(WindowEvent event) {
         try {
-            referenceHandler.getDatabaseController().shutdown();
             referenceHandler.getReferenceHandlers().remove(referenceHandler);
+
+            if (referenceHandler.getReferenceHandlers().isEmpty()) {
+                referenceHandler.getDatabaseController().shutdown();
+            }
 
             Files.delete(Paths.get("automata/" + referenceHandler.getName() + ".class"));
         } catch (IOException e) {

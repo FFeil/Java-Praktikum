@@ -8,6 +8,8 @@ import de.feil.view.dialog.AlertHelper;
 import javafx.stage.FileChooser;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class SerializationController {
 
@@ -19,7 +21,13 @@ public class SerializationController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("*.ser", "*.ser"));
     }
 
-    public SerializationController(ReferenceHandler referenceHandler) {
+    public SerializationController(ReferenceHandler referenceHandler) throws IOException {
+        // Populations-Ordner erstellen, falls nicht vorhanden
+        Path populationsPath = Path.of("populations");
+        if (!Files.exists(populationsPath)) {
+            Files.createDirectories(populationsPath);
+        }
+
         referenceHandler.getMainController().getSerializeMenuItem().setOnAction(e -> savePopulation(referenceHandler));
         referenceHandler.getMainController().getDeserializeMenuItem().setOnAction(e -> loadPopulation(referenceHandler));
     }

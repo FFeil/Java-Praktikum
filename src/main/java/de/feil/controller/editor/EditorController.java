@@ -47,7 +47,7 @@ public class EditorController {
         try {
             event.consume();
 
-            List<String> newLines = new ArrayList<>(Arrays.asList(codeTextArea.getText().split(System.lineSeparator())));
+            List<String> newLines = new ArrayList<>(Arrays.asList(codeTextArea.getText().split("\n")));
             List<String> oldLines = Files.readAllLines(Paths.get("automata/" + referenceHandler.getName() + ".java"),
                     StandardCharsets.UTF_8);
 

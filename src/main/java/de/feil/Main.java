@@ -20,19 +20,20 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        // automata Ordner überprüfen
+        // automata Ordner überprüfen/erstellen
         try {
-            if (!Files.exists(Path.of("automata"))) {
-                Files.createDirectories(Path.of("automata"));
+            Path automataPath = Path.of("automata");
+            if (!Files.exists(automataPath)) {
+                Files.createDirectories(automataPath);
             }
         } catch (Exception e) { // .jar in .zip
             AlertHelper.showError("Beim Erstellen des Automata Verzeichnis ist ein Fehler aufgetreten. " +
-                    "Vielleicht ist die .jar Datei noch in einem .zip Ordner:\n" + e);
+                    "Vielleicht ist die .jar-Datei noch in einem .zip-Ordner:\n" + e);
 
             return;
         }
 
-        // Automat erstellen/laden
+        // Initialen Automaten erstellen/laden
         final String initialAutomaton = "DefaultAutomaton";
         FileHelper.createFile(initialAutomaton);
         Optional<Automaton> optionalAutomaton = FileHelper.loadAutomaton(initialAutomaton, false);

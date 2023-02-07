@@ -44,7 +44,7 @@ public class ResourcesController {
 	private ResourcesController() {
 		try {
 			String localLanguage = PropertiesController.getPropertiesController().getLanguage();
-			System.out.println(localLanguage);
+
 			if (localLanguage == null) {
 				this.locale = Locale.getDefault();
 			} else {
