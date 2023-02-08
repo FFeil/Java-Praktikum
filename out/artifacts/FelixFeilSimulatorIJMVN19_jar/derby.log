@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Tue Feb 07 11:11:52 CET 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0186-2b5c-4312-0000026fbfa8 
+Wed Feb 08 21:18:11 CET 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0186-32ad-ba20-0000026e02a0 
 on database directory C:\Users\feilf\IdeaProjects\FelixFeilSimulatorIJMVN19\out\artifacts\FelixFeilSimulatorIJMVN19_jar\SettingsDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@c387f44 
 Loaded from file:/C:/Users/feilf/IdeaProjects/FelixFeilSimulatorIJMVN19/out/artifacts/FelixFeilSimulatorIJMVN19_jar/FelixFeilSimulatorIJMVN19.jar
 java.vendor=Oracle Corporation
@@ -12,8 +12,8 @@ os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Tue Feb 07 11:12:07 CET 2023: Shutting down Derby engine
+Wed Feb 08 21:18:15 CET 2023: Shutting down Derby engine
 ----------------------------------------------------------------
-Tue Feb 07 11:12:07 CET 2023:
-Shutting down instance a816c00e-0186-2b5c-4312-0000026fbfa8 on database directory C:\Users\feilf\IdeaProjects\FelixFeilSimulatorIJMVN19\out\artifacts\FelixFeilSimulatorIJMVN19_jar\SettingsDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@c387f44 
+Wed Feb 08 21:18:15 CET 2023:
+Shutting down instance a816c00e-0186-32ad-ba20-0000026e02a0 on database directory C:\Users\feilf\IdeaProjects\FelixFeilSimulatorIJMVN19\out\artifacts\FelixFeilSimulatorIJMVN19_jar\SettingsDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@c387f44 
 ----------------------------------------------------------------

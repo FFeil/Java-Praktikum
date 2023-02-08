@@ -67,7 +67,7 @@ public class MVCSetCreator {
             mainController.getStatePanelScrollPane().setContent(statePanel);
             mainController.getPopulationPanelScrollPane().setContent(populationPanel);
 
-            // Initialize language menu + bind string properties
+            // Initialize language menu + bind text properties
             mainController.intLanguageMenu();
             mainController.bindTextProperties();
 

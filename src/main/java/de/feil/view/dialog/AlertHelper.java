@@ -18,9 +18,14 @@ public class AlertHelper {
         alert.showAndWait();
     }
 
-    public static void showInformation(String nameOfAutomaton, String msg) {
+    public static void showInformation(String nameOfAutomaton, String msg) { // Mit Name vom Automat im Titel
         Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
         alert.setTitle(alert.getTitle() + ": " + nameOfAutomaton);
+        alert.showAndWait();
+    }
+
+    public static void showInformation(String msg) { // Ohne Name vom Automat im Titel
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
         alert.showAndWait();
     }
 }

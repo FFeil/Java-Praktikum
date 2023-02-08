@@ -9,9 +9,12 @@ import javafx.stage.Stage;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class Main extends Application {
+
+    private static final String INITIAL_AUTOMATON = "DefaultAutomaton";
 
     // VM Args: --module-path "C:\Program Files\Java\javafx-sdk-19\lib" --add-modules javafx.controls,javafx.fxml
     public static void main(String[] args) {
@@ -27,34 +30,49 @@ public class Main extends Application {
                 Files.createDirectories(automataPath);
             }
         } catch (Exception e) { // .jar in .zip
-            AlertHelper.showError("Beim Erstellen des Automata Verzeichnis ist ein Fehler aufgetreten. " +
-                    "Vielleicht ist die .jar-Datei noch in einem .zip-Ordner:\n" + e);
+            AlertHelper.showError("Beim Validieren bzw. Erstellen des automata-Verzeichnis ist ein Fehler " +
+                    "aufgetreten. Vielleicht ist die .jar-Datei noch in einem .zip-Ordner:\n" + e);
 
             return;
         }
 
-        // Initialen Automaten erstellen/laden
-        final String initialAutomaton = "DefaultAutomaton";
-        FileHelper.createFile(initialAutomaton);
-        Optional<Automaton> optionalAutomaton = FileHelper.loadAutomaton(initialAutomaton, false);
+        loadInitialAutomaton();
+    }
 
-        int ctr = 1;
-        String newName = initialAutomaton;
+    private void loadInitialAutomaton() {
+        FileHelper.createFile(INITIAL_AUTOMATON);
+        Optional<Automaton> optionalAutomaton = FileHelper.loadAutomaton(INITIAL_AUTOMATON, false);
+        String automatonToLoad = INITIAL_AUTOMATON;
+        List<String> corruptedAutomata = new ArrayList<>();
 
-        if (optionalAutomaton.isEmpty()) { // DefaultAutomaton kann nicht geladen werden
-            AlertHelper.showError(newName, "Beim laden des Standard-Automaten ist ein Fehler augetreten! " +
-                    "Eine Neuer wird nun erstellt.");
+        // INITIAL_AUTOMATON kann nicht geladen werden => <INITIAL_AUTOMATON + i> erstellen, i aus [ , 1, 2, ...]
+        if (optionalAutomaton.isEmpty()) {
+            AlertHelper.showError(automatonToLoad, "Beim laden des Standard-Automaten <" + INITIAL_AUTOMATON + "> " +
+                    "ist ein Fehler aufgetreten! Ein Neuer wird nun geladen.");
 
-            while (optionalAutomaton.isEmpty()) { //DefaultAutomaton + i erstellen, i aus [ , 1, 2, ...]
+            corruptedAutomata.add(INITIAL_AUTOMATON);
+            int ctr = 2;
+
+            while (optionalAutomaton.isEmpty()) {
+                automatonToLoad = INITIAL_AUTOMATON + ctr;
+                corruptedAutomata.add(automatonToLoad);
+
+                FileHelper.createFile(automatonToLoad);
+                optionalAutomaton = FileHelper.loadAutomaton(automatonToLoad, false);
+
                 ctr++;
-                newName = initialAutomaton + ctr;
-                FileHelper.createFile(newName);
-                optionalAutomaton = FileHelper.loadAutomaton(newName, false);
             }
         }
 
+        // Fehlerhafte Automaten ausgeben
+        if (!corruptedAutomata.isEmpty()) {
+            corruptedAutomata.remove(corruptedAutomata.size() - 1); // Der Automat, der geladen wird
+            AlertHelper.showInformation("<" + automatonToLoad + "> wurde erfolgreich geladen. Folgende Automaten " +
+                    "konnten nicht kompiliert werden, da der Code fehlerhaft ist:\n" + corruptedAutomata);
+        }
+
         // MVC-Set erstellen
-        String finalNewName = newName;
-        optionalAutomaton.ifPresent(automaton -> MVCSetCreator.create(finalNewName, new ArrayList<>(), automaton));
+        String finalAutomatonName = automatonToLoad;
+        optionalAutomaton.ifPresent(automaton -> MVCSetCreator.create(finalAutomatonName, new ArrayList<>(), automaton));
     }
 }
