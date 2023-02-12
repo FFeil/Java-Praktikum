@@ -23,21 +23,35 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        // automata Ordner überprüfen/erstellen
-        try {
-            Path automataPath = Path.of("automata");
-            if (!Files.exists(automataPath)) {
-                Files.createDirectories(automataPath);
-            }
-        } catch (Exception e) { // .jar in .zip
-            AlertHelper.showError("Beim Validieren bzw. Erstellen des automata-Verzeichnis ist ein Fehler " +
-                    "aufgetreten. Vielleicht ist die .jar-Datei noch in einem .zip-Ordner:\n" + e);
-
+        if (!validateDirectories()) {
             return;
         }
 
         loadInitialAutomaton();
     }
+
+    private static boolean validateDirectories() {
+        try {
+            // automata-Verzeichnis
+            Path automataPath = Path.of("automata");
+            if (!Files.exists(automataPath)) {
+                Files.createDirectories(automataPath);
+            }
+
+            // populations-Verzeichnis
+            Path populationsPath = Path.of("populations");
+            if (!Files.exists(populationsPath)) {
+                Files.createDirectories(populationsPath);
+            }
+        } catch (Exception e) { // Vermutlich: .jar in .zip
+            AlertHelper.showError("Beim Validieren bzw. Erstellen der Ordner ist ein Fehler " +
+                    "aufgetreten. Vielleicht ist die .jar-Datei noch in einem .zip-Ordner:\n" + e);
+
+            return false;
+        }
+        return true;
+    }
+
 
     private void loadInitialAutomaton() {
         FileHelper.createFile(INITIAL_AUTOMATON);

@@ -15,7 +15,8 @@ import javafx.beans.property.SimpleObjectProperty;
 public class ResourcesController {
 
 	private static final String PROPERTIES_FILE = "automaton.properties";
-	private static String PROPERTIES_CLASS = "i18n_resources.text";
+	private static final ArrayList<String> PROPERTIES_FILE_DEFAULT_CONTENT = new ArrayList<>(List.of("language=de"));
+	private static final String PROPERTIES_CLASS = "i18n_resources.text";
 
 	private static ResourcesController resourcesController = null;
 	private Locale locale;
@@ -28,7 +29,7 @@ public class ResourcesController {
 		if (!Files.exists(path)) {
 			try {
 				Files.createFile(path);
-				Files.write(path, new ArrayList<>(List.of("language=de")), StandardCharsets.UTF_8);
+				Files.write(path, PROPERTIES_FILE_DEFAULT_CONTENT, StandardCharsets.UTF_8);
 			} catch (IOException e) {
 				AlertHelper.showError("Fehler beim Erstellen der automaton.properties-Datei:\n" + e);
 			}

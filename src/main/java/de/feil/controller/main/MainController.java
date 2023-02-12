@@ -254,7 +254,7 @@ public class MainController {
             Files.delete(Paths.get("automata/" + referenceHandler.getName() + ".class"));
         } catch (IOException e) {
             AlertHelper.showError(
-                    referenceHandler.getName(),"Beim Schließen des Fensters ist ein Fehler aufgetreten" + e);
+                    referenceHandler.getName(),"Beim Schließen des Fensters ist ein Fehler aufgetreten:\n" + e);
         }
     }
 

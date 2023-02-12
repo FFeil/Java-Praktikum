@@ -10,7 +10,7 @@ public class KruemelmonsterAutomaton extends Automaton {
     }
 
     public KruemelmonsterAutomaton() {
-        this(100, 100, 10, true);
+        this(50, 50, 10, true);
     }
 
     @Override
